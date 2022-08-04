@@ -3,8 +3,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        main: "#B20600",
-        mainLight: "#FF5F00",
+        main: "#FF5F00",
         second: "#00092C",
       },
       fontFamily: {
