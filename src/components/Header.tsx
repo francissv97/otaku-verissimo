@@ -1,10 +1,10 @@
-import headerImage from "../assets/header-logo.png";
+import logo from "../assets/logo.svg";
 
 export function Header() {
   return (
     <div className="bg-second">
       <div className="max-w-screen-lg mx-auto px-4">
-        <img src={headerImage} alt="97AnimeList" className="w-28 mx-auto" />
+        <img src={logo} alt="97AnimeListLogo" className="w-24 mx-auto" />
       </div>
     </div>
   );
