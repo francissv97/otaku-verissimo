@@ -1,4 +1,4 @@
-export const perPage = 6;
+export const perPage = 5;
 
 export const currentSeason = () => {
   const currentMonth = new Date().getMonth() + 1;
