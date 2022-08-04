@@ -1,22 +1,15 @@
-import ContentLoader from "react-content-loader";
-import { Code, Facebook } from "react-content-loader";
+import { Circle, CircleDashed, CircleNotch } from "phosphor-react";
 
 export function Loading() {
   return (
-    <ContentLoader
-      className="mt-6"
-      height={140}
-      speed={1}
-      backgroundColor="#888"
-      foregroundColor="#cccccc"
-      viewBox="0 0 480 70"
-    >
-      <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
-      <rect x="80" y="0" rx="5" ry="5" width="70" height="70" />
-      <rect x="160" y="0" rx="5" ry="5" width="70" height="70" />
-      <rect x="240" y="0" rx="5" ry="5" width="70" height="70" />
-      <rect x="320" y="0" rx="5" ry="5" width="70" height="70" />
-      <rect x="400" y="0" rx="5" ry="5" width="70" height="70" />
-    </ContentLoader>
+    <div className="max-w-screen-lg m-auto py-32 flex justify-center items-center gap-2 w-full h-full rounded-xl">
+      <CircleNotch className="w-20 h-20 animate-spin text-second" />
+
+      <div className="flex flex-col justify-end">
+        <Circle className="animate-ping text-main" />
+      </div>
+
+      <CircleDashed className="w-20 h-20 animate-spin text-main" />
+    </div>
   );
 }
