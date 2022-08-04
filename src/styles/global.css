@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-200 text-gray-700 font-main overflow-x-hidden box-border;
+  @apply bg-gray-200 text-zinc-600 font-main overflow-x-hidden box-border;
   --webkit-font-smoothing: antialiased;
 }
