@@ -2,30 +2,30 @@ import logo from "../assets/logo.svg";
 
 export function Footer() {
   return (
-    <div className="bg-gray-700">
-      <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:max-w-screen-lg gap-4 mx-auto p-4">
-        <img src={logo} alt="97AnimeListLogo" className="w-24" />
+    <div className="">
+      <div className="flex flex-col items-center sm:flex-row sm:justify-between sm:max-w-screen-lg gap-2 mx-auto p-4">
+        <img src={logo} alt="97AnimeListLogo" className="w-40" />
 
-        <div className="flex flex-col gap-4">
-          <p className="text-gray-300 text-sm">
-            {"Alimentado por "}
+        <div className="flex flex-col gap-1">
+          <p className="text-gray-700 text-sm">
+            {"Powered by "}
             <a
               href="https://anilist.co/"
               target="_blank"
-              className="text-main inline-block duration-200 hover:scale-105"
+              className="text-main font-semibold inline-block duration-200 hover:scale-105"
             >
               {"Anilist"}
             </a>
           </p>
 
-          <p className="text-gray-300 text-sm">
-            {"Desenvolvido por "}
+          <p className="text-gray-700 text-sm">
+            {"Developed by "}
             <a
               href="https://francissportfolio.vercel.app/"
               target="_blank"
-              className="text-main inline-block duration-200 hover:scale-105"
+              className="text-main font-semibold inline-block duration-200 hover:scale-105"
             >
-              {"Francis S. Verissimo"}
+              {"Francis Verissimo"}
             </a>
           </p>
         </div>
