@@ -22,6 +22,6 @@ export function TrendingNow({ perPage }: TrendingNowType) {
   const { data } = useQuery(GET_TRENDING_NOW_QUERY, {
     variables: { perPage },
   });
-
-  return <Results title="Tendências do momento" data={data} />;
+  
+  return <Results title="trending now" data={data} />;
 }

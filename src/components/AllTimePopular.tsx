@@ -23,9 +23,5 @@ export function AllTimePopular({ perPage }: AllTimePopularType) {
     variables: { perPage },
   });
 
-  return (
-    <div>
-      <Results title="Populares de todos os tempos" data={data} />
-    </div>
-  );
+  return <Results title="all time popular" data={data} />;
 }

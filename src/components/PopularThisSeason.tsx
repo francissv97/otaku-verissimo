@@ -32,5 +32,5 @@ export function PopularThisSeason({
     variables: { currentYear, currentSeason, perPage },
   });
 
-  return <Results title="Populares desta temporada" data={data} />;
+  return <Results title="Popular this season" data={data} />;
 }
