@@ -12,21 +12,20 @@ export function Footer() {
             <a
               href="https://anilist.co/"
               target="_blank"
-              className="text-main font-semibold inline-block duration-200 hover:scale-105"
+              className="text-main font-semibold inline-block hover:scale-105"
             >
               {"Anilist"}
             </a>
           </p>
 
           <p className="text-gray-700 text-sm">
-            {"Developed by "}
             <a
               href="https://francissportfolio.vercel.app/"
               target="_blank"
-              className="text-main font-semibold inline-block duration-200 hover:scale-105"
+              className="text-main font-semibold inline-block hover:scale-105"
             >
-              {"Francis Verissimo"}
-            </a>
+              Francis Verissimo
+            </a> &copy; {new Date().getFullYear()}
           </p>
         </div>
       </div>

@@ -16,20 +16,25 @@ export function Home() {
   return (
     <>
       <Header />
+
       <>
         <TrendingNow perPage={perPage} />
+
         <PopularThisSeason
           currentSeason={currentSeason()}
           currentYear={currentYear()}
           perPage={perPage}
         />
+
         <UpcomingNextSeason
           nextSeason={nextSeason()}
           nextSeasonYear={nextSeasonYear()}
           perPage={perPage}
         />
+
         <AllTimePopular perPage={perPage} />
       </>
+
       <Footer />
     </>
   );

@@ -1,8 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  @apply bg-gradient-to-tl to-gray-200  from-gray-300 text-zinc-600 font-main overflow-x-hidden box-border;
-  --webkit-font-smoothing: antialiased;
-}
