@@ -8,7 +8,6 @@ module.exports = {
       },
       fontFamily: {
         main: ["Fira Sans Condensed", "sans-serif"],
-        mainCondensed: ["Fira Sans Extra Condensed", "sans-serif"],
       },
     },
   },

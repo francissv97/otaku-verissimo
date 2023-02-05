@@ -14,10 +14,10 @@ import {
 
 export function Home() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col justify-between">
       <Header />
 
-      <>
+      <div className="mb-auto">
         <TrendingNow perPage={perPage} />
 
         <PopularThisSeason
@@ -33,9 +33,9 @@ export function Home() {
         />
 
         <AllTimePopular perPage={perPage} />
-      </>
+      </div>
 
       <Footer />
-    </>
+    </div>
   );
 }

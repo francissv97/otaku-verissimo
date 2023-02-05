@@ -1,27 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
-import { UpcomingNextSeasonType } from "../types/handleTypes";
-import { Results } from "./Results";
-
-const GET_NEXT_SEASON_POPULAR_QUERY = gql`
-  query ($nextSeason: MediaSeason, $nextSeasonYear: Int, $perPage: Int) {
-    Page(page: 1, perPage: $perPage) {
-      media(
-        type: ANIME
-        season: $nextSeason
-        seasonYear: $nextSeasonYear
-        sort: POPULARITY_DESC
-      ) {
-        id
-        title {
-          romaji
-        }
-        coverImage {
-          large
-        }
-      }
-    }
-  }
-`;
+import { useQuery } from "@apollo/client";
+import { GET_NEXT_SEASON_POPULAR_QUERY } from "../lib/queries";
+import { UpcomingNextSeasonType } from "../types";
+import { SectionResults } from "./SectionResults";
 
 export function UpcomingNextSeason({
   nextSeason,
@@ -32,5 +12,13 @@ export function UpcomingNextSeason({
     variables: { nextSeason, nextSeasonYear, perPage },
   });
 
-  return <Results title="upcoming next season" data={data} />;
+  return (
+    <div>
+      <SectionResults
+        title="upcoming next season"
+        navigateParamViewAll="next-season"
+        data={data}
+      />
+    </div>
+  );
 }

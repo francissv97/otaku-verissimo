@@ -1,4 +1,4 @@
-export interface GetAnimeInfoQueryResponse {
+export type GetAnimeInfoQueryResponse = {
   Page: {
     media: Array<{
       id: number;
@@ -10,24 +10,30 @@ export interface GetAnimeInfoQueryResponse {
       };
     }>;
   };
-}
+};
 
-export interface PopularThisSeasonType {
+export type PopularThisSeasonType = {
   currentYear: number;
   currentSeason: string | undefined;
   perPage: number;
-}
+};
 
-export interface UpcomingNextSeasonType {
+export type UpcomingNextSeasonType = {
   nextSeasonYear: number;
   nextSeason: string | undefined;
   perPage: number;
-}
+};
 
-export interface TrendingNowType {
+export type TrendingNowType = {
   perPage: number;
-}
+};
 
-export interface AllTimePopularType {
+export type AllTimePopularType = {
   perPage: number;
-}
+};
+
+export type ViewAllParams =
+  | "trending"
+  | "this-season"
+  | "next-season"
+  | "popular";

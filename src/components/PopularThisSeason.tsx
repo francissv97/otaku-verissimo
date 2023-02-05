@@ -1,27 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
-import { PopularThisSeasonType } from "../types/handleTypes";
-import { Results } from "./Results";
-
-const GET_POPULAR_THIS_SEASON_QUERY = gql`
-  query ($currentYear: Int, $currentSeason: MediaSeason, $perPage: Int) {
-    Page(page: 1, perPage: $perPage) {
-      media(
-        type: ANIME
-        seasonYear: $currentYear
-        season: $currentSeason
-        sort: POPULARITY_DESC
-      ) {
-        id
-        title {
-          romaji
-        }
-        coverImage {
-          large
-        }
-      }
-    }
-  }
-`;
+import { GET_POPULAR_THIS_SEASON_QUERY } from "../lib/queries";
+import { PopularThisSeasonType } from "../types";
+import { SectionResults } from "./SectionResults";
 
 export function PopularThisSeason({
   currentSeason,
@@ -32,5 +12,11 @@ export function PopularThisSeason({
     variables: { currentYear, currentSeason, perPage },
   });
 
-  return <Results title="Popular this season" data={data} />;
+  return (
+    <SectionResults
+      title="Popular this season"
+      navigateParamViewAll="popular"
+      data={data}
+    />
+  );
 }
