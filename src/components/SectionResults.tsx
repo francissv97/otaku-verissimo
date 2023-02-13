@@ -1,9 +1,11 @@
+import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
-import { GetAnimeInfoQueryResponse, ViewAllParams } from "../types";
+import { AnimeMediaResults, ViewAllParams } from "../types";
 import { Loading } from "./Loading";
+import { PopoverResults } from "./PopoverResults";
 
 type SectionResultProps = {
-  data: GetAnimeInfoQueryResponse | undefined;
+  data: { Page: { media: AnimeMediaResults[] } } | undefined;
   title: string;
   navigateParamViewAll: ViewAllParams;
 };
@@ -27,29 +29,43 @@ export function SectionResults({
 
         <button
           onClick={() => navigate(`/${navigateParamViewAll}`)}
-          className="uppercase text-gray-600 px-2 h-fit my-auto rounded text-sm hover:text-main font-medium duration-300"
+          className="uppercase text-gray-600 px-2 h-fit my-auto rounded text-sm hover:text-main hover:rotate-3 font-medium duration-100"
         >
           view all
         </button>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-fit">
-        {animes.map(({ id, title, coverImage }) => (
-          <div
-            key={id}
-            onClick={() => console.log(id)}
-            className="max-w-[180px] group duration-200 cursor-pointer"
+        {animes.map((anime) => (
+          <Popover
+            placement="rightTop"
+            key={anime.id}
+            mouseEnterDelay={0}
+            mouseLeaveDelay={0}
+            showArrow={false}
+            autoAdjustOverflow
+            destroyTooltipOnHide
+            overlayStyle={{ padding: "0 12px" }}
+            overlayInnerStyle={{ borderRadius: 4, padding: 0 }}
+            content={<PopoverResults anime={anime} />}
           >
-            <img
-              src={coverImage.large}
-              alt={title.romaji}
-              className="h-[90%] w-full rounded-md object-cover object-center mb-2 duration-300"
-            />
+            <div
+              onClick={() => {
+                navigate(`/anime/${anime.id}`);
+              }}
+              className="max-w-[180px] group duration-200 cursor-pointer"
+            >
+              <img
+                src={anime.coverImage.large}
+                alt={anime.title.romaji}
+                className="h-[90%] w-full rounded-md object-cover object-center mb-2 duration-100 group-hover:rotate-2 group-hover:-translate-y-2"
+              />
 
-            <p className="h-[10%] text-sm text-zinc-600 truncate group-hover:text-main duration-300">
-              {title.romaji}
-            </p>
-          </div>
+              <p className="h-[10%] text-sm text-zinc-600 truncate group-hover:text-main duration-100">
+                {anime.title.romaji}
+              </p>
+            </div>
+          </Popover>
         ))}
       </div>
 

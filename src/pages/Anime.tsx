@@ -1,7 +1,11 @@
 export function Anime() {
   return (
-    <div>
+    <div className="flex flex-col p-10">
       <strong>ANIME PAGE</strong>
+
+      <strong className="text-2xl">
+        {"<"} under development... {" />"}
+      </strong>
     </div>
   );
 }
