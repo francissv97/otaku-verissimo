@@ -1,11 +1,11 @@
 import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
-import { AnimeMediaResults, ViewAllParams } from "../types";
+import { AnimeMediaDefaultFields, ViewAllParams } from "../types";
 import { Loading } from "./Loading";
 import { PopoverResults } from "./PopoverResults";
 
 type SectionResultProps = {
-  data: { Page: { media: AnimeMediaResults[] } } | undefined;
+  data: { Page: { media: AnimeMediaDefaultFields[] } } | undefined;
   title: string;
   navigateParamViewAll: ViewAllParams;
 };

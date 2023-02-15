@@ -2,6 +2,8 @@ type StudioConnection = {
   nodes: { id: number; name: string }[];
 };
 
+type MediaSeason = "WINTER" | "SPRING" | "SUMMER" | "FALL";
+
 type MediaFormat =
   | "TV"
   | "TV_SHORT"
@@ -21,26 +23,7 @@ type MediaStatus =
   | "CANCELLED"
   | "HIATUS";
 
-export type AnimeMedia = {
-  id: number;
-  title: {
-    romaji: string;
-  };
-  coverImage: {
-    large: string;
-  };
-  format: MediaFormat;
-  // description: string,
-  averageScore: number;
-  meanScore: number;
-  popularity: number;
-  // season: MediaSeason,
-  episodes: number;
-  genres: string;
-  studios: StudioConnection;
-};
-
-export type AnimeMediaResults = {
+export type AnimeMediaDefaultFields = {
   id: number;
   title: {
     romaji: string;
@@ -54,9 +37,29 @@ export type AnimeMediaResults = {
   genres: string[];
   status: MediaStatus;
   studios: StudioConnection;
-  season: string;
+  season: MediaSeason;
   seasonYear: number;
-  nextAiringEpisode: any;
+};
+
+export type AnimeMedia = AnimeMediaDefaultFields & {
+  extAiringEpisode: {
+    edges: { id: number; name: string };
+    nodes: { id: number; name: string };
+  };
+  description: string;
+  popularity: number;
+  bannerImage: string;
+  tags: {
+    id: number;
+    name: string;
+    description: string;
+    category: string;
+    rank: number;
+    isGeneralSpoiler: boolean;
+    isMediaSpoiler: boolean;
+    isAdult: boolean;
+  }[];
+  favourites: number;
 };
 
 export type GetAnimeInfoQueryResponse = {

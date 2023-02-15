@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_POPULAR_THIS_SEASON_QUERY } from "../lib/queries";
 import { PopularThisSeasonType } from "../types";
 import { SectionResults } from "./SectionResults";

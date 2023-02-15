@@ -1,21 +1,16 @@
 import { gql } from "@apollo/client";
 
-const animeMediaDefault = `
+const animeMediaDefaultFields = `
   id
   title {
     romaji
   }
-  bannerImage
   coverImage {
     large
   }
   genres
-  tags {
-    name
-  }
   episodes
   averageScore
-  meanScore
   format
   studios(isMain: true) {
     nodes {
@@ -33,15 +28,35 @@ const animeMediaDefault = `
   }
   `;
 
-// bannerImage
 // characters(sort: RELEVANCE)
 // description(asHTML: true)
+
+export const GET_ANIME_MEDIA = gql`
+  query($id: Int) {
+    Media(id: $id, type: ANIME) {
+      ${animeMediaDefaultFields}
+      bannerImage
+      favourites
+      description(asHtml: false)
+      tags {
+        id
+        name
+        description
+        category
+        rank
+        isGeneralSpoiler
+        isMediaSpoiler
+        isAdult
+      }
+  }
+}
+`;
 
 export const GET_TRENDING_NOW_QUERY = gql`
   query ($perPage: Int) {
     Page(page: 1, perPage: $perPage) {
       media(type: ANIME, sort: TRENDING_DESC) {
-        ${animeMediaDefault}
+        ${animeMediaDefaultFields}
       }
     }
   }
@@ -56,7 +71,7 @@ export const GET_POPULAR_THIS_SEASON_QUERY = gql`
         season: $currentSeason
         sort: POPULARITY_DESC
       ) {
-        ${animeMediaDefault}
+        ${animeMediaDefaultFields}
       }
     }
   }
@@ -71,7 +86,7 @@ export const GET_NEXT_SEASON_POPULAR_QUERY = gql`
         seasonYear: $nextSeasonYear
         sort: POPULARITY_DESC
       ) {
-        ${animeMediaDefault}
+        ${animeMediaDefaultFields}
       }
     }
   }
@@ -81,7 +96,7 @@ export const GET_ALL_TIME_POPULAR_QUERY = gql`
   query ($perPage: Int) {
     Page(page: 1, perPage: $perPage) {
       media(type: ANIME, sort: POPULARITY_DESC) {
-        ${animeMediaDefault}
+        ${animeMediaDefaultFields}
       }
     }
   }
