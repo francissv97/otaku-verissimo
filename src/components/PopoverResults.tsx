@@ -1,9 +1,9 @@
 import { Smiley, SmileyMeh, SmileySad } from "phosphor-react";
-import { AnimeMediaResults } from "../types";
+import { AnimeMediaDefaultFields } from "../types";
 import { Space } from "./Space";
 
 type PopoverResultsProps = {
-  anime: AnimeMediaResults;
+  anime: AnimeMediaDefaultFields;
 };
 
 export function PopoverResults({ anime }: PopoverResultsProps) {
