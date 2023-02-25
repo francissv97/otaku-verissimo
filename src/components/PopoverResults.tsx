@@ -1,25 +1,26 @@
 import { Smiley, SmileyMeh, SmileySad } from "phosphor-react";
 import { AnimeMediaDefaultFields } from "../types";
-import { Space } from "./Space";
+import { Space } from "./MyComponents";
 
 type PopoverResultsProps = {
   anime: AnimeMediaDefaultFields;
 };
 
 export function PopoverResults({ anime }: PopoverResultsProps) {
-  const { episodes, studios, averageScore, season, seasonYear } = anime;
+  const { episodes, studios, averageScore, season, seasonYear, format } = anime;
 
   const studio = studios.nodes[0].name;
-  const format = anime.format == "TV" ? "TV SHOW" : anime.format;
   const genres =
     anime.genres.length > 3 ? anime.genres.slice(0, 3) : anime.genres;
 
   return (
     <div className="flex flex-col w-64 p-4">
       <div className="flex justify-between">
-        <span className="text-zinc-600 text-sm">
-          {season + " " + seasonYear}
-        </span>
+        {!(!season || !seasonYear) && (
+          <span className="text-zinc-600 text-sm">
+            {season + " " + seasonYear}
+          </span>
+        )}
 
         {averageScore && (
           <div className="flex gap-1 items-center">
@@ -38,7 +39,7 @@ export function PopoverResults({ anime }: PopoverResultsProps) {
 
       <Space />
 
-      <span className="text-sky-700 text-sm">{studio}</span>
+      <span className="font-sans font-medium text-sky-700 text-sm">{studio}</span>
 
       <Space />
 
@@ -61,7 +62,7 @@ export function PopoverResults({ anime }: PopoverResultsProps) {
         {genres.map((genre) => (
           <span
             key={genre}
-            className="bg-orange-700 p-1 text-zinc-100 text-xs rounded"
+            className="bg-main p-1 font-sans font-medium text-zinc-100 text-xs rounded"
           >
             {genre}
           </span>

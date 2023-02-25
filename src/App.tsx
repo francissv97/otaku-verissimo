@@ -9,10 +9,10 @@ export function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/trending" element={<ViewAll param="trending" />} />
-        <Route path="/this-season" element={<ViewAll param="this-season" />} />
-        <Route path="/next-season" element={<ViewAll param="next-season" />} />
-        <Route path="/popular" element={<ViewAll param="popular" />} />
+        <Route path="/trending" element={<ViewAll />} />
+        <Route path="/this-season" element={<ViewAll />} />
+        <Route path="/next-season" element={<ViewAll />} />
+        <Route path="/popular" element={<ViewAll />} />
         <Route path="/anime/:id" element={<Anime />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
