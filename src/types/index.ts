@@ -23,6 +23,14 @@ type MediaStatus =
   | "CANCELLED"
   | "HIATUS";
 
+export type PageInfo = {
+  total: number;
+  currentPage: number;
+  lastPage: number;
+  hasNextPage: true;
+  perPage: number;
+};
+
 export type AnimeMediaDefaultFields = {
   id: number;
   title: {

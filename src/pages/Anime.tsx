@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Pagination } from "antd";
 import { GET_ANIME_MEDIA } from "../lib/queries";
 import { AnimeMedia } from "../types";
-import { Loading } from "../components/Loading";
+import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
 import { Space } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
@@ -15,15 +14,15 @@ export function Anime() {
   const [showSpoilerTags, setShowSpoilerTags] = useState(false);
   const { id } = useParams() as { id: string };
 
-  const query = useQuery(GET_ANIME_MEDIA, {
+  const { data, loading } = useQuery(GET_ANIME_MEDIA, {
     variables: { id },
   });
 
-  const anime: AnimeMedia = query.data && query.data.Media;
+  const anime: AnimeMedia = data && data.Media;
 
-  return !anime ? (
-    <Loading />
-  ) : (
+  if (loading) return <CircularLoading />;
+
+  return (
     <div>
       {anime.bannerImage ? (
         <img
@@ -38,7 +37,7 @@ export function Anime() {
       <AnimeHeader />
 
       <div className={`${anime.bannerImage && "-mt-32 md:-mt-0"}`}>
-        <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-5xl mx-auto pt-4">
+        <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
           <img
             src={anime.coverImage.large}
             alt={anime.title.romaji + " - cover image"}
@@ -48,14 +47,16 @@ export function Anime() {
           />
 
           <div className="flex flex-1 flex-col gap-1">
-            <h1 className="text-lg text-zinc-600 md:self-start md:break-words px-4">
+            <h1 className="text-xl text-zinc-600 md:self-start md:break-words px-4">
               {anime.title.romaji}
             </h1>
 
             <div className="flex gap-2 px-4">
               {anime.seasonYear && (
                 <>
-                  <span className="text-emerald-700">{anime.seasonYear}</span>
+                  <span className="text-sky-700 font-medium">
+                    {anime.seasonYear}
+                  </span>
                   {"·"}
                 </>
               )}
@@ -82,7 +83,7 @@ export function Anime() {
               {anime.genres.map((genre) => (
                 <li
                   key={genre}
-                  className="bg-amber-700 rounded text-zinc-200 px-1"
+                  className="bg-emerald-700 font-medium text-zinc-200 text-sm py-1 px-2 rounded"
                 >
                   {genre}
                 </li>
@@ -103,12 +104,12 @@ export function Anime() {
 
         <MyDivider />
 
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between mb-4">
             <strong className="font-semibold">Tags</strong>
             {anime.tags.find((item) => item.isMediaSpoiler === true) && (
               <button
-                className="text-emerald-600"
+                className="text-rose-600"
                 onClick={() => setShowSpoilerTags(!showSpoilerTags)}
               >
                 {showSpoilerTags ? "Hide Spoiler" : "Show Spoiler"}
@@ -156,22 +157,23 @@ function AnimeHeader() {
 
   return (
     <>
-      <div className="hidden sm:block fixed h-16 bg-zinc-800/40 backdrop-blur-sm left-0 right-0 top-0"></div>
-      <div className="flex z-10 fixed w-full justify-between max-w-5xl mx-auto px-4 right-0 left-0 top-0">
-        <div
-          className="p-4 cursor-pointer transition bg-main/10 hover:bg-main/20 rounded-full"
-          onClick={() => navigate(-1)}
-        >
-          <X size={28} className="text-main" />
-        </div>
+      <div className="sm:block fixed bg-zinc-800/40 backdrop-blur-sm left-0 right-0 top-0">
+        <div className="flex z-10 w-full justify-between items-center max-w-6xl mx-auto px-4">
+          <div
+            className="p-4 cursor-pointer transition hover:bg-main/10"
+            onClick={() => navigate(-1)}
+          >
+            <X size={22} className="text-main" />
+          </div>
 
-        <div className="hidden sm:flex flex-1 justify-center">
-          <img
-            src={logo}
-            alt="otakuVERISSIMOlogo"
-            className="h-12 my-auto cursor-pointer"
-            onClick={() => navigate("/")}
-          />
+          <div className="flex flex-1 justify-center">
+            <img
+              src={logo}
+              alt="otakuVERISSIMOlogo"
+              className="w-48 md:w-60 my-auto px-2 cursor-pointer"
+              onClick={() => navigate("/")}
+            />
+          </div>
         </div>
       </div>
     </>

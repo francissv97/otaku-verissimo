@@ -53,8 +53,8 @@ export const GET_ANIME_MEDIA = gql`
 `;
 
 export const GET_TRENDING_NOW_QUERY = gql`
-  query ($perPage: Int) {
-    Page(page: 1, perPage: $perPage) {
+  query ($perPage: Int, $page: Int ) {
+    Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
         currentPage
@@ -70,8 +70,8 @@ export const GET_TRENDING_NOW_QUERY = gql`
 `;
 
 export const GET_POPULAR_THIS_SEASON_QUERY = gql`
-  query ($currentYear: Int, $currentSeason: MediaSeason, $perPage: Int) {
-    Page(page: 1, perPage: $perPage) {
+  query ($currentYear: Int, $currentSeason: MediaSeason, $perPage: Int, $page: Int) {
+    Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
         currentPage
@@ -92,8 +92,8 @@ export const GET_POPULAR_THIS_SEASON_QUERY = gql`
 `;
 
 export const GET_NEXT_SEASON_POPULAR_QUERY = gql`
-  query ($nextSeason: MediaSeason, $nextSeasonYear: Int, $perPage: Int) {
-    Page(page: 1, perPage: $perPage) {
+  query ($nextSeason: MediaSeason, $nextSeasonYear: Int, $perPage: Int, $page: Int) {
+    Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
         currentPage
@@ -114,8 +114,8 @@ export const GET_NEXT_SEASON_POPULAR_QUERY = gql`
 `;
 
 export const GET_ALL_TIME_POPULAR_QUERY = gql`
-  query ($perPage: Int) {
-    Page(page: 1, perPage: $perPage) {
+  query ($perPage: Int, $page: Int) {
+    Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
         currentPage

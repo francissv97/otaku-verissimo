@@ -13,7 +13,8 @@ import {
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { HeaderResults } from "../components/HeaderResults";
-import { QueryComponent } from "../components/QueryComponent";
+import { SmallResultsList } from "../components/SmallResultsList";
+import { MyDivider, MyShadow } from "../components/MyComponents";
 
 export function Home() {
   return (
@@ -21,37 +22,57 @@ export function Home() {
       <Header />
 
       <div className="mb-auto">
-        <QueryComponent query={GET_TRENDING_NOW_QUERY} perPage={6}>
+        <SmallResultsList
+          query={GET_TRENDING_NOW_QUERY}
+          variables={{ perPage: 6 }}
+        >
           <HeaderResults title="trending now" paramViewAll="trending" />
-        </QueryComponent>
+        </SmallResultsList>
 
-        <QueryComponent
+        <MyShadow />
+
+        <SmallResultsList
           query={GET_POPULAR_THIS_SEASON_QUERY}
-          currentSeason={currentSeason()}
-          currentYear={currentYear()}
-          perPage={6}
+          variables={{
+            currentSeason: currentSeason(),
+            currentYear: currentYear(),
+            perPage: 6,
+          }}
         >
           <HeaderResults
             title="popular this season"
             paramViewAll="this-season"
           />
-        </QueryComponent>
+        </SmallResultsList>
 
-        <QueryComponent
+        <MyShadow />
+
+        <SmallResultsList
           query={GET_NEXT_SEASON_POPULAR_QUERY}
-          nextSeason={nextSeason()}
-          nextSeasonYear={nextSeasonYear()}
-          perPage={6}
+          variables={{
+            nextSeason: nextSeason(),
+            nextSeasonYear: nextSeasonYear(),
+            perPage: 6,
+          }}
         >
           <HeaderResults
             title="upcoming next season"
             paramViewAll="next-season"
           />
-        </QueryComponent>
+        </SmallResultsList>
 
-        <QueryComponent query={GET_ALL_TIME_POPULAR_QUERY} perPage={6}>
+        <MyShadow />
+
+        <SmallResultsList
+          query={GET_ALL_TIME_POPULAR_QUERY}
+          variables={{
+            perPage: 6,
+          }}
+        >
           <HeaderResults title="all time popular" paramViewAll="popular" />
-        </QueryComponent>
+        </SmallResultsList>
+
+        <MyShadow />
       </div>
 
       <Footer />

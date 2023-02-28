@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
-import { QueryComponent } from "../components/QueryComponent";
+import { MyShadow } from "../components/MyComponents";
+import { ResultsList } from "../components/ResultsList";
 import {
   GET_ALL_TIME_POPULAR_QUERY,
   GET_NEXT_SEASON_POPULAR_QUERY,
@@ -25,40 +26,54 @@ export function ViewAll() {
   function handleSwitch() {
     switch (pathname) {
       case "trending":
-        return <QueryComponent query={GET_TRENDING_NOW_QUERY} perPage={20} />;
+        return (
+          <ResultsList
+            query={GET_TRENDING_NOW_QUERY}
+            variables={{ perPage: 20, page: 1 }}
+          />
+        );
       case "popular":
         return (
-          <QueryComponent query={GET_ALL_TIME_POPULAR_QUERY} perPage={20} />
+          <ResultsList
+            query={GET_ALL_TIME_POPULAR_QUERY}
+            variables={{ perPage: 20, page: 1 }}
+          />
         );
       case "next-season":
         return (
-          <QueryComponent
+          <ResultsList
             query={GET_NEXT_SEASON_POPULAR_QUERY}
-            perPage={20}
-            nextSeason={nextSeason()}
-            nextSeasonYear={nextSeasonYear()}
+            variables={{
+              perPage: 20,
+              page: 1,
+              nextSeason: nextSeason(),
+              nextSeasonYear: nextSeasonYear(),
+            }}
           />
         );
       case "this-season":
         return (
-          <QueryComponent
+          <ResultsList
             query={GET_POPULAR_THIS_SEASON_QUERY}
-            currentSeason={currentSeason()}
-            currentYear={currentYear()}
-            perPage={20}
+            variables={{
+              perPage: 20,
+              page: 1,
+              currentSeason: currentSeason(),
+              currentYear: currentYear(),
+            }}
           />
         );
     }
   }
 
-  useEffect(() => scrollTo({ top: 0, left: 0, behavior: "smooth" }), []);
+  useEffect(() => scrollTo({ top: 0, behavior: "smooth" }), []);
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
       <Header />
 
       <main className="mb-auto">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <button
             onClick={() => navigate(-1)}
             className="flex gap-2 items-center border border-main text-main mx-2 mt-4 px-2 rounded uppercase hover:bg-main/20 transition"
@@ -70,6 +85,8 @@ export function ViewAll() {
         </div>
         {handleSwitch()}
       </main>
+
+      <MyShadow />
 
       <Footer />
     </div>

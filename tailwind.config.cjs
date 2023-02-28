@@ -7,7 +7,7 @@ module.exports = {
         second: "#00092C",
       },
       fontFamily: {
-        main: ["Roboto Condensed", "sans-serif"],
+        main: ["Roboto", "sans-serif"],
       },
     },
   },
