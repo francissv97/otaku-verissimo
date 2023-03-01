@@ -16,14 +16,13 @@ export function CardSkeleton() {
   return (
     <>
       {Array.from({ length: 6 }, (v, k) => k).map((item) => (
-        <div
-          key={item}
-          className="cursor-pointer flex flex-col gap-1 animate-pulse"
-        >
-          <div className="h-52 md:h-60 bg-zinc-400 rounded" />
+        <Grow in timeout={400} key={item}>
+          <div className="cursor-pointer flex flex-col gap-1 animate-pulse">
+            <div className="h-52 md:h-60 bg-zinc-400 rounded" />
 
-          <span className="h-[10%] bg-zinc-400 rounded"></span>
-        </div>
+            <span className="h-[10%] bg-zinc-400 rounded"></span>
+          </div>
+        </Grow>
       ))}
     </>
   );

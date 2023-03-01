@@ -30,7 +30,7 @@ export function SmallResultsList({
   return (
     <div className="px-2 py-4 max-w-6xl mx-auto">
       {children}
-      <div className="grid gap-x-4 gap-y-6 grid-cols-[repeat(auto-fill,minmax(114px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(136px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(152px,1fr))]">
+      <div className="grid gap-x-3 md:gap-x-6 gap-y-4 md:gap-y-8 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] md:grid-cols-[repeat(auto-fill,164px)]">
         {animes?.map((anime) => (
           <CardAnimeResult key={anime.id} anime={anime} />
         ))}

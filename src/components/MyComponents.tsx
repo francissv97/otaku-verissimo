@@ -1,4 +1,3 @@
-import { Fade, Zoom } from "@mui/material";
 import { ClassAttributes, useEffect, useState } from "react";
 
 type MyDividerProps = ClassAttributes<HTMLDivElement> & {
@@ -16,7 +15,7 @@ export function Space({ pxHeight }: SpaceProps) {
 }
 
 export function MyShadow() {
-  return <div className="h-3 w-full shadow-zinc-400 shadow-lg" />;
+  return <div className="h-1 w-full shadow-zinc-300 shadow-sm" />;
 }
 
 export function MyCoverImage({ src, alt }: ProgressiveImageProps) {

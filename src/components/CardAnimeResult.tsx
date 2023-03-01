@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { CardMedia, Fade, Grow, useMediaQuery } from "@mui/material";
+import { Grow, useMediaQuery } from "@mui/material";
 import { AnimeMediaDefaultFields } from "../types";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { PopoverResults } from "./PopoverResults";
-import { MyCoverImage } from "./MyComponents";
 
 type CardAnimeResultProps = {
   anime: AnimeMediaDefaultFields;
@@ -18,7 +17,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
         <Link to={`/anime/${anime.id}`}>
           <Grow in timeout={800}>
             <div className="group duration-200 cursor-pointer flex flex-col">
-              <div className="relative h-52 md:h-60 mb-2">
+              <div className="relative h-48 md:h-[248px] mb-2">
                 <img
                   src={anime.coverImage.large}
                   alt={anime.title.romaji}
@@ -41,11 +40,13 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
         </Link>
       </HoverCard.Trigger>
 
-      <HoverCard.Portal>
-        <HoverCard.Content side="right" align="start" sideOffset={14}>
-          {screenSizeMatches && <PopoverResults anime={anime} />}
-        </HoverCard.Content>
-      </HoverCard.Portal>
+      {screenSizeMatches && (
+        <HoverCard.Portal>
+          <HoverCard.Content side="right" align="start" sideOffset={14}>
+            <PopoverResults anime={anime} />
+          </HoverCard.Content>
+        </HoverCard.Portal>
+      )}
     </HoverCard.Root>
   );
 }
