@@ -16,7 +16,7 @@ export function Space({ pxHeight }: SpaceProps) {
 }
 
 export function MyShadow() {
-  return <div className="h-3 w-full shadow-zinc-500 shadow-lg" />;
+  return <div className="h-3 w-full shadow-zinc-400 shadow-lg" />;
 }
 
 export function MyCoverImage({ src, alt }: ProgressiveImageProps) {
@@ -33,13 +33,16 @@ export function MyCoverImage({ src, alt }: ProgressiveImageProps) {
   }, []);
 
   return loaded ? (
-    <Fade in timeout={800}>
-      <img
-        src={imageSrc}
-        alt={alt}
-        className="w-full h-full rounded object-cover object-center duration-200 group-hover:border-main"
-      />
-    </Fade>
+    <img
+      src={imageSrc}
+      alt={alt}
+      className="w-full h-full rounded object-cover object-center duration-200 group-hover:border-main"
+      loading="lazy"
+      style={{ opacity: 0, transitionDuration: "800ms" }}
+      onLoad={(t) => {
+        t.currentTarget.style.opacity = "1";
+      }}
+    />
   ) : (
     <div className="bg-zinc-400 w-full h-full animate-pulse" />
   );

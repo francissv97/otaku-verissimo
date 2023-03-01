@@ -20,7 +20,7 @@ export function CardSkeleton() {
           key={item}
           className="cursor-pointer flex flex-col gap-1 animate-pulse"
         >
-          <div className="h-48 md:h-52 lg:h-56 bg-zinc-400 rounded" />
+          <div className="h-52 md:h-60 bg-zinc-400 rounded" />
 
           <span className="h-[10%] bg-zinc-400 rounded"></span>
         </div>

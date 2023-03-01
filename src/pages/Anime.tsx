@@ -9,6 +9,7 @@ import { Space } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
 import { X } from "phosphor-react";
 import logo from "../assets/logo.svg";
+import { Fade, Zoom } from "@mui/material";
 
 export function Anime() {
   const [showSpoilerTags, setShowSpoilerTags] = useState(false);
@@ -29,6 +30,11 @@ export function Anime() {
           src={anime.bannerImage}
           className="h-48 md:h-80 w-full object-cover object-center"
           alt="anime banner image"
+          loading="lazy"
+          style={{ opacity: 0, transitionDuration: "800ms" }}
+          onLoad={(t) => {
+            t.currentTarget.style.opacity = "1";
+          }}
         />
       ) : (
         <Space pxHeight={64} />
@@ -41,9 +47,14 @@ export function Anime() {
           <img
             src={anime.coverImage.large}
             alt={anime.title.romaji + " - cover image"}
-            className={`rounded w-24 md:w-52 shadow-xl place-self-start ml-4 ${
+            className={`rounded w-24 md:w-52 z-10 shadow-xl place-self-start ml-4 ${
               anime.bannerImage && "md:-mt-28"
             }`}
+            loading="lazy"
+            style={{ opacity: 0, transition: "all 400ms" }}
+            onLoad={(t) => {
+              t.currentTarget.style.opacity = "1";
+            }}
           />
 
           <div className="flex flex-1 flex-col gap-1">
