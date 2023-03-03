@@ -2,7 +2,7 @@ import logo from "../assets/logo-black.svg";
 
 export function Footer() {
   return (
-    <footer className="flex flex-col items-center max-w-[980px] w-full sm:flex-row sm:justify-between gap-2 mx-auto px-2 py-5">
+    <footer className="flex flex-col items-center max-w-6xl w-full sm:flex-row sm:justify-between gap-2 mx-auto p-4">
       <img src={logo} alt="otakuVERISSIMOlogo" className="w-48 opacity-75" />
 
       <div className="flex flex-col gap-1">
