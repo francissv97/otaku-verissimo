@@ -53,7 +53,7 @@ export const GET_ANIME_MEDIA = gql`
 `;
 
 export const GET_TRENDING_NOW_QUERY = gql`
-  query ($perPage: Int, $page: Int ) {
+  query ($perPage: Int, $page: Int) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
         total
@@ -124,6 +124,23 @@ export const GET_ALL_TIME_POPULAR_QUERY = gql`
         perPage
       }
       media(type: ANIME, sort: POPULARITY_DESC) {
+        ${animeMediaDefaultFields}
+      }
+    }
+  }
+`;
+
+export const GET_SEARCH_QUERY = gql`
+  query ($perPage: Int, $page: Int, $search: String, $sort: [MediaSort], $isAdult: Boolean) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        total
+        currentPage
+        lastPage
+        hasNextPage
+        perPage
+      }
+      media(type: ANIME, sort: $sort, search: $search, isAdult: $isAdult) {
         ${animeMediaDefaultFields}
       }
     }

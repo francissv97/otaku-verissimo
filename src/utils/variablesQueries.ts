@@ -1,4 +1,4 @@
-export const perPage = 5;
+const perPage = 5;
 
 export function currentSeason() {
   const currentMonth = new Date().getMonth() + 1;
@@ -33,3 +33,24 @@ export function nextSeasonYear() {
 
   return currentYear();
 }
+
+export const genres = [
+  "Action",
+  "Adventure",
+  "Comedy",
+  "Drama",
+  "Ecchi",
+  "Fantasy",
+  "Horror",
+  "Mahou Shoujo",
+  "Mecha",
+  "Music",
+  "Mystery",
+  "Psychological",
+  "Romance",
+  "Sci-Fi",
+  "Slice of Life",
+  "Sports",
+  "Supernatural",
+  "Thriller",
+];

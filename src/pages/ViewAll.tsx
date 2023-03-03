@@ -66,7 +66,7 @@ export function ViewAll() {
     }
   }
 
-  useEffect(() => scrollTo({ top: 0, behavior: "smooth" }), []);
+  useEffect(() => scrollTo({ top: 0 }), []);
 
   return (
     <div className="min-h-screen flex flex-col justify-between">

@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_ANIME_MEDIA } from "../lib/queries";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
-import { Space } from "../components/MyComponents";
+import { MySpace } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
 import { X } from "phosphor-react";
 import logo from "../assets/logo.svg";
-import { Fade, Zoom } from "@mui/material";
 
 export function Anime() {
   const [showSpoilerTags, setShowSpoilerTags] = useState(false);
@@ -17,14 +16,17 @@ export function Anime() {
 
   const { data, loading } = useQuery(GET_ANIME_MEDIA, {
     variables: { id },
+    notifyOnNetworkStatusChange: true,
   });
 
   const anime: AnimeMedia = data && data.Media;
 
+  useEffect(() => scrollTo({ top: 0 }), []);
+
   if (loading) return <CircularLoading />;
 
   return (
-    <div>
+    <div className="flex flex-col justify-between min-h-screen">
       {anime.bannerImage ? (
         <img
           src={anime.bannerImage}
@@ -37,12 +39,12 @@ export function Anime() {
           }}
         />
       ) : (
-        <Space pxHeight={64} />
+        <MySpace pxHeight={54} />
       )}
 
       <AnimeHeader />
 
-      <div className={`${anime.bannerImage && "-mt-32 md:-mt-0"}`}>
+      <div className={`mb-auto ${anime.bannerImage && "-mt-32 md:-mt-0"}`}>
         <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
           <img
             src={anime.coverImage.large}
@@ -168,8 +170,8 @@ function AnimeHeader() {
 
   return (
     <>
-      <div className="sm:block fixed bg-zinc-800/40 backdrop-blur-sm left-0 right-0 top-0">
-        <div className="flex z-10 w-full justify-between items-center max-w-6xl mx-auto px-4">
+      <div className="sm:block fixed z-30 bg-zinc-800/40 backdrop-blur-sm left-0 right-0 top-0">
+        <div className="flex w-full justify-between items-center max-w-6xl mx-auto px-4">
           <div
             className="p-4 cursor-pointer transition hover:bg-main/10"
             onClick={() => navigate(-1)}

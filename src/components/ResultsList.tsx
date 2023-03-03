@@ -2,25 +2,39 @@ import { useEffect, ReactNode } from "react";
 import { DocumentNode, useQuery } from "@apollo/client";
 import { AnimeMediaDefaultFields } from "../types";
 import { CardAnimeResult } from "./CardAnimeResult";
-import { CardSkeleton, CircularLoading } from "./Loading";
-import { Grow } from "@mui/material";
-
-type IntersectionObserverComponentProps = {
-  doSomething: () => void;
-  page: number;
-};
+import { CardSkeleton } from "./Loading";
 
 type ResultsListProps = {
   query: DocumentNode;
   variables: {
     perPage: number;
     page: number;
+    search?: string;
+    currentYear?: number;
+    currentSeason?: string | undefined;
+    nextSeasonYear?: number;
+    nextSeason?: string | undefined;
+    isAdult: boolean;
+    sort: "POPULARITY_DESC" | "TRENDING_DESC" | "SCORE_DESC";
+  };
+  children?: ReactNode;
+};
+
+type SmallResultsListProps = {
+  query: DocumentNode;
+  variables: {
+    perPage: number;
     currentYear?: number;
     currentSeason?: string | undefined;
     nextSeasonYear?: number;
     nextSeason?: string | undefined;
   };
   children?: ReactNode;
+};
+
+type IntersectionObserverComponentProps = {
+  doSomething: () => void;
+  page: number;
 };
 
 export function ResultsList({ query, variables }: ResultsListProps) {
@@ -36,6 +50,12 @@ export function ResultsList({ query, variables }: ResultsListProps) {
           data.Page.media.map((anime: AnimeMediaDefaultFields) => (
             <CardAnimeResult key={anime.id} anime={anime} />
           ))}
+
+        {!loading && data && data.Page.media.length == 0 && (
+          <strong className="text-2xl font-medium text-zinc-600 place-self-center col-span-3">
+            No results
+          </strong>
+        )}
 
         {loading && <CardSkeleton />}
       </div>
@@ -60,6 +80,31 @@ export function ResultsList({ query, variables }: ResultsListProps) {
           }
         />
       )}
+    </div>
+  );
+}
+
+export function SmallResultsList({
+  query,
+  variables,
+  children,
+}: SmallResultsListProps) {
+  const { data, loading } = useQuery(query, {
+    variables,
+  });
+
+  const animes: AnimeMediaDefaultFields[] = data && data.Page.media;
+
+  return (
+    <div className="px-2 py-4 max-w-6xl mx-auto">
+      {children}
+      <div className="grid gap-x-3 md:gap-x-6 gap-y-4 md:gap-y-8 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] md:grid-cols-[repeat(auto-fill,164px)]">
+        {animes?.map((anime) => (
+          <CardAnimeResult key={anime.id} anime={anime} />
+        ))}
+
+        {loading && <CardSkeleton />}
+      </div>
     </div>
   );
 }
