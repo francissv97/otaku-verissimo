@@ -67,16 +67,17 @@ export function InputSearch({
           type="text"
           onChange={handleSearch}
           value={searchTerm}
+          placeholder="Search"
           className="w-full text-xl text-zinc-500 outline-none caret-main/70 bg-transparent p-2"
         />
         <button
           onClick={handleClear}
           disabled={searchTerm.length <= 0}
-          className={`hover:bg-zinc-200 p-1 duration-300 rounded-full ${
+          className={`group hover:bg-zinc-200 p-1 duration-300 rounded-full ${
             searchTerm ? "opacity-100" : "opacity-0"
-          } opacity-0`}
+          }`}
         >
-          <X size={18} className="text-zinc-400" weight="bold" />
+          <X size={18} className="text-zinc-400 duration-200 group-hover:text-red-400" weight="bold" />
         </button>
       </div>
     </div>

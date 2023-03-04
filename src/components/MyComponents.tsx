@@ -7,7 +7,7 @@ type MyDividerProps = ClassAttributes<HTMLDivElement> & {
 type SpaceProps = { pxHeight?: number };
 
 export function MyDivider({ className }: MyDividerProps) {
-  return <div className={`my-4 bg-zinc-400/60 ${className} h-[1px]`} />;
+  return <div className={`my-4 bg-zinc-300 ${className} h-[1px]`} />;
 }
 
 export function MySpace({ pxHeight }: SpaceProps) {
@@ -15,5 +15,5 @@ export function MySpace({ pxHeight }: SpaceProps) {
 }
 
 export function MyShadow() {
-  return <div className="h-1 w-full shadow-zinc-300 shadow-sm" />;
+  return <div className="h-4 w-full shadow" />;
 }

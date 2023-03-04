@@ -16,7 +16,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { HeaderResults } from "../components/Header";
 import { ResultsList, SmallResultsList } from "../components/ResultsList";
-import { MyDivider } from "../components/MyComponents";
+import { MyShadow } from "../components/MyComponents";
 import { InputSearch } from "../components/SearchFields";
 
 export function Home() {
@@ -63,7 +63,7 @@ export function Home() {
         </div>
       </div>
 
-      <div className="mb-auto">
+      <div className="mb-auto flex-1 shadow-xl pb-6">
         {searchTerm.length == 0 ? (
           <>
             <SmallResultsList
@@ -73,7 +73,7 @@ export function Home() {
               <HeaderResults title="trending now" paramViewAll="trending" />
             </SmallResultsList>
 
-            <MyDivider />
+            <MyShadow />
 
             <SmallResultsList
               query={GET_POPULAR_THIS_SEASON_QUERY}
@@ -89,7 +89,7 @@ export function Home() {
               />
             </SmallResultsList>
 
-            <MyDivider />
+            <MyShadow />
 
             <SmallResultsList
               query={GET_NEXT_SEASON_POPULAR_QUERY}
@@ -105,7 +105,7 @@ export function Home() {
               />
             </SmallResultsList>
 
-            <MyDivider />
+            <MyShadow />
 
             <SmallResultsList
               query={GET_ALL_TIME_POPULAR_QUERY}
@@ -129,8 +129,6 @@ export function Home() {
           />
         )}
       </div>
-
-      <MyDivider className="mt-auto" />
 
       <Footer />
     </div>

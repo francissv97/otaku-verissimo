@@ -1,14 +1,32 @@
-const perPage = 5;
-
 export function currentSeason() {
-  const currentMonth = new Date().getMonth() + 1;
-  if (currentMonth >= 1 && currentMonth <= 3) return "WINTER";
+  const currentMonth = new Date().getMonth();
 
-  if (currentMonth >= 4 && currentMonth <= 6) return "SPRING";
-
-  if (currentMonth >= 7 && currentMonth <= 9) return "SUMMER";
-
-  if (currentMonth >= 10 && currentMonth <= 12) return "FALL";
+  switch (currentMonth) {
+    case 0:
+      return "WINTER";
+    case 1:
+      return "WINTER";
+    case 2:
+      return "WINTER";
+    case 3:
+      return "SPRING";
+    case 4:
+      return "SPRING";
+    case 5:
+      return "SPRING";
+    case 6:
+      return "SUMMER";
+    case 7:
+      return "SUMMER";
+    case 8:
+      return "SUMMER";
+    case 9:
+      return "FALL";
+    case 10:
+      return "FALL";
+    default:
+      return "FALL";
+  }
 }
 
 export function currentYear() {
