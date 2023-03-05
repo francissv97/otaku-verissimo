@@ -4,10 +4,7 @@ import { CircleNotch } from "phosphor-react";
 export function CircularLoading() {
   return (
     <div className="fixed top-0 flex justify-center items-center h-full w-full">
-      <CircleNotch
-        className="w-20 h-20 animate-spin text-main"
-        weight="light"
-      />
+      <CircleNotch className="w-20 h-20 text-main/80 animate-spin" weight="thin" />
     </div>
   );
 }
