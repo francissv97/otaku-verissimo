@@ -1,4 +1,5 @@
-import { ChangeEvent, ReactNode } from "react";
+import { ChangeEvent, ReactNode, useCallback, useState } from "react";
+import { debounce } from "lodash";
 import * as Select from "@radix-ui/react-select";
 import { Check, CaretDown, CaretUp } from "phosphor-react";
 import { genres } from "../utils/variablesQueries";
@@ -30,7 +31,7 @@ type SearchFields = {
 type InputSearchProps = {
   setSearchParams: (searchTerm: string | {}) => void;
   searchParams: URLSearchParams;
-  searchTerm: string;
+  // searchTerm: string;
 };
 
 type SelectItemProps = {
@@ -39,21 +40,26 @@ type SelectItemProps = {
 };
 
 export function InputSearch({
-  searchTerm,
+  // searchTerm,
   searchParams,
   setSearchParams,
 }: InputSearchProps) {
+  const [displayValue, setDisplayValue] = useState("");
+  const debouncer = useCallback(debounce(setSearchParams, 700), []);
+
   function handleClear() {
+    setDisplayValue("");
     searchParams.delete("search");
     setSearchParams(searchParams);
   }
 
   function handleSearch(event: ChangeEvent<HTMLInputElement>) {
-    const search = event.target.value;
+    setDisplayValue(event.target.value);
 
-    if (search.trim() != "") {
-      setSearchParams({ search });
+    if (event.target.value) {
+      debouncer({ search: event.target.value });
     } else {
+      debouncer.cancel();
       handleClear();
     }
   }
@@ -66,18 +72,22 @@ export function InputSearch({
         <input
           type="text"
           onChange={handleSearch}
-          value={searchTerm}
+          value={displayValue}
           placeholder="Search"
-          className="w-full text-xl text-zinc-500 outline-none caret-main/70 bg-transparent p-2"
+          className="w-full text-md leading-none text-zinc-500 outline-none caret-main/70 bg-transparent p-2"
         />
         <button
           onClick={handleClear}
-          disabled={searchTerm.length <= 0}
+          disabled={displayValue.length <= 0}
           className={`group hover:bg-zinc-200 p-1 duration-300 rounded-full ${
-            searchTerm ? "opacity-100" : "opacity-0"
+            displayValue ? "opacity-100" : "opacity-0"
           }`}
         >
-          <X size={18} className="text-zinc-400 duration-200 group-hover:text-red-400" weight="bold" />
+          <X
+            size={18}
+            className="text-zinc-400/70 duration-200 group-hover:text-red-400"
+            weight="bold"
+          />
         </button>
       </div>
     </div>
