@@ -1,5 +1,5 @@
 {
-  "name": "97-anime-list",
+  "name": "otaku-verissimo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,28 +9,28 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.9",
+    "@apollo/client": "^3.7.10",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@mui/material": "^5.11.10",
-    "@radix-ui/react-hover-card": "^1.0.4",
-    "@radix-ui/react-select": "^1.2.0",
+    "@mui/material": "^5.11.12",
+    "@radix-ui/react-hover-card": "^1.0.5",
+    "@radix-ui/react-select": "^1.2.1",
     "graphql": "^16.5.0",
     "lodash": "^4.17.21",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.0"
+    "react-router-dom": "^6.8.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^2.0.0",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.6",
+    "tailwindcss": "^3.2.7",
     "typescript": "^4.6.4",
-    "vite": "^3.0.0"
+    "vite": "^4.1.4"
   }
 }
