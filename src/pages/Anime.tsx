@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Collapse } from "@mui/material";
 import { CaretDown, CaretUp, X } from "phosphor-react";
-import { monthsShort } from "moment";
 import { GET_ANIME_MEDIA } from "../lib/queries";
+import { monthsShort } from "../utils/variablesQueries";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
@@ -29,16 +29,14 @@ export function Anime() {
   return (
     <div className="flex flex-col justify-between min-h-screen">
       {anime.bannerImage ? (
-        <div className="bg-gradient-to-b from-black via-black/80 to-transparent bg-main">
-          <img
-            src={anime.bannerImage}
-            className="h-48 md:h-80 w-full object-cover object-center opacity-0"
-            alt="anime banner image"
-            loading="lazy"
-            style={{ opacity: 0, transitionDuration: "900ms" }}
-            onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-          />
-        </div>
+        <img
+          src={anime.bannerImage}
+          className="h-48 md:h-80 w-full object-cover object-center opacity-0"
+          alt="anime banner image"
+          loading="lazy"
+          style={{ opacity: 0, transitionDuration: "900ms" }}
+          onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+        />
       ) : (
         <MySpace pxHeight={54} />
       )}
@@ -51,18 +49,16 @@ export function Anime() {
         } shadow-xl`}
       >
         <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
-          <div className="bg-gradient-to-t from-black via-black/70 to-transparent bg-main w-fit ml-4 rounded-md overflow-hidden z-10">
-            <img
-              src={anime.coverImage.large}
-              alt={anime.title.romaji}
-              className={`rounded w-28 md:w-52 shadow-xl place-self-start ${
-                anime.bannerImage && "md:-mt-28"
-              }`}
-              loading="lazy"
-              style={{ opacity: 0, transition: "all 600ms" }}
-              onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-            />
-          </div>
+          <img
+            src={anime.coverImage.large}
+            alt={anime.title.romaji}
+            className={`ml-4 rounded w-28 md:w-52 z-10 shadow-xl place-self-start ${
+              anime.bannerImage && "md:-mt-28"
+            }`}
+            loading="lazy"
+            style={{ opacity: 0, transition: "all 600ms" }}
+            onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+          />
 
           <div className="flex flex-1 flex-col gap-1">
             <h1 className="text-xl text-zinc-600 md:self-start md:break-words px-4">
@@ -126,15 +122,14 @@ export function Anime() {
             <div className="flex gap-4 overflow-x-auto">
               {anime.characters.nodes.map((character) => (
                 <div key={character.id} className="flex flex-col gap-1">
-                  <div className="bg-gradient-to-b from-black/70 via-black/50 to-transparent bg-main rounded-full overflow-hidden">
-                    <img
-                      src={character.image.medium}
-                      alt={character.name.full}
-                      style={{ opacity: 0, transitionDuration: "900ms" }}
-                      onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                      className="min-w-[80px] h-[80px] object-cover"
-                    />
-                  </div>
+                  <img
+                    src={character.image.medium}
+                    alt={character.name.full}
+                    style={{ opacity: 0, transitionDuration: "900ms" }}
+                    onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                    className="min-w-[80px] h-[80px] object-cover rounded-full"
+                  />
+
                   <span className="text-xs text-main font-medium max-w-[80px] text-center mx-auto">
                     {character.name.full}
                   </span>
@@ -247,9 +242,9 @@ export function Anime() {
               anime.startDate.month &&
               anime.startDate.year ? (
                 <span className="flex-1 text-sm text-zinc-600">
-                  {`${anime.startDate.year} ${monthsShort(
-                    anime.startDate.month
-                  )} ${anime.startDate.day}`}
+                  {`${anime.startDate.year} ${
+                    monthsShort[anime.startDate.month]
+                  } ${anime.startDate.day}`}
                 </span>
               ) : (
                 "?"
@@ -262,7 +257,7 @@ export function Anime() {
               anime.endDate.month &&
               anime.endDate.year ? (
                 <span className="flex-1 text-sm text-zinc-600">
-                  {`${anime.endDate.year} ${monthsShort(anime.endDate.month)} ${
+                  {`${anime.endDate.year} ${monthsShort[anime.endDate.month]} ${
                     anime.endDate.day
                   }`}
                 </span>
@@ -336,7 +331,7 @@ function DescriptionCollapse({ description }: DescriptionCollapseProps) {
     <div className="flex flex-col px-4">
       <strong className="mb-2">Description</strong>
 
-      {description.length > 76 ? (
+      {description.length > 112 ? (
         <>
           <div className="relative">
             <Collapse in={showAllDescription} collapsedSize={80}>
@@ -475,7 +470,7 @@ function TagsList({ tags }: TagsListProps) {
                 <span
                   className={`${
                     tag.isMediaSpoiler ? "text-main" : "text-zinc-600"
-                  } text-sm md:text-base`}
+                  } text-sm`}
                 >
                   {tag.name}
                 </span>
