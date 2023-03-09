@@ -30,6 +30,7 @@ export function Home() {
 
         <div className="flex gap-4 items-center p-4 max-w-6xl justify-center mx-auto flex-wrap">
           <InputSearch
+            searchTerm={searchTerm}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
           />

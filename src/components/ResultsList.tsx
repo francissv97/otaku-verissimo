@@ -1,6 +1,6 @@
 import { useEffect, ReactNode } from "react";
 import { DocumentNode, useQuery } from "@apollo/client";
-import { AnimeMediaDefaultFields } from "../types";
+import { AnimeMediaResults } from "../types";
 import { CardAnimeResult } from "./CardAnimeResult";
 import { CardSkeleton } from "./Loading";
 
@@ -42,17 +42,16 @@ export function ResultsList({ query, variables }: ResultsListProps) {
     variables,
     notifyOnNetworkStatusChange: true,
   });
-
   return (
     <div className="px-2 py-4 max-w-6xl mx-auto">
       <div className="grid gap-x-4 gap-y-6 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(136px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(152px,1fr))]">
         {data &&
-          data.Page.media.map((anime: AnimeMediaDefaultFields) => (
+          data.Page.media.map((anime: AnimeMediaResults) => (
             <CardAnimeResult key={anime.id} anime={anime} />
           ))}
 
         {!loading && data && data.Page.media.length == 0 && (
-          <strong className="text-2xl font-medium text-zinc-600 place-self-center col-span-3">
+          <strong className="text-xl font-medium text-zinc-500 place-self-center col-">
             No results
           </strong>
         )}
@@ -93,7 +92,7 @@ export function SmallResultsList({
     variables,
   });
 
-  const animes: AnimeMediaDefaultFields[] = data && data.Page.media;
+  const animes: AnimeMediaResults[] = data && data.Page.media;
 
   return (
     <div className="px-2 pt-4 pb-2 max-w-6xl mx-auto">

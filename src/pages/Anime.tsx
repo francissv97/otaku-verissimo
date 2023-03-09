@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
+import { Collapse } from "@mui/material";
+import { CaretDown, CaretUp, X } from "phosphor-react";
+import { monthsShort } from "moment";
 import { GET_ANIME_MEDIA } from "../lib/queries";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
 import { MySpace } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
-import { X } from "phosphor-react";
 import logo from "../assets/logo.svg";
 
 export function Anime() {
-  const [showSpoilerTags, setShowSpoilerTags] = useState(false);
   const { id } = useParams() as { id: string };
 
   const { data, loading } = useQuery(GET_ANIME_MEDIA, {
@@ -28,36 +29,40 @@ export function Anime() {
   return (
     <div className="flex flex-col justify-between min-h-screen">
       {anime.bannerImage ? (
-        <img
-          src={anime.bannerImage}
-          className="h-48 md:h-80 w-full object-cover object-center"
-          alt="anime banner image"
-          loading="lazy"
-          style={{ opacity: 0, transitionDuration: "800ms" }}
-          onLoad={(t) => {
-            t.currentTarget.style.opacity = "1";
-          }}
-        />
+        <div className="bg-gradient-to-b from-black via-black/80 to-transparent bg-main">
+          <img
+            src={anime.bannerImage}
+            className="h-48 md:h-80 w-full object-cover object-center opacity-0"
+            alt="anime banner image"
+            loading="lazy"
+            style={{ opacity: 0, transitionDuration: "900ms" }}
+            onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+          />
+        </div>
       ) : (
         <MySpace pxHeight={54} />
       )}
 
       <AnimeHeader />
 
-      <div className={`mb-auto ${anime.bannerImage && "-mt-32 md:-mt-0"}`}>
+      <div
+        className={`mb-auto pb-4 ${
+          anime.bannerImage && "-mt-32 md:-mt-0"
+        } shadow-xl`}
+      >
         <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
-          <img
-            src={anime.coverImage.large}
-            alt={anime.title.romaji + " - cover image"}
-            className={`rounded w-24 md:w-52 z-10 shadow-xl place-self-start ml-4 ${
-              anime.bannerImage && "md:-mt-28"
-            }`}
-            loading="lazy"
-            style={{ opacity: 0, transition: "all 400ms" }}
-            onLoad={(t) => {
-              t.currentTarget.style.opacity = "1";
-            }}
-          />
+          <div className="bg-gradient-to-t from-black via-black/70 to-transparent bg-main w-fit ml-4 rounded-md overflow-hidden z-10">
+            <img
+              src={anime.coverImage.large}
+              alt={anime.title.romaji}
+              className={`rounded w-28 md:w-52 shadow-xl place-self-start ${
+                anime.bannerImage && "md:-mt-28"
+              }`}
+              loading="lazy"
+              style={{ opacity: 0, transition: "all 600ms" }}
+              onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+            />
+          </div>
 
           <div className="flex flex-1 flex-col gap-1">
             <h1 className="text-xl text-zinc-600 md:self-start md:break-words px-4">
@@ -103,62 +108,189 @@ export function Anime() {
               ))}
             </ul>
 
-            <MyDivider className="md:ml-4" />
-
-            <div className="flex flex-col px-4">
-              <strong className="mb-2">Description</strong>
-              <p
-                className="text-justify"
-                dangerouslySetInnerHTML={{ __html: anime.description }}
-              ></p>
-            </div>
+            {anime.description && (
+              <>
+                <MyDivider className="md:ml-4" />
+                <DescriptionCollapse description={anime.description} />
+              </>
+            )}
           </div>
         </div>
 
-        <MyDivider />
-
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between mb-4">
-            <strong className="font-semibold">Tags</strong>
-            {anime.tags.find((item) => item.isMediaSpoiler === true) && (
-              <button
-                className="text-rose-600"
-                onClick={() => setShowSpoilerTags(!showSpoilerTags)}
-              >
-                {showSpoilerTags ? "Hide Spoiler" : "Show Spoiler"}
-              </button>
+          <MyDivider />
+
+          <div className="flex flex-col">
+            <strong className="mb-2">Characters</strong>
+
+            <div className="flex gap-4 overflow-x-auto">
+              {anime.characters.nodes.map((character) => (
+                <div key={character.id} className="flex flex-col gap-1">
+                  <div className="bg-gradient-to-b from-black/70 via-black/50 to-transparent bg-main rounded-full overflow-hidden">
+                    <img
+                      src={character.image.medium}
+                      alt={character.name.full}
+                      style={{ opacity: 0, transitionDuration: "900ms" }}
+                      onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                      className="min-w-[80px] h-[80px] object-cover"
+                    />
+                  </div>
+                  <span className="text-xs text-main font-medium max-w-[80px] text-center mx-auto">
+                    {character.name.full}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <MyDivider />
+
+          <div className="flex flex-col gap-2">
+            <strong>Info</strong>
+
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm min-w-[128px]">Romaji</span>
+              <div className="flex-1">
+                <span className="text-sm text-main text-justify cursor-pointer">
+                  {anime.title.romaji}
+                </span>
+              </div>
+            </div>
+
+            {anime.title.english && (
+              <div className="flex flex-wrap gap-y-2 gap-x-4">
+                <span className="text-sm min-w-[128px]">English</span>
+                <div className="flex-1">
+                  <span className="text-sm text-main text-justify cursor-pointer">
+                    {anime.title.english}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm min-w-[128px]">Native</span>
+              <div className="flex-1">
+                <span className="text-sm text-main text-justify cursor-pointer">
+                  {anime.title.native}
+                </span>
+              </div>
+            </div>
+
+            {anime.synonyms.length > 0 && (
+              <div className="flex flex-wrap gap-y-2 gap-x-4">
+                <span className="text-sm min-w-[128px]">Synonyms</span>
+                <div className="flex-1 flex flex-col">
+                  {anime.synonyms.map((synonym, index) => (
+                    <span
+                      key={index}
+                      className="text-sm text-zinc-600 text-justify"
+                    >
+                      {synonym}
+                    </span>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
 
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-            {anime.tags.map((tag) => {
-              if (!tag.isMediaSpoiler || showSpoilerTags) {
-                return (
-                  <div key={tag.id} className="flex justify-between">
-                    <span
-                      className={
-                        tag.isMediaSpoiler ? "text-main" : "text-zinc-600"
-                      }
-                    >
-                      {tag.name}
-                    </span>
+          <MyDivider />
 
-                    <span
-                      className={
-                        tag.isMediaSpoiler ? "text-main" : "text-zinc-600"
-                      }
-                    >
-                      {tag.rank + "%"}
-                    </span>
-                  </div>
-                );
-              }
-            })}
-          </ul>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm min-w-[128px]">Format</span>
+
+              <span className="flex-1 text-sm text-zinc-600">
+                {anime.format}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm min-w-[128px]">Episodes</span>
+
+              <span className="flex-1 text-sm text-zinc-600">
+                {anime.episodes ? anime.episodes : "?"}
+              </span>
+            </div>
+
+            {anime.duration && (
+              <div className="flex flex-wrap gap-y-2 gap-x-4">
+                <span className="text-sm min-w-[128px]">Episode Duration</span>
+
+                <span className="flex-1 text-sm text-zinc-600">
+                  {anime.duration}
+                  {anime.duration > 1 ? " mins" : " min"}
+                </span>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm leading-none min-w-[128px]">Source</span>
+
+              <span className="text-sm leading-none">
+                {anime.source.replace("_", " ")}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm min-w-[128px]">Status</span>
+
+              <span className="flex-1 text-sm text-zinc-600">
+                {anime.status.replaceAll("_", " ")}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm min-w-[128px]">Start Date</span>
+
+              {anime.startDate.day &&
+              anime.startDate.month &&
+              anime.startDate.year ? (
+                <span className="flex-1 text-sm text-zinc-600">
+                  {`${anime.startDate.year} ${monthsShort(
+                    anime.startDate.month
+                  )} ${anime.startDate.day}`}
+                </span>
+              ) : (
+                "?"
+              )}
+            </div>
+
+            <div className="flex flex-wrap gap-y-2 gap-x-4">
+              <span className="text-sm min-w-[128px]">End Date</span>
+              {anime.endDate.day &&
+              anime.endDate.month &&
+              anime.endDate.year ? (
+                <span className="flex-1 text-sm text-zinc-600">
+                  {`${anime.endDate.year} ${monthsShort(anime.endDate.month)} ${
+                    anime.endDate.day
+                  }`}
+                </span>
+              ) : (
+                "?"
+              )}
+            </div>
+
+            {anime.season && anime.seasonYear && (
+              <div className="flex flex-wrap gap-y-2 gap-x-4">
+                <span className="text-sm min-w-[128px]">Season</span>
+
+                <span className="flex-1 text-sm text-main cursor-pointer">
+                  {`${anime.season} ${anime.seasonYear}`}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <MyDivider />
+
+          <StudiosList studios={anime.studios.edges} />
+
+          <MyDivider />
+
+          <TagsList tags={anime.tags} />
         </div>
       </div>
-
-      <MyDivider />
 
       <Footer />
     </div>
@@ -189,6 +321,177 @@ function AnimeHeader() {
           </div>
         </div>
       </div>
+    </>
+  );
+}
+
+type DescriptionCollapseProps = {
+  description: string;
+};
+
+function DescriptionCollapse({ description }: DescriptionCollapseProps) {
+  const [showAllDescription, setShowAllDescription] = useState(false);
+
+  return (
+    <div className="flex flex-col px-4">
+      <strong className="mb-2">Description</strong>
+
+      {description.length > 76 ? (
+        <>
+          <div className="relative">
+            <Collapse in={showAllDescription} collapsedSize={80}>
+              <p
+                className="text-justify"
+                dangerouslySetInnerHTML={{ __html: description }}
+              ></p>
+            </Collapse>
+          </div>
+
+          <button
+            onClick={() => setShowAllDescription(!showAllDescription)}
+            className={`flex justify-center bg-zinc-100/70 ${
+              showAllDescription ? "mt-0" : "-mt-8 py-2"
+            } z-10`}
+          >
+            {showAllDescription ? (
+              <CaretUp size={26} className="text-zinc-400" weight="bold" />
+            ) : (
+              <CaretDown size={26} className="text-zinc-400" weight="bold" />
+            )}
+          </button>
+        </>
+      ) : (
+        <p
+          className="text-justify"
+          dangerouslySetInnerHTML={{ __html: description }}
+        ></p>
+      )}
+    </div>
+  );
+}
+
+type StudiosListProps = {
+  studios: {
+    isMain: boolean;
+    node: {
+      id: number;
+      name: string;
+      isAnimationStudio: boolean;
+    };
+  }[];
+};
+
+function StudiosList({ studios }: StudiosListProps) {
+  function sortByIsMainStudio(a: { isMain: boolean }, b: { isMain: boolean }) {
+    if (a.isMain && !b.isMain) return -1;
+
+    if (!a.isMain && b.isMain) return 1;
+
+    return 0;
+  }
+
+  const animationStudios = studios.filter(
+    (studio) => studio.node.isAnimationStudio
+  );
+
+  animationStudios.sort(sortByIsMainStudio);
+
+  const producers = studios.filter((studio) => !studio.node.isAnimationStudio);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap gap-y-2 gap-x-4">
+        <span className="text-sm min-w-[128px]">Studios</span>
+
+        <div className="flex flex-col gap-1">
+          {animationStudios.length > 0
+            ? animationStudios.map((studio) => (
+                <span
+                  key={studio.node.id}
+                  className="flex-1 text-sm text-main cursor-pointer"
+                >
+                  {studio.node.name}
+                </span>
+              ))
+            : "?"}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-y-2 gap-x-4">
+        <span className="text-sm min-w-[128px]">Producers</span>
+
+        <div className="flex flex-col gap-1">
+          {producers.length > 1
+            ? producers.map((producer) => (
+                <span
+                  key={producer.node.id}
+                  className="flex-1 text-sm text-main cursor-pointer"
+                >
+                  {producer.node.name}
+                </span>
+              ))
+            : "?"}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type TagsListProps = {
+  tags: {
+    id: number;
+    name: string;
+    description: string;
+    category: string;
+    rank: number;
+    isGeneralSpoiler: boolean;
+    isMediaSpoiler: boolean;
+    isAdult: boolean;
+  }[];
+};
+
+function TagsList({ tags }: TagsListProps) {
+  const [showSpoilerTags, setShowSpoilerTags] = useState(false);
+
+  return (
+    <>
+      <div className="flex justify-between mb-2">
+        <strong>Tags</strong>
+        {tags.find((item) => item.isMediaSpoiler === true) && (
+          <button
+            className="text-rose-600 text-sm md:text-base"
+            onClick={() => setShowSpoilerTags(!showSpoilerTags)}
+          >
+            {showSpoilerTags ? "Hide Spoiler" : "Show Spoiler"}
+          </button>
+        )}
+      </div>
+
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+        {tags.map((tag) => {
+          if (!tag.isMediaSpoiler || showSpoilerTags) {
+            return (
+              <div key={tag.id} className="flex justify-between">
+                <span
+                  className={`${
+                    tag.isMediaSpoiler ? "text-main" : "text-zinc-600"
+                  } text-sm md:text-base`}
+                >
+                  {tag.name}
+                </span>
+
+                <span
+                  className={`${
+                    tag.isMediaSpoiler ? "text-main" : "text-zinc-600"
+                  } text-sm md:text-base`}
+                >
+                  {tag.rank + "%"}
+                </span>
+              </div>
+            );
+          }
+        })}
+      </ul>
     </>
   );
 }

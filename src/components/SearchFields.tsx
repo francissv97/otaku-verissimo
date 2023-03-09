@@ -1,4 +1,10 @@
-import { ChangeEvent, ReactNode, useCallback, useState } from "react";
+import {
+  ChangeEvent,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { debounce } from "lodash";
 import * as Select from "@radix-ui/react-select";
 import { Check, CaretDown, CaretUp } from "phosphor-react";
@@ -31,7 +37,7 @@ type SearchFields = {
 type InputSearchProps = {
   setSearchParams: (searchTerm: string | {}) => void;
   searchParams: URLSearchParams;
-  // searchTerm: string;
+  searchTerm: string;
 };
 
 type SelectItemProps = {
@@ -40,12 +46,12 @@ type SelectItemProps = {
 };
 
 export function InputSearch({
-  // searchTerm,
+  searchTerm,
   searchParams,
   setSearchParams,
 }: InputSearchProps) {
   const [displayValue, setDisplayValue] = useState("");
-  const debouncer = useCallback(debounce(setSearchParams, 700), []);
+  const debouncer = useCallback(debounce(setSearchParams, 500), []);
 
   function handleClear() {
     setDisplayValue("");
@@ -64,6 +70,10 @@ export function InputSearch({
     }
   }
 
+  useEffect(() => {
+    if (searchTerm) setDisplayValue(searchTerm);
+  }, []);
+
   return (
     <div className="flex flex-col w-full md:max-w-xs gap-2">
       <span className="font-medium text-zinc-500">Search</span>
@@ -73,7 +83,6 @@ export function InputSearch({
           type="text"
           onChange={handleSearch}
           value={displayValue}
-          placeholder="Search"
           className="w-full text-md leading-none text-zinc-500 outline-none caret-main/70 bg-transparent p-2"
         />
         <button

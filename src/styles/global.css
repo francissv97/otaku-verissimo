@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gradient-to-t from-zinc-300 via-zinc-100 to-zinc-100 text-zinc-600 font-main overflow-x-hidden min-h-screen box-border;
+  @apply bg-zinc-100 text-zinc-600 font-main overflow-x-hidden min-h-screen box-border;
   --webkit-font-smoothing: antialiased;
 }

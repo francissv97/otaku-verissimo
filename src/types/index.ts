@@ -1,5 +1,8 @@
 type StudioConnection = {
-  nodes: { id: number; name: string }[];
+  edges: {
+    isMain: boolean;
+    node: { id: number; name: string; isAnimationStudio: boolean };
+  }[];
 };
 
 type MediaSeason = "WINTER" | "SPRING" | "SUMMER" | "FALL";
@@ -31,7 +34,7 @@ export type PageInfo = {
   perPage: number;
 };
 
-export type AnimeMediaDefaultFields = {
+export type AnimeMediaResults = {
   id: number;
   title: {
     romaji: string;
@@ -44,19 +47,57 @@ export type AnimeMediaDefaultFields = {
   episodes: number;
   genres: string[];
   status: MediaStatus;
-  studios: StudioConnection;
+  studios: { nodes: { id: number; name: string }[] };
   season: MediaSeason;
   seasonYear: number;
 };
 
-export type AnimeMedia = AnimeMediaDefaultFields & {
-  extAiringEpisode: {
-    edges: { id: number; name: string };
-    nodes: { id: number; name: string };
+export type AnimeMedia = {
+  id: number;
+  title: {
+    romaji: string;
+    english: string;
+    native: string;
   };
-  description: string;
-  popularity: number;
+  coverImage: {
+    large: string;
+  };
   bannerImage: string;
+  season: MediaSeason;
+  seasonYear: number;
+  format: MediaFormat;
+  averageScore: number;
+  genres: string[];
+  description: string;
+  status: MediaStatus;
+  episodes: number;
+  duration: number;
+  studios: StudioConnection;
+  synonyms: string[];
+  // extAiringEpisode: {
+  //   edges: { id: number; name: string };
+  //   nodes: { id: number; name: string };
+  // };
+  popularity: number;
+  favourites: number;
+  characters: {
+    nodes: {
+      id: number;
+      name: { full: string };
+      image: { medium: string };
+    }[];
+  };
+  source: string;
+  startDate: {
+    day: number;
+    month: number;
+    year: number;
+  };
+  endDate: {
+    day: number;
+    month: number;
+    year: number;
+  };
   tags: {
     id: number;
     name: string;
@@ -67,7 +108,6 @@ export type AnimeMedia = AnimeMediaDefaultFields & {
     isMediaSpoiler: boolean;
     isAdult: boolean;
   }[];
-  favourites: number;
 };
 
 export type GetAnimeInfoQueryResponse = {

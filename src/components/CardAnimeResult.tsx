@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { Grow, useMediaQuery } from "@mui/material";
-import { AnimeMediaDefaultFields } from "../types";
+import { AnimeMediaResults } from "../types";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { Smiley, SmileyMeh, SmileySad } from "phosphor-react";
 
 type CardAnimeResultProps = {
-  anime: AnimeMediaDefaultFields;
+  anime: AnimeMediaResults;
 };
 
 type CardAnimeResultPopoverProps = {
-  anime: AnimeMediaDefaultFields;
+  anime: AnimeMediaResults;
 };
 
 export function CardAnimeResult({ anime }: CardAnimeResultProps) {
@@ -17,9 +17,9 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
 
   return (
     <HoverCard.Root key={anime.id} openDelay={0} closeDelay={0}>
-      <HoverCard.Trigger asChild>
+      <HoverCard.Trigger className="relative" asChild>
         <Link to={`/anime/${anime.id}`}>
-          <Grow in timeout={800}>
+          <Grow in timeout={600}>
             <div className="group duration-200 cursor-pointer flex flex-col">
               <div className="relative h-48 md:h-[248px] mb-2">
                 <img
@@ -28,9 +28,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
                   className="w-full h-full rounded object-cover object-center duration-200 group-hover:border-main"
                   loading="lazy"
                   style={{ opacity: 0, transitionDuration: "400ms" }}
-                  onLoad={(t) => {
-                    t.currentTarget.style.opacity = "1";
-                  }}
+                  onLoad={(t) => (t.currentTarget.style.opacity = "1")}
                 />
 
                 <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
@@ -46,7 +44,12 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
 
       {screenSizeMatches && (
         <HoverCard.Portal>
-          <HoverCard.Content side="right" align="start" sideOffset={14}>
+          <HoverCard.Content
+            className="pointer-events-none"
+            side="right"
+            align="start"
+            sideOffset={14}
+          >
             <CardAnimeResultPopover anime={anime} />
           </HoverCard.Content>
         </HoverCard.Portal>

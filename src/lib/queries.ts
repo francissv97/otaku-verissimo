@@ -28,16 +28,70 @@ const animeMediaDefaultFields = `
   }
   `;
 
-// characters(sort: RELEVANCE)
-// description(asHTML: true)
-
 export const GET_ANIME_MEDIA = gql`
-  query($id: Int) {
+  query ($id: Int) {
     Media(id: $id, type: ANIME) {
-      ${animeMediaDefaultFields}
+      id
+      title {
+        romaji
+        english
+        native
+      }
+      coverImage {
+        large
+      }
       bannerImage
+      synonyms
+      genres
+      episodes
+      duration
+      averageScore
+      format
+      studios(sort: ID) {
+        edges {
+          isMain
+          node {
+            id
+            name
+            isAnimationStudio
+          }
+        }
+      }
+      season
+      seasonYear
+      status
+      nextAiringEpisode {
+        airingAt
+        timeUntilAiring
+        episode
+      }
       favourites
       description(asHtml: false)
+      characters(sort: ID, role: MAIN) {
+        nodes {
+          id
+          name {
+            full
+          }
+          image {
+            medium
+          }
+        }
+        pageInfo {
+          hasNextPage
+        }
+      }
+      source
+      startDate {
+        day
+        month
+        year
+      }
+      endDate {
+        day
+        month
+        year
+      }
       tags {
         id
         name
@@ -48,8 +102,8 @@ export const GET_ANIME_MEDIA = gql`
         isMediaSpoiler
         isAdult
       }
+    }
   }
-}
 `;
 
 export const GET_TRENDING_NOW_QUERY = gql`
