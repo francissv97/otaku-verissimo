@@ -51,7 +51,7 @@ export function InputSearch({
   setSearchParams,
 }: InputSearchProps) {
   const [displayValue, setDisplayValue] = useState("");
-  const debouncer = useCallback(debounce(setSearchParams, 500), []);
+  const debouncer = useCallback(debounce(setSearchParams, 700), []);
 
   function handleClear() {
     setDisplayValue("");

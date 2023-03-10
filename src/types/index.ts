@@ -67,6 +67,7 @@ export type AnimeMedia = {
   seasonYear: number;
   format: MediaFormat;
   averageScore: number;
+  meanScore: number;
   genres: string[];
   description: string;
   status: MediaStatus;

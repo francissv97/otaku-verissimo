@@ -1,4 +1,4 @@
-import { useEffect, ReactNode } from "react";
+import { useEffect, ReactNode, ClassAttributes } from "react";
 import { DocumentNode, useQuery } from "@apollo/client";
 import { AnimeMediaResults } from "../types";
 import { CardAnimeResult } from "./CardAnimeResult";
@@ -20,23 +20,6 @@ type ResultsListProps = {
   children?: ReactNode;
 };
 
-type SmallResultsListProps = {
-  query: DocumentNode;
-  variables: {
-    perPage: number;
-    currentYear?: number;
-    currentSeason?: string | undefined;
-    nextSeasonYear?: number;
-    nextSeason?: string | undefined;
-  };
-  children?: ReactNode;
-};
-
-type IntersectionObserverComponentProps = {
-  doSomething: () => void;
-  page: number;
-};
-
 export function ResultsList({ query, variables }: ResultsListProps) {
   const { data, loading, fetchMore } = useQuery(query, {
     variables,
@@ -44,7 +27,7 @@ export function ResultsList({ query, variables }: ResultsListProps) {
   });
   return (
     <div className="px-2 py-4 max-w-6xl mx-auto">
-      <div className="grid gap-x-4 gap-y-6 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(136px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(152px,1fr))]">
+      <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] md:grid-cols-[repeat(auto-fill,168px)]">
         {data &&
           data.Page.media.map((anime: AnimeMediaResults) => (
             <CardAnimeResult key={anime.id} anime={anime} />
@@ -83,6 +66,18 @@ export function ResultsList({ query, variables }: ResultsListProps) {
   );
 }
 
+type SmallResultsListProps = {
+  query: DocumentNode;
+  variables: {
+    perPage: number;
+    currentYear?: number;
+    currentSeason?: string | undefined;
+    nextSeasonYear?: number;
+    nextSeason?: string | undefined;
+  };
+  children?: ReactNode;
+};
+
 export function SmallResultsList({
   query,
   variables,
@@ -97,7 +92,7 @@ export function SmallResultsList({
   return (
     <div className="px-2 pt-4 pb-2 max-w-6xl mx-auto">
       {children}
-      <div className="grid gap-x-3 md:gap-x-6 gap-y-4 md:gap-y-8 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] md:grid-cols-[repeat(auto-fill,164px)]">
+      <div className="grid gap-4 md:gap-6 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] md:grid-cols-[repeat(auto-fill,164px)]">
         {animes?.map((anime) => (
           <CardAnimeResult key={anime.id} anime={anime} />
         ))}
@@ -107,6 +102,11 @@ export function SmallResultsList({
     </div>
   );
 }
+
+type IntersectionObserverComponentProps = {
+  doSomething: () => void;
+  page: number;
+};
 
 function IntersectionObserverComponent({
   doSomething,

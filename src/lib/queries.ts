@@ -46,8 +46,10 @@ export const GET_ANIME_MEDIA = gql`
       episodes
       duration
       averageScore
+      meanScore
+      popularity
       format
-      studios(sort: ID) {
+      studios {
         edges {
           isMain
           node {

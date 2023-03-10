@@ -21,11 +21,11 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
         <Link to={`/anime/${anime.id}`}>
           <Grow in timeout={600}>
             <div className="group duration-200 cursor-pointer flex flex-col">
-              <div className="relative h-48 md:h-[248px] mb-2">
+              <div className="relative h-48 md:h-60 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/60">
                 <img
                   src={anime.coverImage.large}
                   alt={anime.title.romaji}
-                  className="w-full h-full rounded object-cover object-center duration-200 group-hover:border-main"
+                  className="w-full h-full object-cover object-center duration-200 group-hover:border-main"
                   loading="lazy"
                   style={{ opacity: 0, transitionDuration: "400ms" }}
                   onLoad={(t) => (t.currentTarget.style.opacity = "1")}
@@ -34,7 +34,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
                 <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
               </div>
 
-              <span className="block text-sm md:text-base text-zinc-600 truncate group-hover:text-main duration-100">
+              <span className="block text-sm leading-none md:text-base text-zinc-600 truncate group-hover:text-main duration-100">
                 {anime.title.romaji}
               </span>
             </div>
@@ -75,7 +75,7 @@ function CardAnimeResultPopover({ anime }: CardAnimeResultPopoverProps) {
                 {season}
               </span>
 
-              <span className="font-medium text-sky-700 text-sm">
+              <span className="font-medium text-second text-sm">
                 {seasonYear}
               </span>
             </div>
@@ -119,7 +119,7 @@ function CardAnimeResultPopover({ anime }: CardAnimeResultPopoverProps) {
           {genres.map((genre) => (
             <span
               key={genre}
-              className="bg-emerald-700 py-1 px-2 font-medium text-zinc-100 text-xs rounded"
+              className="bg-gradient-to-t from-emerald-800 via-emerald-700 to-emerald-400 py-1 px-2 font-medium text-zinc-100 text-xs rounded"
             >
               {genre}
             </span>

@@ -4,7 +4,7 @@ module.exports = {
     extend: {
       colors: {
         main: "#FF5F00",
-        second: "#00092C",
+        second: "#0369a1",
       },
       fontFamily: {
         main: ["Roboto", "sans-serif"],
