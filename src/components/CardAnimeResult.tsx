@@ -19,26 +19,31 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
     <HoverCard.Root key={anime.id} openDelay={0} closeDelay={0}>
       <HoverCard.Trigger className="relative" asChild>
         <Link to={`/anime/${anime.id}`}>
-          <Grow in timeout={600}>
-            <div className="group duration-200 cursor-pointer flex flex-col">
-              <div className="relative h-48 md:h-60 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/60">
-                <img
-                  src={anime.coverImage.large}
-                  alt={anime.title.romaji}
-                  className="w-full h-full object-cover object-center duration-200 group-hover:border-main"
-                  loading="lazy"
-                  style={{ opacity: 0, transitionDuration: "400ms" }}
-                  onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                />
+          <div className="group cursor-pointer flex flex-col">
+            <div className="relative h-48 md:h-60 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+              <img
+                src={anime.coverImage.large}
+                alt={anime.title.romaji}
+                className="w-full h-full object-cover object-center group-hover:border-main"
+                loading="lazy"
+                style={{
+                  opacity: 0,
+                  transform: "scale(0.86)",
+                  transitionDuration: "200ms",
+                }}
+                onLoad={(t) => (
+                  (t.currentTarget.style.opacity = "1"),
+                  (t.currentTarget.style.transform = "initial")
+                )}
+              />
 
-                <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
-              </div>
-
-              <span className="block text-sm leading-none md:text-base text-zinc-600 truncate group-hover:text-main duration-100">
-                {anime.title.romaji}
-              </span>
+              <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
             </div>
-          </Grow>
+
+            <span className="block text-sm leading-none md:text-base text-zinc-600 truncate group-hover:text-main duration-100">
+              {anime.title.romaji}
+            </span>
+          </div>
         </Link>
       </HoverCard.Trigger>
 
