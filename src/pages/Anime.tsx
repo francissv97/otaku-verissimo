@@ -51,7 +51,7 @@ export function Anime() {
                 style={{
                   opacity: 0,
                   transform: "scale(0.96)",
-                  transitionDuration: "700ms",
+                  transitionDuration: "900ms",
                 }}
                 onLoad={(t) => {
                   t.currentTarget.style.opacity = "1";
@@ -73,7 +73,7 @@ export function Anime() {
             <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
               <div className="flex flex-wrap md:flex-col">
                 <div
-                  className={`bg-main/80 ml-4 rounded w-fit z-10 place-self-start shadow-xl overflow-hidden ${
+                  className={`bg-main/80 ml-4 rounded w-fit z-10 place-self-start shadow-zinc-400/70 shadow-lg overflow-hidden ${
                     anime.bannerImage && "md:-mt-28"
                   }`}
                 >
@@ -85,7 +85,7 @@ export function Anime() {
                     style={{
                       opacity: 0,
                       transform: "scale(0.84)",
-                      transitionDuration: "600ms",
+                      transitionDuration: "200ms",
                     }}
                     onLoad={(t) => {
                       t.currentTarget.style.opacity = "1";
@@ -95,23 +95,17 @@ export function Anime() {
                 </div>
 
                 <div className="place-self-end md:place-self-center px-4 my-2 md:mt-4 flex gap-6">
-                  {anime.averageScore && (
-                    <div className="flex gap-1 items-center">
-                      <Star
-                        size={22}
-                        weight="fill"
-                        className="text-yellow-500"
-                      />
-                      <span className="text-zinc-600 text-sm">
-                        {anime.averageScore}
-                      </span>
-                    </div>
-                  )}
+                  <div className="flex gap-1 items-center">
+                    <Star size={22} weight="fill" className="text-yellow-500" />
+                    <span className="text-zinc-600 text-sm">
+                      {anime.averageScore > 0 ? anime.averageScore : 0}
+                    </span>
+                  </div>
 
                   <div className="flex gap-1 items-center">
                     <Heart size={22} weight="fill" className="text-red-600" />
                     <span className="text-zinc-600 text-sm">
-                      {anime.favourites > 1 ? anime.favourites : 0}
+                      {anime.favourites > 0 ? anime.favourites : 0}
                     </span>
                   </div>
                 </div>
@@ -124,30 +118,22 @@ export function Anime() {
 
                 <div className="flex gap-2 px-4">
                   {anime.seasonYear && (
-                    <>
-                      <span className="text-second font-medium">
-                        {anime.seasonYear}
-                      </span>
-                      {"·"}
-                    </>
+                    <span className="text-second font-medium">
+                      {anime.seasonYear}
+                    </span>
                   )}
 
-                  <div className="flex gap-1">
-                    {anime.format && (
-                      <>
-                        <span>{anime.format}</span>
-                      </>
-                    )}
+                  {anime.format && (
+                    <span className="text-md before:content-['·'] before:pr-2">
+                      {anime.format}
+                    </span>
+                  )}
 
-                    {anime.episodes && (
-                      <>
-                        {"·"}
-                        <span>{`${anime.episodes} ${
-                          anime.episodes > 1 ? "episodes" : "episode"
-                        }`}</span>
-                      </>
-                    )}
-                  </div>
+                  {anime.episodes && (
+                    <span className="text-md before:content-['·'] before:pr-2">{`${
+                      anime.episodes
+                    } ${anime.episodes > 1 ? "episodes" : "episode"}`}</span>
+                  )}
                 </div>
 
                 <ul className="flex gap-2 flex-wrap px-4">
@@ -255,7 +241,7 @@ export function Anime() {
                   <span className="text-sm min-w-[110px]">Format</span>
 
                   <span className="flex-1 text-sm text-zinc-600">
-                    {anime.format}
+                    {anime.format ? anime.format : "-"}
                   </span>
                 </div>
 
@@ -286,7 +272,7 @@ export function Anime() {
                   </span>
 
                   <span className="text-sm leading-none">
-                    {anime.source.replace("_", " ")}
+                    {anime.source ? anime.source.replace("_", " ") : "-"}
                   </span>
                 </div>
 
@@ -301,13 +287,15 @@ export function Anime() {
                 <div className="flex flex-wrap gap-y-2 gap-x-4">
                   <span className="text-sm min-w-[110px]">Start Date</span>
 
-                  {anime.startDate.day &&
-                  anime.startDate.month &&
+                  {anime.startDate.day ||
+                  anime.startDate.month ||
                   anime.startDate.year ? (
                     <span className="flex-1 text-sm text-zinc-600">
-                      {`${anime.startDate.year} ${
-                        monthsShort[anime.startDate.month]
-                      } ${anime.startDate.day}`}
+                      {`${anime.startDate.year ? anime.startDate.year : ""} ${
+                        anime.startDate.month
+                          ? monthsShort[anime.startDate.month]
+                          : ""
+                      } ${anime.startDate.day ? anime.startDate.day : ""}`}
                     </span>
                   ) : (
                     "?"
@@ -316,13 +304,16 @@ export function Anime() {
 
                 <div className="flex flex-wrap gap-y-2 gap-x-4">
                   <span className="text-sm min-w-[110px]">End Date</span>
-                  {anime.endDate.day &&
-                  anime.endDate.month &&
+
+                  {anime.endDate.day ||
+                  anime.endDate.month ||
                   anime.endDate.year ? (
                     <span className="flex-1 text-sm text-zinc-600">
-                      {`${anime.endDate.year} ${
-                        monthsShort[anime.endDate.month]
-                      } ${anime.endDate.day}`}
+                      {`${anime.endDate.year ? anime.endDate.year : ""} ${
+                        anime.endDate.month
+                          ? monthsShort[anime.endDate.month]
+                          : ""
+                      } ${anime.endDate.day ? anime.endDate.day : ""}`}
                     </span>
                   ) : (
                     "?"
@@ -490,7 +481,7 @@ function StudiosList({ studios }: StudiosListProps) {
         <span className="text-sm min-w-[110px]">Studios</span>
 
         <div className="flex flex-col gap-1">
-          {animationStudio
+          {animationStudio && animationStudio.length > 0
             ? animationStudio.map((studio) => (
                 <span
                   key={studio.node.id}
@@ -507,7 +498,7 @@ function StudiosList({ studios }: StudiosListProps) {
         <span className="text-sm min-w-[110px]">Producers</span>
 
         <div className="flex flex-col gap-1">
-          {producers
+          {producers && producers.length > 0
             ? producers.map((producer) => (
                 <span
                   key={producer.node.id}
