@@ -26,6 +26,45 @@ type MediaStatus =
   | "CANCELLED"
   | "HIATUS";
 
+export type MediaSort =
+  | "TITLE_ROMAJI_DESC"
+  | "POPULARITY_DESC"
+  | "SCORE_DESC"
+  | "TRENDING_DESC"
+  | "FAVOURITES_DESC"
+  | "ID_DESC"
+  | "START_DATE_DESC";
+// | "ID"
+// | "TITLE_ROMAJI"
+// | "TITLE_ENGLISH"
+// | "TITLE_ENGLISH_DESC"
+// | "TITLE_NATIVE"
+// | "TITLE_NATIVE_DESC"
+// | "TYPE"
+// | "TYPE_DESC"
+// | "FORMAT"
+// | "FORMAT_DESC"
+// | "START_DATE"
+// | "END_DATE"
+// | "END_DATE_DESC"
+// | "SCORE"
+// | "POPULARITY"
+// | "TRENDING"
+// | "EPISODES"
+// | "EPISODES_DESC"
+// | "DURATION"
+// | "DURATION_DESC"
+// | "STATUS"
+// | "STATUS_DESC"
+// | "CHAPTERS"
+// | "CHAPTERS_DESC"
+// | "VOLUMES"
+// | "VOLUMES_DESC"
+// | "UPDATED_AT"
+// | "UPDATED_AT_DESC"
+// | "SEARCH_MATCH"
+// | "FAVOURITES"
+
 export type PageInfo = {
   total: number;
   currentPage: number;
@@ -109,6 +148,22 @@ export type AnimeMedia = {
     isMediaSpoiler: boolean;
     isAdult: boolean;
   }[];
+  relations: {
+    edges: {
+      relationType: string;
+      node: {
+        id: number;
+        title: {
+          romaji: string;
+        };
+        format: string;
+        coverImage: {
+          large: string;
+        };
+        type: string;
+      };
+    }[];
+  };
 };
 
 export type GetAnimeInfoQueryResponse = {

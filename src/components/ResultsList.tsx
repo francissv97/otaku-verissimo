@@ -1,6 +1,6 @@
 import { useEffect, ReactNode, ClassAttributes } from "react";
 import { DocumentNode, useQuery } from "@apollo/client";
-import { AnimeMediaResults } from "../types";
+import { AnimeMediaResults, MediaSort } from "../types";
 import { CardAnimeResult } from "./CardAnimeResult";
 import { CardSkeleton } from "./Loading";
 
@@ -70,10 +70,9 @@ type SmallResultsListProps = {
   query: DocumentNode;
   variables: {
     perPage: number;
-    currentYear?: number;
-    currentSeason?: string | undefined;
-    nextSeasonYear?: number;
-    nextSeason?: string | undefined;
+    seasonYear?: number;
+    season?: string | undefined;
+    sort?: MediaSort;
   };
   children?: ReactNode;
 };

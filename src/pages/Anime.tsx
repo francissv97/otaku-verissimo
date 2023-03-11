@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Collapse } from "@mui/material";
+import { Alert, Collapse, Tooltip } from "@mui/material";
 import { CaretDown, CaretUp, Heart, Star, X } from "phosphor-react";
 import { GET_ANIME_MEDIA } from "../lib/queries";
 import { monthsShort } from "../utils/variablesQueries";
@@ -191,7 +191,12 @@ export function Anime() {
                 <div className="flex flex-wrap gap-y-2 gap-x-4">
                   <span className="text-sm min-w-[110px]">Romaji</span>
                   <div className="flex-1">
-                    <span className="text-sm text-second text-justify cursor-pointer">
+                    <span
+                      onClick={() => {
+                        navigator.clipboard.writeText(anime.title.romaji);
+                      }}
+                      className="text-sm text-second text-justify cursor-pointer"
+                    >
                       {anime.title.romaji}
                     </span>
                   </div>
@@ -201,7 +206,12 @@ export function Anime() {
                   <div className="flex flex-wrap gap-y-2 gap-x-4">
                     <span className="text-sm min-w-[110px]">English</span>
                     <div className="flex-1">
-                      <span className="text-sm text-second text-justify cursor-pointer">
+                      <span
+                        onClick={() => {
+                          navigator.clipboard.writeText(anime.title.english);
+                        }}
+                        className="text-sm text-second text-justify cursor-pointer"
+                      >
                         {anime.title.english}
                       </span>
                     </div>
@@ -211,7 +221,12 @@ export function Anime() {
                 <div className="flex flex-wrap gap-y-2 gap-x-4">
                   <span className="text-sm min-w-[110px]">Native</span>
                   <div className="flex-1">
-                    <span className="text-sm text-second text-justify cursor-pointer">
+                    <span
+                      onClick={() => {
+                        navigator.clipboard.writeText(anime.title.native);
+                      }}
+                      className="text-sm text-second text-justify cursor-pointer"
+                    >
                       {anime.title.native}
                     </span>
                   </div>
@@ -376,7 +391,12 @@ export function Anime() {
               </div>
 
               <MyDivider />
+
               <TagsList tags={anime.tags} />
+
+              <MyDivider />
+
+              <RelationsList edges={anime.relations.edges} />
             </div>
           </div>
 
@@ -570,5 +590,90 @@ function TagsList({ tags }: TagsListProps) {
         })}
       </ul>
     </>
+  );
+}
+
+type RelationsListProps = {
+  edges: {
+    relationType: string;
+    node: {
+      id: number;
+      title: {
+        romaji: string;
+      };
+      format: string;
+      coverImage: {
+        large: string;
+      };
+      type: string;
+    };
+  }[];
+};
+
+function RelationsList({ edges }: RelationsListProps) {
+  const order = [
+    "ADAPTATION",
+    "PREQUEL",
+    "SEQUEL",
+    "PARENT",
+    "SIDE_STORY",
+    "CHARACTER",
+    "SUMMARY",
+    "ALTERNATIVE",
+    "SPIN_OFF",
+    "OTHER",
+  ];
+
+  const sortEdges = [...edges].sort((a, b) => {
+    if (order.indexOf(a.relationType) > order.indexOf(b.relationType)) return 1;
+    if (order.indexOf(a.relationType) < order.indexOf(b.relationType))
+      return -1;
+    return 0;
+  });
+
+  return (
+    <div className="flex flex-col">
+      <strong>Relations</strong>
+
+      <div className="flex gap-4 overflow-x-auto mt-4">
+        {sortEdges.map((edge) => (
+          <Link
+            to={edge.node.type == "ANIME" ? `/anime/${edge.node.id}` : ""}
+            key={edge.node.id}
+            className="group cursor-pointer flex gap-1 flex-col w-32"
+          >
+            <span className="block text-[14px] text-center leading-none text-zinc-600 font-medium">
+              {edge.node.format ? edge.node.format.replaceAll("_", " ") : ""}
+            </span>
+
+            <div className="relative w-32 h-48 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+              <img
+                src={edge.node.coverImage.large}
+                alt={edge.node.title.romaji}
+                className="w-full h-full object-cover object-center group-hover:border-main"
+                loading="lazy"
+                style={{
+                  opacity: 0,
+                  transform: "scale(0.86)",
+                  transitionDuration: "600ms",
+                }}
+                onLoad={(t) => (
+                  (t.currentTarget.style.opacity = "1"),
+                  (t.currentTarget.style.transform = "initial")
+                )}
+              />
+            </div>
+
+            <span className="block text-sm text-center leading-none md:text-base truncate text-main">
+              {edge.node.title.romaji}
+            </span>
+
+            <span className="block text-[14px] text-center leading-none text-zinc-600">
+              {edge.relationType.replaceAll("_", " ")}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

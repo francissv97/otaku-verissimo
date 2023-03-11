@@ -5,13 +5,7 @@ import {
   nextSeason,
   nextSeasonYear,
 } from "../utils/variablesQueries";
-import {
-  GET_ALL_TIME_POPULAR_QUERY,
-  GET_NEXT_SEASON_POPULAR_QUERY,
-  GET_POPULAR_THIS_SEASON_QUERY,
-  GET_SEARCH_QUERY,
-  GET_TRENDING_NOW_QUERY,
-} from "../lib/queries";
+import { GET_SEARCH_QUERY } from "../lib/queries";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { HeaderResults } from "../components/Header";
@@ -66,8 +60,8 @@ export function Home() {
         {searchTerm.length == 0 ? (
           <>
             <SmallResultsList
-              query={GET_TRENDING_NOW_QUERY}
-              variables={{ perPage: 6 }}
+              query={GET_SEARCH_QUERY}
+              variables={{ perPage: 6, sort: "TRENDING_DESC" }}
             >
               <HeaderResults title="trending now" paramViewAll="trending" />
             </SmallResultsList>
@@ -75,11 +69,12 @@ export function Home() {
             <MyShadow />
 
             <SmallResultsList
-              query={GET_POPULAR_THIS_SEASON_QUERY}
+              query={GET_SEARCH_QUERY}
               variables={{
-                currentSeason: currentSeason(),
-                currentYear: currentYear(),
+                season: currentSeason(),
+                seasonYear: currentYear(),
                 perPage: 6,
+                sort: "POPULARITY_DESC",
               }}
             >
               <HeaderResults
@@ -91,11 +86,12 @@ export function Home() {
             <MyShadow />
 
             <SmallResultsList
-              query={GET_NEXT_SEASON_POPULAR_QUERY}
+              query={GET_SEARCH_QUERY}
               variables={{
-                nextSeason: nextSeason(),
-                nextSeasonYear: nextSeasonYear(),
+                season: nextSeason(),
+                seasonYear: nextSeasonYear(),
                 perPage: 6,
+                sort: "POPULARITY_DESC",
               }}
             >
               <HeaderResults
@@ -107,9 +103,10 @@ export function Home() {
             <MyShadow />
 
             <SmallResultsList
-              query={GET_ALL_TIME_POPULAR_QUERY}
+              query={GET_SEARCH_QUERY}
               variables={{
                 perPage: 6,
+                sort: "POPULARITY_DESC",
               }}
             >
               <HeaderResults title="all time popular" paramViewAll="popular" />
