@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Alert, Collapse, Tooltip } from "@mui/material";
-import { CaretDown, CaretUp, Heart, Star, X } from "phosphor-react";
+import { Collapse, Tooltip } from "@mui/material";
+import { CaretDown, CaretUp, CopySimple, Heart, Star, X } from "phosphor-react";
 import { GET_ANIME_MEDIA } from "../lib/queries";
 import { monthsShort } from "../utils/variablesQueries";
 import { AnimeMedia } from "../types";
@@ -11,6 +11,7 @@ import { MyDivider } from "../components/MyComponents";
 import { MySpace } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
 import logo from "../assets/logo.svg";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 export function Anime() {
   const { id } = useParams() as { id: string };
@@ -23,6 +24,8 @@ export function Anime() {
   const anime: AnimeMedia = data && data.Media;
 
   if (error) console.error(error);
+
+  // if (anime) {}
 
   useEffect(() => {
     const hostname = location.hostname;
@@ -39,7 +42,7 @@ export function Anime() {
         </div>
       )}
       {loading && <CircularLoading />}
-      {!loading && anime && (
+      {anime && (
         <>
           {anime.bannerImage ? (
             <div className="bg-main/80">
@@ -112,25 +115,25 @@ export function Anime() {
               </div>
 
               <div className="flex flex-1 flex-col gap-1">
-                <h1 className="text-lg text-main px-4 text-justify overflow-hidden">
+                <h1 className="text-lg text-main px-4 text-justify overflow-hidden line-clamp-2">
                   {anime.title.romaji}
                 </h1>
 
-                <div className="flex gap-2 px-4">
+                <div className="flex gap-2 px-4 ">
                   {anime.seasonYear && (
-                    <span className="text-second font-medium">
+                    <span className="peer text-second font-medium">
                       {anime.seasonYear}
                     </span>
                   )}
 
                   {anime.format && (
-                    <span className="text-md before:content-['·'] before:pr-2">
+                    <span className="peer peer-[]:before:content-['·'] peer-[]:before:pr-2 text-md">
                       {anime.format}
                     </span>
                   )}
 
                   {anime.episodes && (
-                    <span className="text-md before:content-['·'] before:pr-2">{`${
+                    <span className="peer text-md peer-[]:before:content-['·'] peer-[]:before:pr-2">{`${
                       anime.episodes
                     } ${anime.episodes > 1 ? "episodes" : "episode"}`}</span>
                   )}
@@ -162,25 +165,41 @@ export function Anime() {
               <div className="flex flex-col">
                 <strong className="mb-2">Characters</strong>
 
-                <div className="flex gap-4 overflow-x-auto">
-                  {anime.characters.nodes.map((character) => (
-                    <div key={character.id} className="flex flex-col gap-1">
-                      <div className="bg-zinc-300 rounded-full overflow-hidden">
-                        <img
-                          src={character.image.medium}
-                          alt={character.name.full}
-                          style={{ opacity: 0, transitionDuration: "900ms" }}
-                          onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                          className="min-w-[80px] h-[80px] object-cover"
-                        />
-                      </div>
+                <ScrollArea.Root>
+                  <ScrollArea.Viewport>
+                    <div className="flex gap-4 overflow-x-auto pb-2">
+                      {anime.characters.nodes.map((character) => (
+                        <div key={character.id} className="flex flex-col gap-1">
+                          <div className="bg-zinc-300 rounded-full overflow-hidden">
+                            <img
+                              src={character.image.medium}
+                              alt={character.name.full}
+                              style={{
+                                opacity: 0,
+                                transitionDuration: "900ms",
+                              }}
+                              onLoad={(t) =>
+                                (t.currentTarget.style.opacity = "1")
+                              }
+                              className="min-w-[80px] h-[80px] object-cover"
+                            />
+                          </div>
 
-                      <span className="text-sm text-main font-medium max-w-[80px] text-center mx-auto">
-                        {character.name.full}
-                      </span>
+                          <span className="text-sm text-main font-medium max-w-[80px] text-center mx-auto">
+                            {character.name.full}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </ScrollArea.Viewport>
+
+                  <ScrollArea.Scrollbar
+                    className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+                    orientation="horizontal"
+                  >
+                    <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+                  </ScrollArea.Scrollbar>
+                </ScrollArea.Root>
               </div>
 
               <MyDivider />
@@ -190,46 +209,19 @@ export function Anime() {
 
                 <div className="flex flex-wrap gap-y-2 gap-x-4">
                   <span className="text-sm min-w-[110px]">Romaji</span>
-                  <div className="flex-1">
-                    <span
-                      onClick={() => {
-                        navigator.clipboard.writeText(anime.title.romaji);
-                      }}
-                      className="text-sm text-second text-justify cursor-pointer"
-                    >
-                      {anime.title.romaji}
-                    </span>
-                  </div>
+                  <TitleCopyToClipboard title={anime.title.romaji} />
                 </div>
 
                 {anime.title.english && (
                   <div className="flex flex-wrap gap-y-2 gap-x-4">
                     <span className="text-sm min-w-[110px]">English</span>
-                    <div className="flex-1">
-                      <span
-                        onClick={() => {
-                          navigator.clipboard.writeText(anime.title.english);
-                        }}
-                        className="text-sm text-second text-justify cursor-pointer"
-                      >
-                        {anime.title.english}
-                      </span>
-                    </div>
+                    <TitleCopyToClipboard title={anime.title.english} />
                   </div>
                 )}
 
                 <div className="flex flex-wrap gap-y-2 gap-x-4">
                   <span className="text-sm min-w-[110px]">Native</span>
-                  <div className="flex-1">
-                    <span
-                      onClick={() => {
-                        navigator.clipboard.writeText(anime.title.native);
-                      }}
-                      className="text-sm text-second text-justify cursor-pointer"
-                    >
-                      {anime.title.native}
-                    </span>
-                  </div>
+                  <TitleCopyToClipboard title={anime.title.native} />
                 </div>
 
                 {anime.synonyms.length > 0 && (
@@ -397,6 +389,13 @@ export function Anime() {
               <MyDivider />
 
               <RelationsList edges={anime.relations.edges} />
+
+              {anime.recommendations.edges.length > 0 && (
+                <>
+                  <MyDivider />
+                  <RecommendationsList edges={anime.recommendations.edges} />
+                </>
+              )}
             </div>
           </div>
 
@@ -476,6 +475,40 @@ function DescriptionCollapse({ description }: DescriptionCollapseProps) {
           dangerouslySetInnerHTML={{ __html: description }}
         ></p>
       )}
+    </div>
+  );
+}
+
+type TitleCopyToClipboardProps = {
+  title: string;
+};
+
+function TitleCopyToClipboard({ title }: TitleCopyToClipboardProps) {
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
+
+  function handleClick() {
+    setShowCopyMessage(true);
+    navigator.clipboard.writeText(title);
+    setTimeout(() => setShowCopyMessage(false), 1000);
+  }
+
+  return (
+    <div className=" flex-1 flex items-center gap-1">
+      <span
+        onClick={handleClick}
+        className="relative text-sm text-second text-justify cursor-pointer pr-4"
+        title="click to copy"
+      >
+        {title}
+
+        {showCopyMessage ? (
+          <span className="absolute -top-3 -right-3 pointer-events-none bg-emerald-600 text-zinc-50 text-sm px-2 py-1 rounded duration-500">
+            copied text
+          </span>
+        ) : (
+          <CopySimple className="absolute -top-1 -right-3 cursor-pointer rounded-full bg-second/80 text-zinc-50 text-[20px] p-1 h-6 w-6 duration-500" />
+        )}
+      </span>
     </div>
   );
 }
@@ -635,45 +668,171 @@ function RelationsList({ edges }: RelationsListProps) {
     <div className="flex flex-col">
       <strong>Relations</strong>
 
-      <div className="flex gap-4 overflow-x-auto mt-4">
-        {sortEdges.map((edge) => (
-          <Link
-            to={edge.node.type == "ANIME" ? `/anime/${edge.node.id}` : ""}
-            key={edge.node.id}
-            className="group cursor-pointer flex gap-1 flex-col w-32"
-          >
-            <span className="block text-[14px] text-center leading-none text-zinc-600 font-medium">
-              {edge.node.format ? edge.node.format.replaceAll("_", " ") : ""}
-            </span>
+      <ScrollArea.Root>
+        <ScrollArea.Viewport>
+          <div className="flex gap-4 overflow-x-auto mt-2 pb-2">
+            {sortEdges.map((edge) => (
+              <Link
+                to={edge.node.type == "ANIME" ? `/anime/${edge.node.id}` : ""}
+                key={edge.node.id}
+                className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
+              >
+                <div className="relative w-32 h-48 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+                  <img
+                    src={edge.node.coverImage.large}
+                    alt={edge.node.title.romaji}
+                    className="w-full h-full object-cover object-center group-hover:border-main"
+                    loading="lazy"
+                    style={{
+                      opacity: 0,
+                      transform: "scale(0.86)",
+                      transitionDuration: "700ms",
+                    }}
+                    onLoad={(t) => (
+                      (t.currentTarget.style.opacity = "1"),
+                      (t.currentTarget.style.transform = "initial")
+                    )}
+                  />
 
-            <div className="relative w-32 h-48 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
-              <img
-                src={edge.node.coverImage.large}
-                alt={edge.node.title.romaji}
-                className="w-full h-full object-cover object-center group-hover:border-main"
-                loading="lazy"
-                style={{
-                  opacity: 0,
-                  transform: "scale(0.86)",
-                  transitionDuration: "600ms",
-                }}
-                onLoad={(t) => (
-                  (t.currentTarget.style.opacity = "1"),
-                  (t.currentTarget.style.transform = "initial")
-                )}
-              />
-            </div>
+                  <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 p-1">
+                    <span className="text-zinc-50 text-sm font-medium">
+                      {edge.node.format
+                        ? edge.node.format.replaceAll("_", " ")
+                        : ""}
+                    </span>
+                  </div>
 
-            <span className="block text-sm text-center leading-none md:text-base truncate text-main">
-              {edge.node.title.romaji}
-            </span>
+                  <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 p-1">
+                    <span className="text-zinc-50 text-sm font-medium">
+                      {edge.relationType.replaceAll("_", " ")}
+                    </span>
+                  </div>
+                </div>
 
-            <span className="block text-[14px] text-center leading-none text-zinc-600">
-              {edge.relationType.replaceAll("_", " ")}
-            </span>
-          </Link>
-        ))}
-      </div>
+                <span className="block text-[14px] text-center leading-none text-main line-clamp-2">
+                  {edge.node.title.romaji}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </ScrollArea.Viewport>
+
+        <ScrollArea.Scrollbar
+          className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+          orientation="horizontal"
+        >
+          <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+        </ScrollArea.Scrollbar>
+      </ScrollArea.Root>
     </div>
   );
+}
+
+type RecommendationsListProps = {
+  edges: {
+    node: {
+      mediaRecommendation: {
+        id: number;
+        title: {
+          romaji: string;
+        };
+        format: string;
+        coverImage: {
+          large: string;
+        };
+        averageScore: number;
+        favourites: number;
+      };
+    };
+  }[];
+};
+
+function RecommendationsList({ edges }: RecommendationsListProps) {
+  return (
+    <div className="flex flex-col">
+      <strong>Recommendations</strong>
+      <ScrollArea.Root>
+        <ScrollArea.Viewport>
+          <div className="flex gap-4 overflow-x-auto mt-2">
+            {edges.map((edge) => (
+              <Link
+                to={`/anime/${edge.node.mediaRecommendation.id}`}
+                key={edge.node.mediaRecommendation.id}
+                className="group cursor-pointer flex gap-1 flex-col w-32 pt-1 pb-3"
+              >
+                <div className="relative w-32 h-48 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+                  <img
+                    src={edge.node.mediaRecommendation.coverImage.large}
+                    alt={edge.node.mediaRecommendation.title.romaji}
+                    className="w-full h-full object-cover object-center group-hover:border-main"
+                    loading="lazy"
+                    style={{
+                      opacity: 0,
+                      transform: "scale(0.86)",
+                      transitionDuration: "700ms",
+                    }}
+                    onLoad={(t) => (
+                      (t.currentTarget.style.opacity = "1"),
+                      (t.currentTarget.style.transform = "initial")
+                    )}
+                  />
+
+                  <div className="absolute top-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                    <Star size={18} weight="fill" className="text-yellow-400" />
+                    <span className="text-zinc-50 text-sm font-medium">
+                      {edge.node.mediaRecommendation.averageScore > 0
+                        ? edge.node.mediaRecommendation.averageScore
+                        : 0}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                    <Heart size={18} weight="fill" className="text-red-500" />
+                    <span className="text-zinc-50 text-sm font-medium">
+                      {edge.node.mediaRecommendation.favourites > 0
+                        ? edge.node.mediaRecommendation.favourites
+                        : 0}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-0 right-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                    <span className="text-zinc-50 text-xs font-medium">
+                      {edge.node.mediaRecommendation.format.replaceAll(
+                        "_",
+                        " "
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                <span className="block text-sm text-center leading-none text-main line-clamp-2">
+                  {edge.node.mediaRecommendation.title.romaji}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </ScrollArea.Viewport>
+
+        <ScrollArea.Scrollbar
+          className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+          orientation="horizontal"
+        >
+          <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+        </ScrollArea.Scrollbar>
+      </ScrollArea.Root>
+    </div>
+  );
+}
+
+{
+  /* <ScrollArea.Root>
+  <ScrollArea.Viewport></ScrollArea.Viewport>
+
+  <ScrollArea.Scrollbar
+    className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+    orientation="horizontal"
+  >
+    <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+  </ScrollArea.Scrollbar>
+</ScrollArea.Root>; */
 }

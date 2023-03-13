@@ -40,7 +40,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
               <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
             </div>
 
-            <span className="block text-sm leading-none md:text-base text-zinc-600 truncate group-hover:text-main duration-100">
+            <span className="block text-md leading-none text-zinc-600 line-clamp-2 group-hover:text-main duration-100">
               {anime.title.romaji}
             </span>
           </div>

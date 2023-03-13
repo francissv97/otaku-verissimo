@@ -164,6 +164,24 @@ export type AnimeMedia = {
       };
     }[];
   };
+  recommendations: {
+    edges: {
+      node: {
+        mediaRecommendation: {
+          id: number;
+          title: {
+            romaji: string;
+          };
+          format: string;
+          coverImage: {
+            large: string;
+          };
+          averageScore: number;
+          favourites: number;
+        };
+      };
+    }[];
+  };
 };
 
 export type GetAnimeInfoQueryResponse = {

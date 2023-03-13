@@ -92,6 +92,26 @@ export const GET_ANIME_MEDIA = gql`
           }
         }
       }
+      recommendations(sort: RATING_DESC) {
+        edges {
+          node {
+            id
+            rating
+            mediaRecommendation {
+              id
+              title {
+                romaji
+              }
+              format
+              coverImage {
+                large
+              }
+              averageScore
+              favourites
+            }
+          }
+        }
+      }
     }
   }
 `;
