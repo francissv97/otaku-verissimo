@@ -1,8 +1,8 @@
 <p align="center">
-  <img alt="Project screenshot" src=".github/97-anime-list.svg" width="100%">
+  <img alt="Project screenshot" src=".github/otakuVERISSIMO.png" width="100%">
 </p>
 
-<h2>Site published <a href="https://97animelist.vercel.app/">here</a></h2>
+<h2>Site published <a href="https://otakuverissimo.vercel.app/">here</a></h2>
 
 ## Technologies
 
