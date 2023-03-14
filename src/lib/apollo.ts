@@ -9,6 +9,16 @@ export const client = new ApolloClient({
           return mergeObjects(existing, incoming);
         },
       },
+      Media: {
+        fields: {
+          title: {
+            merge(existing, incoming, { mergeObjects }) {
+              return mergeObjects(existing, incoming);
+            },
+          },
+        },
+        keyFields: ["id"],
+      },
     },
   }),
 });

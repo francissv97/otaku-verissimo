@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_ANIME_MEDIA = gql`
-  query ($id: Int) {
+  query AnimeMedia ($id: Int) {
     Media(id: $id, type: ANIME) {
       id
       title {
@@ -117,7 +117,7 @@ export const GET_ANIME_MEDIA = gql`
 `;
 
 export const GET_SEARCH_QUERY = gql`
-  query (
+  query AnimeResults (
     $perPage: Int
     $page: Int
     $search: String
