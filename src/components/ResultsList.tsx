@@ -27,7 +27,7 @@ export function ResultsList({ query, variables }: ResultsListProps) {
   });
   return (
     <div className="px-2 py-4 max-w-6xl mx-auto">
-      <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] md:grid-cols-[repeat(auto-fill,168px)]">
+      <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(110px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
         {data &&
           data.Page.media.map((anime: AnimeMediaResults) => (
             <CardAnimeResult key={anime.id} anime={anime} />
@@ -91,7 +91,7 @@ export function SmallResultsList({
   return (
     <div className="px-2 pt-4 pb-2 max-w-6xl mx-auto">
       {children}
-      <div className="grid gap-4 md:gap-6 justify-between grid-cols-[repeat(auto-fill,minmax(114px,1fr))] md:grid-cols-[repeat(auto-fill,164px)]">
+      <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(118px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
         {animes?.map((anime) => (
           <CardAnimeResult key={anime.id} anime={anime} />
         ))}

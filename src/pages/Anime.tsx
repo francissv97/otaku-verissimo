@@ -167,7 +167,7 @@ export function Anime() {
 
                 <ScrollArea.Root>
                   <ScrollArea.Viewport>
-                    <div className="flex gap-4 overflow-x-auto pb-2">
+                    <div className="flex gap-4 pb-2">
                       {anime.characters.nodes.map((character) => (
                         <div key={character.id} className="flex flex-col gap-1">
                           <div className="bg-zinc-300 rounded-full overflow-hidden">

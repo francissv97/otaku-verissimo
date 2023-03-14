@@ -19,12 +19,12 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
     <HoverCard.Root key={anime.id} openDelay={0} closeDelay={0}>
       <HoverCard.Trigger className="relative" asChild>
         <Link to={`/anime/${anime.id}`}>
-          <div className="group cursor-pointer flex flex-col">
-            <div className="relative h-48 md:h-60 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+          <div className="group cursor-pointer flex flex-col h-full">
+            <div className="relative mb-3 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
               <img
                 src={anime.coverImage.large}
                 alt={anime.title.romaji}
-                className="w-full h-full object-cover object-center group-hover:border-main"
+                className="w-full h-full aspect-[6_/_9] object-cover object-center group-hover:border-main"
                 loading="lazy"
                 style={{
                   opacity: 0,
@@ -40,7 +40,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
               <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
             </div>
 
-            <span className="block text-md leading-none text-zinc-600 line-clamp-2 group-hover:text-main duration-100">
+            <span className="block text-[14px] leading-none text-zinc-500 font-medium line-clamp-2 group-hover:text-main duration-100">
               {anime.title.romaji}
             </span>
           </div>
@@ -71,7 +71,7 @@ function CardAnimeResultPopover({ anime }: CardAnimeResultPopoverProps) {
     anime.genres.length > 3 ? anime.genres.slice(0, 3) : anime.genres;
 
   return (
-    <Grow in>
+    <Grow in timeout={200}>
       <div className="flex flex-col gap-1 w-72 p-4 bg-gradient-to-t from-[#bbb] via-zinc-50 to-zinc-100 rounded shadow-xl -mt-1">
         <div className="flex justify-between items-center">
           {!(!season || !seasonYear) && (

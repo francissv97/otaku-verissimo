@@ -107,8 +107,8 @@ export function SelectFieldGenres() {
   return (
     <Select.Root>
       <Select.Trigger
-        className="inline-flex min-w-[100px] items-center justify-center rounded px-4 text-sm leading-none h-9 gap-1 bg-zinc-50 text-main shadow-[0_2px_10px] shadow-black/10 hover:bg-main/5 data-[placeholder]:text-zinc-500 outline-zinc-400 duration-200"
-        aria-label="Genres"
+        className="inline-flex min-w-[100px] items-center justify-between rounded px-4 text-sm leading-none h-9 gap-1 bg-zinc-50 text-main shadow-[0_2px_10px] shadow-black/10 hover:shadow-md hover:bg-zinc-200/50 data-[placeholder]:text-zinc-500 outline-zinc-400 duration-200"
+        aria-label="Select"
       >
         <Select.Value placeholder="Any" />
         <Select.Icon className="text-zinc-500">
@@ -159,5 +159,16 @@ function SelectItem({ value, children }: SelectItemProps) {
         <Check />
       </Select.ItemIndicator>
     </Select.Item>
+  );
+}
+
+export function ButtonMoreOptions() {
+  return (
+    <div className="w-9 h-9 p-2 place-self-end bg-zinc-50 shadow-[0_2px_10px] shadow-black/10 hover:shadow-md hover:bg-zinc-200/50 data-[placeholder]:text-zinc-500 outline-zinc-400 duration-200 cursor-pointer">
+      <SlidersHorizontal
+        size={22}
+        className="text-zinc-500 hover:text-zinc-600 duration-200"
+      />
+    </div>
   );
 }

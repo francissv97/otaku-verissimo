@@ -11,7 +11,11 @@ import { Footer } from "../components/Footer";
 import { HeaderResults } from "../components/Header";
 import { ResultsList, SmallResultsList } from "../components/ResultsList";
 import { MyShadow } from "../components/MyComponents";
-import { InputSearch } from "../components/SearchFields";
+import {
+  ButtonMoreOptions,
+  InputSearch,
+  SelectFieldGenres,
+} from "../components/SearchFields";
 
 export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,36 +26,40 @@ export function Home() {
       <div>
         <Header />
 
-        <div className="flex gap-4 items-center p-4 max-w-6xl justify-center mx-auto flex-wrap">
+        <div className="flex gap-4 items-center p-4 max-w-6xl justify-between mx-auto flex-wrap">
           <InputSearch
             searchTerm={searchTerm}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
           />
 
-          {/* <div className="flex flex-col gap-2">
-            <span className="font-medium text-zinc-500">Genres</span>
-            <SelectFieldGenres />
-          </div> */}
+          {/* <div className="flex gap-4">
+            <div className="flex flex-col gap-2">
+              <span className="font-medium text-sm text-zinc-500">Genres</span>
+              <SelectFieldGenres />
+            </div>
 
-          {/* <div className="flex flex-col gap-2">
-            <span className="font-medium text-zinc-500">Year</span>
-            <SelectFieldGenres />
-          </div> */}
+            <div className="flex flex-col gap-2">
+              <span className="font-medium text-sm text-zinc-500">Year</span>
+              <SelectFieldGenres />
+            </div>
 
-          {/* <div className="flex flex-col gap-2">
-            <span className="font-medium text-zinc-500">Season</span>
-            <SelectFieldGenres />
-          </div> */}
+            <div className="flex flex-col gap-2">
+              <span className="font-medium text-sm text-zinc-500">Season</span>
+              <SelectFieldGenres />
+            </div>
 
-          {/* <div className="flex flex-col gap-2">
-            <span className="font-medium text-zinc-500">Format</span>
-            <SelectFieldGenres />
-          </div>
+            <div className="flex flex-col gap-2">
+              <span className="font-medium text-sm text-zinc-500">Format</span>
+              <SelectFieldGenres />
+            </div>
 
-          <div className="flex flex-col gap-2">
-            <span className="font-medium text-zinc-500">Airing Status</span>
-            <SelectFieldGenres />
+            <div className="flex flex-col gap-2">
+              <span className="font-medium text-sm text-zinc-500">Airing Status</span>
+              <SelectFieldGenres />
+            </div>
+
+            <ButtonMoreOptions />
           </div> */}
         </div>
       </div>
