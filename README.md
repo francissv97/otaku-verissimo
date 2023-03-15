@@ -12,15 +12,14 @@ This project was developed with the following technologies:
   <li>React</li>
   <li>TailwindCSS</li>
   <li>GraphQL</li>
-  <li>Phosphor-React: Icons</li>
   <li>Typescript</li>
-  <li>Vite JS</li>
+  <li>Phosphor Icons</li>
 </ul>
 
 ## Project
 
 <p>
-  Anime list react application, powered by anilist. Inspired by AniList
+  Anime and manga website with a vast library of titles and information about them. The aim of this project is to provide users with a centralized place to find information about anime and manga quickly and easily
 </p>
 
 **<p align="center" weight="bold">Personal project</p>**
