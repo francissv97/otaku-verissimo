@@ -182,6 +182,13 @@ export type AnimeMedia = {
       };
     }[];
   };
+  externalLinks: {
+    id: number;
+    site: string;
+    url: string;
+    color: string;
+    icon: string;
+  }[];
 };
 
 export type GetAnimeInfoQueryResponse = {

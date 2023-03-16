@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Collapse, Tooltip } from "@mui/material";
+import { Collapse } from "@mui/material";
 import { CaretDown, CaretUp, CopySimple, Heart, Star, X } from "phosphor-react";
 import { GET_ANIME_MEDIA } from "../lib/queries";
 import { monthsShort } from "../utils/variablesQueries";
@@ -25,7 +25,7 @@ export function Anime() {
 
   if (error) console.error(error);
 
-  // if (anime) {}
+  // if (anime) console.log(anime);
 
   useEffect(() => {
     const hostname = location.hostname;
@@ -396,6 +396,37 @@ export function Anime() {
                   <RecommendationsList edges={anime.recommendations.edges} />
                 </>
               )}
+
+              <MyDivider />
+
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-between">
+                  <strong className="text-md leading-none">Links</strong>
+                  <span className="text-sm leading-none font-medium text-zinc-500">
+                    Click to copy link
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {anime.externalLinks.map((link) => (
+                    <div
+                      key={link.id}
+                      className="flex gap-1 p-2 rounded items-center h-fit my-auto cursor-pointer hover:scale-[102%]"
+                      onClick={() => navigator.clipboard.writeText(link.url)}
+                      style={{
+                        backgroundColor: link.color ? link.color : "#52525b",
+                      }}
+                    >
+                      {link.icon && (
+                        <img src={link.icon} alt={link.site} className="w-6" />
+                      )}
+                      <strong className="text-white text-sm">
+                        {link.site}
+                      </strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -694,16 +725,16 @@ function RelationsList({ edges }: RelationsListProps) {
                     )}
                   />
 
-                  <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 p-1">
-                    <span className="text-zinc-50 text-sm font-medium">
+                  <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                    <span className="text-zinc-50 text-xs font-medium">
                       {edge.node.format
                         ? edge.node.format.replaceAll("_", " ")
                         : ""}
                     </span>
                   </div>
 
-                  <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 p-1">
-                    <span className="text-zinc-50 text-sm font-medium">
+                  <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                    <span className="text-zinc-50 text-xs font-medium">
                       {edge.relationType.replaceAll("_", " ")}
                     </span>
                   </div>
@@ -822,17 +853,4 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
       </ScrollArea.Root>
     </div>
   );
-}
-
-{
-  /* <ScrollArea.Root>
-  <ScrollArea.Viewport></ScrollArea.Viewport>
-
-  <ScrollArea.Scrollbar
-    className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
-    orientation="horizontal"
-  >
-    <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
-  </ScrollArea.Scrollbar>
-</ScrollArea.Root>; */
 }
