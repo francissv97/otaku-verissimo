@@ -121,10 +121,32 @@ export type AnimeMedia = {
   popularity: number;
   favourites: number;
   characters: {
-    nodes: {
+    edges: {
+      node: {
+        id: number;
+        name: { full: string };
+        image: { medium: string };
+      };
+      voiceActorRoles: {
+        roleNotes: string | null;
+        voiceActor: {
+          id: number;
+          name: { full: string };
+          image: { medium: string };
+        };
+      }[];
+      role: "MAIN" | "SUPPORTING" | "BACKGROUND";
+    }[];
+  };
+  staff: {
+    edges: {
       id: number;
-      name: { full: string };
-      image: { medium: string };
+      node: {
+        id: number;
+        name: { full: string };
+        image: { medium: string };
+      };
+      role: string;
     }[];
   };
   source: string;

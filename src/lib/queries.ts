@@ -41,17 +41,52 @@ export const GET_ANIME_MEDIA = gql`
       }
       favourites
       description(asHtml: false)
-      characters(sort: ID, role: MAIN) {
-        nodes {
-          id
-          name {
-            full
+      characters(sort: [ROLE, ID], page: 1, perPage: 20) {
+        edges {
+          role
+          node {
+            id
+            name {
+              full
+            }
+            image {
+              medium
+            }
           }
-          image {
-            medium
+          voiceActorRoles(language: JAPANESE, sort: RELEVANCE) {
+            voiceActor {
+              id
+              name {
+                full
+              }
+              image {
+                medium
+              }
+            }
+            roleNotes
           }
         }
         pageInfo {
+          currentPage
+          hasNextPage
+        }
+      }
+      staff(sort: RELEVANCE, page: 1, perPage: 20) {
+        edges {
+          id
+          node {
+            id
+            name {
+              full
+            }
+            image {
+              medium
+            }
+          }
+          role
+        }
+        pageInfo {
+          currentPage
           hasNextPage
         }
       }
