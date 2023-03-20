@@ -521,8 +521,8 @@ export function Anime() {
                                   <div className="flex-1 flex">
                                     <div className="flex-1 flex flex-col justify-end items-end p-2">
                                       {voiceActorRole.roleNotes && (
-                                        <span className="text-xs text-end">
-                                          ({voiceActorRole.roleNotes})
+                                        <span className="text-xs text-end text-main">
+                                          {voiceActorRole.roleNotes}
                                         </span>
                                       )}
 
@@ -738,7 +738,7 @@ function TitleCopyToClipboard({ title }: TitleCopyToClipboardProps) {
         {title}
 
         {showCopyMessage ? (
-          <span className="absolute -top-3 -right-3 pointer-events-none bg-emerald-600 text-zinc-50 text-sm px-2 py-1 rounded duration-500">
+          <span className="absolute -top-5 -right-5 whitespace-nowrap pointer-events-none bg-emerald-600 text-zinc-50 text-sm px-2 py-1 rounded duration-500">
             copied text
           </span>
         ) : (
