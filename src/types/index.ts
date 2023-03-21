@@ -137,6 +137,10 @@ export type AnimeMedia = {
       }[];
       role: "MAIN" | "SUPPORTING" | "BACKGROUND";
     }[];
+    pageInfo: {
+      currentPage: number;
+      hasNextPage: boolean;
+    };
   };
   staff: {
     edges: {
@@ -148,6 +152,10 @@ export type AnimeMedia = {
       };
       role: string;
     }[];
+    pageInfo: {
+      currentPage: number;
+      hasNextPage: boolean;
+    };
   };
   source: string;
   startDate: {

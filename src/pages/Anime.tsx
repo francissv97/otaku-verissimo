@@ -1,4 +1,4 @@
-import { Children, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Collapse, Grow, Zoom } from "@mui/material";
@@ -13,12 +13,14 @@ import { Footer } from "../components/Footer";
 import logo from "../assets/logo.svg";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import * as Tabs from "@radix-ui/react-tabs";
+import { AnimeCharacters } from "../components/AnimeCharacters";
+import { AnimeStaff } from "../components/AnimeStaff";
 
 export function Anime() {
   const { id } = useParams() as { id: string };
 
-  const { data, loading, error } = useQuery(GET_ANIME_MEDIA, {
-    variables: { id },
+  const { data, loading, error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
+    variables: { id: id, charactersPage: 1, staffPage: 1 },
     notifyOnNetworkStatusChange: true,
   });
 
@@ -26,7 +28,7 @@ export function Anime() {
 
   if (error) console.error(error);
 
-  if (anime) console.log(anime.staff);
+  // if (anime) console.log(anime.staff);
 
   useEffect(() => {
     const hostname = location.hostname;
@@ -67,11 +69,11 @@ export function Anime() {
             <MySpace pxHeight={72} />
           )}
 
-          <div className={`mb-auto pb-4 shadow-xl px-4`}>
+          <div className="mb-auto pb-4 px-4">
             <div className="flex gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
               <div className="flex flex-wrap md:flex-col">
                 <div
-                  className={`bg-main/80 rounded w-fit z-10 place-self-start shadow-zinc-400/70 shadow-lg overflow-hidden ${
+                  className={`bg-main/80 rounded w-fit z-10 place-self-start shadow-zinc-400 shadow-lg overflow-hidden ${
                     anime.bannerImage && "md:-mt-32"
                   }`}
                 >
@@ -224,7 +226,7 @@ export function Anime() {
                         </ScrollArea.Viewport>
 
                         <ScrollArea.Scrollbar
-                          className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+                          className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
                           orientation="horizontal"
                         >
                           <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
@@ -480,156 +482,54 @@ export function Anime() {
               </Tabs.Content>
 
               <Tabs.Content value="characters" className="outline-none">
-                <Grow in timeout={400}>
-                  <div className="max-w-6xl mx-auto">
-                    <strong>Characters</strong>
+                <AnimeCharacters
+                  characters={anime.characters}
+                  pagingFunction={() =>
+                    fetchMore({
+                      variables: {
+                        charactersPage:
+                          anime.characters.pageInfo.currentPage + 1,
+                      },
+                      updateQuery(pv, { fetchMoreResult }) {
+                        if (!fetchMoreResult) return pv;
 
-                    <div className="grid md:grid-cols-2 gap-4 pb-2 mt-2">
-                      {anime.characters.edges.map((character) =>
-                        character.voiceActorRoles.length >= 1 ? (
-                          character.voiceActorRoles.map((voiceActorRole) => (
-                            <div key={voiceActorRole.voiceActor.id}>
-                              <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-                                <div className="flex-1 flex">
-                                  <img
-                                    src={character.node.image.medium}
-                                    alt={character.node.name.full}
-                                    style={{
-                                      opacity: 0,
-                                      transitionDuration: "900ms",
-                                    }}
-                                    onLoad={(t) =>
-                                      (t.currentTarget.style.opacity = "1")
-                                    }
-                                    className="h-24 md:h-32 aspect-[6_/_9] object-cover"
-                                  />
+                        fetchMoreResult.Media.characters.edges = [
+                          ...pv.Media.characters.edges,
+                          ...fetchMoreResult.Media.characters.edges,
+                        ];
 
-                                  <div className="flex gap-1 p-2">
-                                    <div className="flex flex-col gap-1 w-full">
-                                      <span className="text-sm font-medium ">
-                                        {character.node.name.full}
-                                      </span>
-
-                                      <span className="text-xs text-main">
-                                        {character.role}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {voiceActorRole && (
-                                  <div className="flex-1 flex">
-                                    <div className="flex-1 flex flex-col justify-end items-end p-2">
-                                      {voiceActorRole.roleNotes && (
-                                        <span className="text-xs text-end text-main">
-                                          {voiceActorRole.roleNotes}
-                                        </span>
-                                      )}
-
-                                      <span className="text-sm font-medium text-end">
-                                        {voiceActorRole.voiceActor.name.full}
-                                      </span>
-                                    </div>
-
-                                    <img
-                                      src={
-                                        voiceActorRole.voiceActor.image.medium
-                                      }
-                                      alt={voiceActorRole.voiceActor.name.full}
-                                      style={{
-                                        opacity: 0,
-                                        transitionDuration: "900ms",
-                                      }}
-                                      onLoad={(t) =>
-                                        (t.currentTarget.style.opacity = "1")
-                                      }
-                                      className="h-24 md:h-32 aspect-[6_/_9] object-cover"
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))
-                        ) : (
-                          <div key={character.node.id}>
-                            <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-                              <div className="flex-1 flex">
-                                <img
-                                  src={character.node.image.medium}
-                                  alt={character.node.name.full}
-                                  style={{
-                                    opacity: 0,
-                                    transitionDuration: "900ms",
-                                  }}
-                                  onLoad={(t) =>
-                                    (t.currentTarget.style.opacity = "1")
-                                  }
-                                  className="h-24 md:h-32 aspect-[6_/_9] object-cover"
-                                />
-
-                                <div className="flex gap-1 p-2">
-                                  <div className="flex flex-col gap-1 w-full">
-                                    <span className="text-sm font-medium ">
-                                      {character.node.name.full}
-                                    </span>
-
-                                    <span className="text-xs">
-                                      {character.role}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </Grow>
+                        return fetchMoreResult;
+                      },
+                    })
+                  }
+                />
               </Tabs.Content>
 
               <Tabs.Content value="staff" className="outline-none">
-                <Grow in timeout={400}>
-                  <div className="max-w-6xl mx-auto">
-                    <strong>Staff</strong>
+                <AnimeStaff
+                  staff={anime.staff}
+                  pagingFunction={() => fetchMore({
+                    variables: {
+                      staffPage:
+                        anime.staff.pageInfo.currentPage + 1,
+                    },
+                    updateQuery(pv, { fetchMoreResult }) {
+                      if (!fetchMoreResult) return pv;
 
-                    <div className="grid md:grid-cols-2 gap-4 pb-2 mt-2">
-                      {anime.staff.edges.map((edge) => (
-                        <div key={edge.id}>
-                          <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-                            <div className="flex-1 flex">
-                              <img
-                                src={edge.node.image.medium}
-                                alt={edge.node.name.full}
-                                style={{
-                                  opacity: 0,
-                                  transitionDuration: "900ms",
-                                }}
-                                onLoad={(t) =>
-                                  (t.currentTarget.style.opacity = "1")
-                                }
-                                className="h-24 md:h-32 aspect-[6_/_9] object-cover"
-                              />
+                      fetchMoreResult.Media.staff.edges = [
+                        ...pv.Media.staff.edges,
+                        ...fetchMoreResult.Media.staff.edges,
+                      ];
 
-                              <div className="flex gap-1 p-2">
-                                <div className="flex flex-col gap-1 w-full">
-                                  <span className="text-sm font-medium ">
-                                    {edge.node.name.full}
-                                  </span>
-
-                                  <span className="text-xs">{edge.role}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </Grow>
+                      return fetchMoreResult;
+                    },
+                  }) }
+                />
               </Tabs.Content>
             </Tabs.Root>
           </div>
+
+          <MyDivider />
 
           <Footer />
         </>
@@ -646,7 +546,7 @@ function AnimeHeader({ children }: AnimeHeaderProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="sm:block fixed z-30 bg-zinc-800/60 hover:bg-zinc-800 backdrop-blur-sm left-0 right-0 top-0 duration-300">
+    <div className="sm:block fixed z-30 bg-zinc-800/60 md:hover:bg-zinc-800 backdrop-blur-sm left-0 right-0 top-0 duration-300">
       <div className="group flex w-full justify-between items-center max-w-6xl mx-auto px-4">
         <div
           className="p-2 cursor-pointer transition hover:bg-main/10"
@@ -954,7 +854,7 @@ function RelationsList({ edges }: RelationsListProps) {
         </ScrollArea.Viewport>
 
         <ScrollArea.Scrollbar
-          className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+          className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
           orientation="horizontal"
         >
           <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
@@ -1050,7 +950,7 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
         </ScrollArea.Viewport>
 
         <ScrollArea.Scrollbar
-          className="flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+          className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
           orientation="horizontal"
         >
           <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />

@@ -3,6 +3,7 @@ import { DocumentNode, useQuery } from "@apollo/client";
 import { AnimeMediaResults, MediaSort } from "../types";
 import { CardAnimeResult } from "./CardAnimeResult";
 import { CardSkeleton } from "./Loading";
+import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
 
 type ResultsListProps = {
   query: DocumentNode;
@@ -25,6 +26,7 @@ export function ResultsList({ query, variables }: ResultsListProps) {
     variables,
     notifyOnNetworkStatusChange: true,
   });
+
   return (
     <div className="px-2 py-4 max-w-6xl mx-auto">
       <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(110px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(118px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
@@ -42,7 +44,7 @@ export function ResultsList({ query, variables }: ResultsListProps) {
         {loading && <CardSkeleton />}
       </div>
 
-      {!loading && data && data.Page.pageInfo.hasNextPage && (
+      {!loading && data.Page.pageInfo.hasNextPage && (
         <IntersectionObserverComponent
           page={data.Page.pageInfo.currentPage}
           doSomething={() =>
@@ -100,30 +102,4 @@ export function SmallResultsList({
       </div>
     </div>
   );
-}
-
-type IntersectionObserverComponentProps = {
-  doSomething: () => void;
-  page: number;
-};
-
-function IntersectionObserverComponent({
-  doSomething,
-  page,
-}: IntersectionObserverComponentProps) {
-  useEffect(() => {
-    const intersectionObserver = new IntersectionObserver((entries) =>
-      entries.some((entry) => {
-        if (entry.isIntersecting) {
-          doSomething();
-        }
-      })
-    );
-
-    intersectionObserver.observe(document.getElementById("sentry") as Element);
-
-    return () => intersectionObserver.disconnect();
-  }, [page]);
-
-  return <div id="sentry" className="h-[1px]" />;
 }

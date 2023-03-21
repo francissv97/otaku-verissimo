@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_ANIME_MEDIA = gql`
-  query AnimeMedia($id: Int) {
+  query AnimeMedia($id: Int, $charactersPage: Int, $staffPage: Int) {
     Media(id: $id, type: ANIME) {
       id
       title {
@@ -41,7 +41,7 @@ export const GET_ANIME_MEDIA = gql`
       }
       favourites
       description(asHtml: false)
-      characters(sort: [ROLE, ID], page: 1, perPage: 20) {
+      characters(sort: [ROLE, ID], page: $charactersPage, perPage: 20) {
         edges {
           role
           node {
@@ -71,7 +71,7 @@ export const GET_ANIME_MEDIA = gql`
           hasNextPage
         }
       }
-      staff(sort: RELEVANCE, page: 1, perPage: 20) {
+      staff(sort: RELEVANCE, page: $staffPage, perPage: 20) {
         edges {
           id
           node {

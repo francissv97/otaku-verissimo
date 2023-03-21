@@ -21,19 +21,22 @@ export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("search") || "";
 
+  // console.log(searchParams.has("search"));
+  // searchParams.forEach((item, key) => console.log());
+  // console.log(searchParams.keys().next().value);
+
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <div>
-        <Header />
+      <Header />
 
-        <div className="flex gap-4 items-center p-4 max-w-6xl justify-between mx-auto flex-wrap">
-          <InputSearch
-            searchTerm={searchTerm}
-            searchParams={searchParams}
-            setSearchParams={setSearchParams}
-          />
+      <div className="flex gap-4 items-center p-4 max-w-6xl justify-between mx-auto flex-wrap">
+        <InputSearch
+          searchTerm={searchTerm}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
 
-          {/* <div className="flex gap-4">
+        {/* <div className="flex gap-4">
             <div className="flex flex-col gap-2">
               <span className="font-medium text-sm text-zinc-500">Genres</span>
               <SelectFieldGenres />
@@ -61,7 +64,6 @@ export function Home() {
 
             <ButtonMoreOptions />
           </div> */}
-        </div>
       </div>
 
       <div className="mb-auto flex-1 shadow-xl pb-6">
