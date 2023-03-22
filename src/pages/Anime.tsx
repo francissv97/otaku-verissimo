@@ -3,7 +3,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Collapse, Grow, Zoom } from "@mui/material";
 import { CaretDown, CaretUp, CopySimple, Heart, Star, X } from "phosphor-react";
-import { GET_ANIME_MEDIA } from "../lib/queries";
+import {
+  GET_ANIME_MEDIA,
+  GET_MORE_CHARACTERS,
+  GET_MORE_STAFF,
+} from "../lib/queries";
 import { monthsShort } from "../utils/variablesQueries";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
@@ -18,10 +22,13 @@ import { AnimeStaff } from "../components/AnimeStaff";
 
 export function Anime() {
   const { id } = useParams() as { id: string };
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { data, loading, error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
-    variables: { id: id, charactersPage: 1, staffPage: 1 },
+  const { data, error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
+    variables: { id: id },
     notifyOnNetworkStatusChange: true,
+    onError: () => setIsLoading(false),
+    onCompleted: () => setIsLoading(false),
   });
 
   const anime: AnimeMedia = data && data.Media;
@@ -29,6 +36,8 @@ export function Anime() {
   if (error) console.error(error);
 
   // if (anime) console.log(anime.staff);
+
+  // console.log(networkStatus);
 
   useEffect(() => {
     const hostname = location.hostname;
@@ -44,7 +53,7 @@ export function Anime() {
           <span>{error.message}</span>
         </div>
       )}
-      {loading && <CircularLoading />}
+      {!anime && <CircularLoading />}
       {anime && (
         <>
           {anime.bannerImage ? (
@@ -69,6 +78,8 @@ export function Anime() {
             <MySpace pxHeight={72} />
           )}
 
+          <AnimeHeader />
+
           <div className="mb-auto pb-4 px-4">
             <div className="flex gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
               <div className="flex flex-wrap md:flex-col">
@@ -80,7 +91,7 @@ export function Anime() {
                   <img
                     src={anime.coverImage.large}
                     alt={anime.title.romaji}
-                    className={`w-28 md:w-52`}
+                    className={`w-28 sm:w-44`}
                     loading="lazy"
                     style={{
                       opacity: 0,
@@ -96,7 +107,7 @@ export function Anime() {
               </div>
 
               <div className="flex flex-1 flex-col gap-2">
-                <h1 className="text-lg text-main text-justify overflow-hidden line-clamp-2">
+                <h1 className="text-lg text-main overflow-hidden line-clamp-2">
                   {anime.title.romaji}
                 </h1>
 
@@ -138,37 +149,31 @@ export function Anime() {
               </div>
             </div>
 
-            <MyDivider />
-
             <Tabs.Root defaultValue="overview">
-              <AnimeHeader
-                children={
-                  <Tabs.List className="flex justify-center gap-4 md:gap-8 max-w-6xl group-hover:bg-zinc-700 duration-200 text-zinc-100 text-md font-medium p-1 mx-auto">
-                    <Tabs.Trigger
-                      className="uppercase hover:text-main/60  data-[state=active]:text-main border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                      value="overview"
-                    >
-                      Overview
-                    </Tabs.Trigger>
-                    <Tabs.Trigger
-                      className="uppercase hover:text-main/60 data-[state=active]:text-main border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                      value="characters"
-                    >
-                      Characters
-                    </Tabs.Trigger>
+              <Tabs.List className="flex justify-center gap-4 md:gap-8 max-w-6xl bg-zinc-700 duration-200 text-zinc-100 text-md font-medium mx-auto my-4 rounded">
+                <Tabs.Trigger
+                  className="uppercase py-2 hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
+                  value="overview"
+                >
+                  Overview
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  className="uppercase py-2 hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
+                  value="characters"
+                >
+                  Characters
+                </Tabs.Trigger>
 
-                    <Tabs.Trigger
-                      className="uppercase hover:text-main/60 data-[state=active]:text-main border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                      value="staff"
-                    >
-                      Staff
-                    </Tabs.Trigger>
-                  </Tabs.List>
-                }
-              />
+                <Tabs.Trigger
+                  className="uppercase py-2 hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
+                  value="staff"
+                >
+                  Staff
+                </Tabs.Trigger>
+              </Tabs.List>
 
               <Tabs.Content value="overview" className="outline-none">
-                <Grow in timeout={400}>
+                <Grow in timeout={600}>
                   <div className="max-w-6xl mx-auto">
                     <ul className="flex gap-2 flex-wrap">
                       {anime.genres.map((genre) => (
@@ -422,11 +427,7 @@ export function Anime() {
                       </div>
                     </div>
 
-                    <MyDivider />
-
-                    <TagsList tags={anime.tags} />
-
-                    <MyDivider />
+                    {anime.tags.length > 0 && <TagsList tags={anime.tags} />}
 
                     <RelationsList edges={anime.relations.edges} />
 
@@ -484,46 +485,68 @@ export function Anime() {
               <Tabs.Content value="characters" className="outline-none">
                 <AnimeCharacters
                   characters={anime.characters}
-                  pagingFunction={() =>
+                  pagingFunction={() => {
+                    setIsLoading(true);
+
                     fetchMore({
+                      query: GET_MORE_CHARACTERS,
                       variables: {
                         charactersPage:
                           anime.characters.pageInfo.currentPage + 1,
+                        id: anime.id,
                       },
                       updateQuery(pv, { fetchMoreResult }) {
                         if (!fetchMoreResult) return pv;
 
-                        fetchMoreResult.Media.characters.edges = [
-                          ...pv.Media.characters.edges,
-                          ...fetchMoreResult.Media.characters.edges,
-                        ];
-
-                        return fetchMoreResult;
+                        return {
+                          Media: {
+                            ...pv.Media,
+                            characters: {
+                              ...fetchMoreResult.Media.characters,
+                              edges: [
+                                ...pv.Media.characters.edges,
+                                ...fetchMoreResult.Media.characters.edges,
+                              ],
+                            },
+                          },
+                        };
                       },
-                    })
-                  }
+                    });
+                  }}
+                  isLoading={isLoading}
                 />
               </Tabs.Content>
 
               <Tabs.Content value="staff" className="outline-none">
                 <AnimeStaff
                   staff={anime.staff}
-                  pagingFunction={() => fetchMore({
-                    variables: {
-                      staffPage:
-                        anime.staff.pageInfo.currentPage + 1,
-                    },
-                    updateQuery(pv, { fetchMoreResult }) {
-                      if (!fetchMoreResult) return pv;
+                  pagingFunction={() => {
+                    setIsLoading(true);
+                    fetchMore({
+                      query: GET_MORE_STAFF,
+                      variables: {
+                        staffPage: anime.staff.pageInfo.currentPage + 1,
+                        id: anime.id,
+                      },
+                      updateQuery(pv, { fetchMoreResult }) {
+                        if (!fetchMoreResult) return pv;
 
-                      fetchMoreResult.Media.staff.edges = [
-                        ...pv.Media.staff.edges,
-                        ...fetchMoreResult.Media.staff.edges,
-                      ];
-
-                      return fetchMoreResult;
-                    },
-                  }) }
+                        return {
+                          Media: {
+                            ...pv.Media,
+                            staff: {
+                              ...fetchMoreResult.Media.staff,
+                              edges: [
+                                ...pv.Media.staff.edges,
+                                ...fetchMoreResult.Media.staff.edges,
+                              ],
+                            },
+                          },
+                        };
+                      },
+                    });
+                  }}
+                  isLoading={isLoading}
                 />
               </Tabs.Content>
             </Tabs.Root>
@@ -538,11 +561,7 @@ export function Anime() {
   );
 }
 
-type AnimeHeaderProps = {
-  children: ReactNode;
-};
-
-function AnimeHeader({ children }: AnimeHeaderProps) {
+function AnimeHeader() {
   const navigate = useNavigate();
 
   return (
@@ -564,8 +583,6 @@ function AnimeHeader({ children }: AnimeHeaderProps) {
           />
         </div>
       </div>
-
-      {children}
     </div>
   );
 }
@@ -721,6 +738,8 @@ function TagsList({ tags }: TagsListProps) {
 
   return (
     <>
+      <MyDivider />
+
       <div className="flex justify-between mb-2">
         <strong>Tags</strong>
         {tags.find((item) => item.isMediaSpoiler === true) && (
@@ -802,6 +821,8 @@ function RelationsList({ edges }: RelationsListProps) {
 
   return (
     <div className="flex flex-col">
+      <MyDivider />
+
       <strong>Relations</strong>
 
       <ScrollArea.Root>
