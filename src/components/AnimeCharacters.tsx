@@ -1,5 +1,6 @@
 import { Grow } from "@mui/material";
 import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
+import { HorizontalCardSkeleton } from "./Loading";
 
 type AnimeCharactersProps = {
   characters: {
@@ -25,28 +26,30 @@ type AnimeCharactersProps = {
     };
   };
   pagingFunction: () => void;
+  isLoading: boolean;
 };
 
-export function AnimeCharacters({ characters, pagingFunction }: AnimeCharactersProps) {
+export function AnimeCharacters({
+  characters,
+  pagingFunction,
+  isLoading,
+}: AnimeCharactersProps) {
   return (
-    <Grow in timeout={400}>
-      <div className="max-w-6xl mx-auto">
-        <strong>Characters</strong>
+    <div className="max-w-6xl mx-auto">
+      <strong>Characters</strong>
 
-        <div className="grid md:grid-cols-2 gap-4 pb-2 mt-2">
-          {characters.edges.map((character) =>
-            character.voiceActorRoles.length >= 1 ? (
-              character.voiceActorRoles.map((voiceActorRole) => (
-                <div
-                  key={voiceActorRole.voiceActor.id}
-                  className="flex bg-zinc-50 shadow-lg rounded overflow-hidden"
-                >
+      <div className="grid md:grid-cols-2 gap-4 pb-2 mt-2">
+        {characters.edges.map((character) =>
+          character.voiceActorRoles.length >= 1 ? (
+            character.voiceActorRoles.map((voiceActorRole) => (
+              <Grow in timeout={600} key={voiceActorRole.voiceActor.id}>
+                <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
                   <img
                     src={character.node.image.medium}
                     alt={character.node.name.full}
                     style={{
                       opacity: 0,
-                      transitionDuration: "900ms",
+                      transitionDuration: "600ms",
                     }}
                     onLoad={(t) => (t.currentTarget.style.opacity = "1")}
                     className="h-32 aspect-[6_/_9] object-cover"
@@ -55,7 +58,7 @@ export function AnimeCharacters({ characters, pagingFunction }: AnimeCharactersP
                   <div className="flex-1 flex flex-col justify-between">
                     <div className="flex gap-1 p-2 w-fit">
                       <div className="flex flex-col gap-1 w-full">
-                        <span className="text-sm font-medium ">
+                        <span className="text-sm font-medium break-all">
                           {character.node.name.full}
                         </span>
 
@@ -86,26 +89,25 @@ export function AnimeCharacters({ characters, pagingFunction }: AnimeCharactersP
                       alt={voiceActorRole.voiceActor.name.full}
                       style={{
                         opacity: 0,
-                        transitionDuration: "900ms",
+                        transitionDuration: "600ms",
                       }}
                       onLoad={(t) => (t.currentTarget.style.opacity = "1")}
                       className="h-32 aspect-[6_/_9] object-cover"
                     />
                   )}
                 </div>
-              ))
-            ) : (
-              <div
-                key={character.node.id}
-                className="flex bg-zinc-50 shadow-lg rounded overflow-hidden"
-              >
+              </Grow>
+            ))
+          ) : (
+            <Grow in key={character.node.id}>
+              <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
                 <div className="flex-1 flex">
                   <img
                     src={character.node.image.medium}
                     alt={character.node.name.full}
                     style={{
                       opacity: 0,
-                      transitionDuration: "900ms",
+                      transitionDuration: "600ms",
                     }}
                     onLoad={(t) => (t.currentTarget.style.opacity = "1")}
                     className="h-32 aspect-[6_/_9] object-cover"
@@ -117,22 +119,26 @@ export function AnimeCharacters({ characters, pagingFunction }: AnimeCharactersP
                         {character.node.name.full}
                       </span>
 
-                      <span className="text-xs">{character.role}</span>
+                      <span className="text-xs text-main">
+                        {character.role}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-            )
-          )}
-        </div>
-
-        {characters.pageInfo.hasNextPage && (
-          <IntersectionObserverComponent
-            page={characters.pageInfo.currentPage}
-            doSomething={() => pagingFunction()}
-          />
+            </Grow>
+          )
         )}
+
+        {isLoading && <HorizontalCardSkeleton />}
       </div>
-    </Grow>
+
+      {!isLoading && characters.pageInfo.hasNextPage && (
+        <IntersectionObserverComponent
+          page={characters.pageInfo.currentPage}
+          doSomething={() => pagingFunction()}
+        />
+      )}
+    </div>
   );
 }

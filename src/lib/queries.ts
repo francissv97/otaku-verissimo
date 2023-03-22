@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_ANIME_MEDIA = gql`
-  query AnimeMedia($id: Int, $charactersPage: Int, $staffPage: Int) {
+  query AnimeMedia($id: Int) {
     Media(id: $id, type: ANIME) {
       id
       title {
@@ -41,7 +41,7 @@ export const GET_ANIME_MEDIA = gql`
       }
       favourites
       description(asHtml: false)
-      characters(sort: [ROLE, ID], page: $charactersPage, perPage: 20) {
+      characters(sort: [ROLE, ID], page: 1, perPage: 20) {
         edges {
           role
           node {
@@ -71,7 +71,7 @@ export const GET_ANIME_MEDIA = gql`
           hasNextPage
         }
       }
-      staff(sort: RELEVANCE, page: $staffPage, perPage: 20) {
+      staff(sort: RELEVANCE, page: 1, perPage: 20) {
         edges {
           id
           node {
@@ -208,6 +208,69 @@ export const GET_SEARCH_QUERY = gql`
           airingAt
           timeUntilAiring
           episode
+        }
+      }
+    }
+  }
+`;
+
+export const GET_MORE_CHARACTERS = gql`
+  query MoreCharacters($id: Int, $charactersPage: Int) {
+    Media(id: $id, type: ANIME) {
+      characters(sort: [ROLE, ID], page: $charactersPage, perPage: 20) {
+        edges {
+          role
+          node {
+            id
+            name {
+              full
+            }
+            image {
+              medium
+            }
+          }
+          voiceActorRoles(language: JAPANESE, sort: RELEVANCE) {
+            voiceActor {
+              id
+              name {
+                full
+              }
+              image {
+                medium
+              }
+            }
+            roleNotes
+          }
+        }
+        pageInfo {
+          currentPage
+          hasNextPage
+        }
+      }
+    }
+  }
+`;
+
+export const GET_MORE_STAFF = gql`
+  query MoreStaff($id: Int, $staffPage: Int) {
+    Media(id: $id, type: ANIME) {
+      staff(sort: RELEVANCE, page: $staffPage, perPage: 20) {
+        edges {
+          id
+          node {
+            id
+            name {
+              full
+            }
+            image {
+              medium
+            }
+          }
+          role
+        }
+        pageInfo {
+          currentPage
+          hasNextPage
         }
       }
     }
