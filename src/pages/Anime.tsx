@@ -35,9 +35,15 @@ export function Anime() {
 
   if (error) console.error(error);
 
-  // if (anime) console.log(anime.staff);
+  if (anime) {
+    const title = `${anime.title.romaji} ${
+      anime.title.english != null && anime.title.english != anime.title.romaji
+        ? ` (${anime.title.english})`
+        : ""
+    } · otakuVERISSIMO`;
 
-  // console.log(networkStatus);
+    document.title = title;
+  }
 
   useEffect(() => {
     const hostname = location.hostname;
@@ -75,7 +81,7 @@ export function Anime() {
               />
             </div>
           ) : (
-            <MySpace pxHeight={72} />
+            <MySpace pxHeight={42} />
           )}
 
           <AnimeHeader />
@@ -117,19 +123,27 @@ export function Anime() {
                   </span>
                 )}
 
-                <div className="flex gap-2">
-                  {anime.format && (
-                    <span className="peer peer-[]:before:content-['·'] peer-[]:before:pr-2 text-md">
-                      {anime.format}
-                    </span>
+                {anime.startDate.day == null &&
+                  anime.startDate.month == null &&
+                  anime.startDate.year == null && (
+                    <span className="peer font-medium">To Be Announced</span>
                   )}
 
-                  {anime.episodes && (
-                    <span className="peer text-md peer-[]:before:content-['·'] peer-[]:before:pr-2">{`${
-                      anime.episodes
-                    } ${anime.episodes > 1 ? "episodes" : "episode"}`}</span>
-                  )}
-                </div>
+                {(anime.format ?? anime.episodes) && (
+                  <div className="flex gap-2">
+                    {anime.format && (
+                      <span className="peer peer-[]:before:content-['·'] peer-[]:before:pr-2 text-md">
+                        {anime.format}
+                      </span>
+                    )}
+
+                    {anime.episodes && (
+                      <span className="peer text-md peer-[]:before:content-['·'] peer-[]:before:pr-2">{`${
+                        anime.episodes
+                      } ${anime.episodes > 1 ? "episodes" : "episode"}`}</span>
+                    )}
+                  </div>
+                )}
 
                 <div className="flex gap-6">
                   <div className="flex gap-1 items-center">
