@@ -204,6 +204,11 @@ export const GET_SEARCH_QUERY = gql`
         season
         seasonYear
         status
+        startDate {
+          day
+          month
+          year
+        }
         nextAiringEpisode {
           airingAt
           timeUntilAiring
