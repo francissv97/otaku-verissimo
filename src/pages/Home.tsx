@@ -16,6 +16,7 @@ import {
   InputSearch,
   SelectFieldGenres,
 } from "../components/SearchFields";
+import { useEffect } from "react";
 
 export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,6 +25,12 @@ export function Home() {
   // console.log(searchParams.has("search"));
   // searchParams.forEach((item, key) => console.log());
   // console.log(searchParams.keys().next().value);
+
+  useEffect(() => {
+    return () => {
+      if (document.title != "otakuVERISSIMO") document.title = "otakuVERISSIMO";
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
