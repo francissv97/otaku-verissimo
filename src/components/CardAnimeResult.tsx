@@ -40,7 +40,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
               <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
             </div>
 
-            <span className="block text-[14px] leading-none text-zinc-500 font-medium line-clamp-2 group-hover:text-main duration-100">
+            <span className="block min-h-[28px] text-[14px]  leading-none text-zinc-500 font-medium line-clamp-2 group-hover:text-main duration-100">
               {anime.title.romaji}
             </span>
           </div>
@@ -64,24 +64,37 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
 }
 
 function CardAnimeResultPopover({ anime }: CardAnimeResultPopoverProps) {
-  const { episodes, studios, averageScore, season, seasonYear, format } = anime;
+  const {
+    episodes,
+    studios,
+    averageScore,
+    season,
+    seasonYear,
+    format,
+    startDate,
+  } = anime;
 
-  const studio = studios.nodes.length > 0 ? studios.nodes[0].name : null;
   const genres =
     anime.genres.length > 3 ? anime.genres.slice(0, 3) : anime.genres;
+
+  const { __typename, ...restStartDate } = startDate;
+
+  const isTBA = !Object.values(restStartDate).some((item) => item != null);
 
   return (
     <Grow in timeout={200}>
       <div className="flex flex-col gap-1 w-72 p-4 bg-gradient-to-t from-[#bbb] via-zinc-50 to-zinc-100 rounded shadow-xl -mt-1">
         <div className="flex justify-between items-center">
-          {!(!season || !seasonYear) && (
-            <div className="flex gap-1 justify-center items-center">
-              <span className="font-medium text-zinc-500 text-sm">
-                {season}
-              </span>
+          {!isTBA && (
+            <div className="flex justify-center items-center">
+              {season && (
+                <span className="peer font-medium text-zinc-500 text-sm">
+                  {season}
+                </span>
+              )}
 
-              <span className="font-medium text-second text-sm">
-                {seasonYear}
+              <span className="font-medium text-second text-sm peer-[]:ml-2">
+                {seasonYear || startDate.year}
               </span>
             </div>
           )}
@@ -103,12 +116,25 @@ function CardAnimeResultPopover({ anime }: CardAnimeResultPopoverProps) {
           )}
         </div>
 
-        {studio && (
-          <span className="font-medium text-main text-sm">{studio}</span>
+        {isTBA && (
+          <span className="font-medium text-rose-600 text-sm">TBA</span>
+        )}
+
+        {studios.nodes.length > 0 && (
+          <div>
+            {studios.nodes.map((studio, index, array) => (
+              <span key={index} className="font-medium text-main text-sm">
+                {studio.name}
+                {index != array.length - 1 && ", "}
+              </span>
+            ))}
+          </div>
         )}
 
         <div>
-          <span className="text-zinc-600 text-sm">{format}</span>
+          <span className="text-zinc-600 text-sm">
+            {format.replaceAll("_", " ")}
+          </span>
 
           {episodes && (
             <>
