@@ -132,9 +132,11 @@ function CardAnimeResultPopover({ anime }: CardAnimeResultPopoverProps) {
         )}
 
         <div>
-          <span className="text-zinc-600 text-sm">
-            {format.replaceAll("_", " ")}
-          </span>
+          {format && (
+            <span className="text-zinc-600 text-sm">
+              {format.replaceAll("_", " ")}
+            </span>
+          )}
 
           {episodes && (
             <>
