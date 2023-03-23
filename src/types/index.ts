@@ -89,6 +89,12 @@ export type AnimeMediaResults = {
   studios: { nodes: { id: number; name: string }[] };
   season: MediaSeason;
   seasonYear: number;
+  startDate: {
+    __typename: "FuzzyDate";
+    day: number;
+    month: number;
+    year: number;
+  };
 };
 
 export type AnimeMedia = {
@@ -159,6 +165,7 @@ export type AnimeMedia = {
   };
   source: string;
   startDate: {
+    __typename: "FuzzyDate";
     day: number;
     month: number;
     year: number;
