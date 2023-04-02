@@ -228,6 +228,50 @@ export type AnimeMedia = {
   }[];
 };
 
+export type StaffModel = {
+  id: number;
+  name: {
+    full: string;
+    native: string;
+  };
+  image: {
+    large: string;
+  };
+  description: string;
+  homeTown: string;
+  favourites: number;
+  bloodType: string;
+  characters: {
+    edges: {
+      id: number;
+      role: string;
+      media: {
+        id: number;
+        format: string;
+        title: {
+          romaji: string;
+        };
+        coverImage: {
+          large: string;
+        };
+      }[];
+      node: {
+        id: number;
+        name: {
+          full: string;
+        };
+        image: {
+          large: string;
+        };
+      };
+    }[];
+    pageInfo: {
+      currentPage: number;
+      hasNextPage: boolean;
+    };
+  };
+};
+
 export type GetAnimeInfoQueryResponse = {
   Page: {
     media: AnimeMedia[];

@@ -170,9 +170,7 @@ export const GET_SEARCH_QUERY = gql`
   ) {
     Page(page: $page, perPage: $perPage) {
       pageInfo {
-        total
         currentPage
-        lastPage
         hasNextPage
         perPage
       }
@@ -272,6 +270,54 @@ export const GET_MORE_STAFF = gql`
             }
           }
           role
+        }
+        pageInfo {
+          currentPage
+          hasNextPage
+        }
+      }
+    }
+  }
+`;
+
+export const GET_STAFF = gql`
+  query GetStaff($id: Int) {
+    Staff(id: $id) {
+      id
+      name {
+        full
+        native
+      }
+      image {
+        large
+      }
+      description(asHtml: false)
+      favourites
+      homeTown
+      bloodType
+      characters(sort: FAVOURITES_DESC) {
+        edges {
+          id
+          role
+          node {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+          }
+          media {
+            id
+            title {
+              romaji
+            }
+            coverImage {
+              large
+            }
+            format
+          }
         }
         pageInfo {
           currentPage
