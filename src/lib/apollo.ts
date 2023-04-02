@@ -4,6 +4,7 @@ export const client = new ApolloClient({
   uri: "https://graphql.anilist.co",
   cache: new InMemoryCache({
     typePolicies: {
+      
       Page: {
         merge(existing, incoming, { mergeObjects }) {
           return mergeObjects(existing, incoming);
@@ -18,6 +19,27 @@ export const client = new ApolloClient({
           },
         },
         keyFields: ["id"],
+      },
+      Staff: {
+        fields: {
+          image: {
+            merge: true,
+          },
+          name: {
+            merge: true,
+          },
+          characters: {
+            merge: true,
+          },
+        },
+        keyFields: ["id"],
+      },
+      Character: {
+        fields: {
+          image: {
+            merge: true,
+          },
+        },
       },
     },
   }),
