@@ -1,4 +1,5 @@
 import { Grow } from "@mui/material";
+import { Link } from "react-router-dom";
 import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
 import { HorizontalCardSkeleton } from "./Loading";
 
@@ -44,16 +45,18 @@ export function AnimeCharacters({
             character.voiceActorRoles.map((voiceActorRole) => (
               <Grow in timeout={600} key={voiceActorRole.voiceActor.id}>
                 <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-                  <img
-                    src={character.node.image.medium}
-                    alt={character.node.name.full}
-                    style={{
-                      opacity: 0,
-                      transitionDuration: "600ms",
-                    }}
-                    onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                    className="h-32 aspect-[6_/_9] object-cover"
-                  />
+                  <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                    <img
+                      src={character.node.image.medium}
+                      alt={character.node.name.full}
+                      style={{
+                        opacity: 0,
+                        transitionDuration: "600ms",
+                      }}
+                      onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                      className="h-32 aspect-[6_/_9] object-cover"
+                    />
+                  </div>
 
                   <div className="flex-1 flex flex-col justify-between">
                     <div className="flex gap-1 p-2 w-fit">
@@ -76,24 +79,30 @@ export function AnimeCharacters({
                           </span>
                         )}
 
-                        <span className="text-sm font-medium text-end">
-                          {voiceActorRole.voiceActor.name.full}
-                        </span>
+                        <Link to={`/staff/${voiceActorRole.voiceActor.id}`}>
+                          <span className="text-sm font-medium text-end">
+                            {voiceActorRole.voiceActor.name.full}
+                          </span>
+                        </Link>
                       </div>
                     )}
                   </div>
 
                   {voiceActorRole && (
-                    <img
-                      src={voiceActorRole.voiceActor.image.medium}
-                      alt={voiceActorRole.voiceActor.name.full}
-                      style={{
-                        opacity: 0,
-                        transitionDuration: "600ms",
-                      }}
-                      onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                      className="h-32 aspect-[6_/_9] object-cover"
-                    />
+                    <Link to={`/staff/${voiceActorRole.voiceActor.id}`}>
+                      <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                        <img
+                          src={voiceActorRole.voiceActor.image.medium}
+                          alt={voiceActorRole.voiceActor.name.full}
+                          style={{
+                            opacity: 0,
+                            transitionDuration: "600ms",
+                          }}
+                          onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                          className="h-32 aspect-[6_/_9] object-cover"
+                        />
+                      </div>
+                    </Link>
                   )}
                 </div>
               </Grow>
