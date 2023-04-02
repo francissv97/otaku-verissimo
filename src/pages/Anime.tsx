@@ -1,24 +1,23 @@
-import { ReactNode, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Collapse, Grow, Zoom } from "@mui/material";
-import { CaretDown, CaretUp, CopySimple, Heart, Star, X } from "phosphor-react";
+import { Collapse, Grow } from "@mui/material";
+import { CaretDown, CaretUp, CopySimple, Heart, Star } from "phosphor-react";
 import {
   GET_ANIME_MEDIA,
   GET_MORE_CHARACTERS,
   GET_MORE_STAFF,
 } from "../lib/queries";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
+import * as Tabs from "@radix-ui/react-tabs";
 import { monthsShort } from "../utils/variablesQueries";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
-import { MySpace } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
-import logo from "../assets/logo.svg";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
-import * as Tabs from "@radix-ui/react-tabs";
 import { AnimeCharacters } from "../components/AnimeCharacters";
 import { AnimeStaff } from "../components/AnimeStaff";
+import { SimpleHeader } from "../components/Header";
 
 export function Anime() {
   const { id } = useParams() as { id: string };
@@ -63,15 +62,15 @@ export function Anime() {
       {anime && (
         <>
           {anime.bannerImage ? (
-            <div className="bg-main/80">
+            <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
               <img
                 src={anime.bannerImage}
-                className="h-36 md:h-72 w-full object-cover object-center"
+                className="h-52 md:h-72 w-full object-cover object-center"
                 alt="anime banner image"
                 loading="lazy"
                 style={{
                   opacity: 0,
-                  transform: "scale(0.96)",
+                  transform: "scale(0.86)",
                   transitionDuration: "900ms",
                 }}
                 onLoad={(t) => {
@@ -81,112 +80,115 @@ export function Anime() {
               />
             </div>
           ) : (
-            <MySpace pxHeight={42} />
+            <div className="h-48 w-full bg-gradient-to-t from-zinc-800 via-zinc-700 to-zinc-600"></div>
           )}
 
-          <AnimeHeader />
+          <SimpleHeader />
 
-          <div className="mb-auto pb-4 px-4">
-            <div className="flex gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
-              <div className="flex flex-wrap md:flex-col">
-                <div
-                  className={`bg-main/80 rounded w-fit z-10 place-self-start shadow-zinc-400 shadow-lg overflow-hidden ${
-                    anime.bannerImage && "md:-mt-32"
-                  }`}
-                >
-                  <img
-                    src={anime.coverImage.large}
-                    alt={anime.title.romaji}
-                    className={`w-28 sm:w-44`}
-                    loading="lazy"
-                    style={{
-                      opacity: 0,
-                      transform: "scale(0.84)",
-                      transitionDuration: "200ms",
-                    }}
-                    onLoad={(t) => {
-                      t.currentTarget.style.opacity = "1";
-                      t.currentTarget.style.transform = "initial";
-                    }}
-                  />
+          <Tabs.Root defaultValue="overview">
+            <div className="mb-auto pb-4 px-4">
+              <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
+                <div className="flex flex-wrap md:flex-col gap-2">
+                  <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded w-fit z-10 place-self-start shadow-black/40 shadow-md overflow-hidden -mt-32 md:-mt-36">
+                    <img
+                      src={anime.coverImage.large}
+                      alt={anime.title.romaji}
+                      className={`w-28 md:w-44`}
+                      loading="lazy"
+                      style={{
+                        opacity: 0,
+                        transform: "scale(0.84)",
+                        transitionDuration: "200ms",
+                      }}
+                      onLoad={(t) => {
+                        t.currentTarget.style.opacity = "1";
+                        t.currentTarget.style.transform = "initial";
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex gap-6 place-self-end md:place-self-center">
+                    <div className="flex gap-1 items-center">
+                      <Star
+                        size={22}
+                        weight="fill"
+                        className="text-yellow-500"
+                      />
+                      <span className="text-zinc-600 text-sm">
+                        {anime.averageScore > 0 ? anime.averageScore : 0}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-1 items-center">
+                      <Heart size={22} weight="fill" className="text-red-600" />
+                      <span className="text-zinc-600 text-sm">
+                        {anime.favourites > 0 ? anime.favourites : 0}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-1 flex-col gap-2">
-                <h1 className="text-lg text-main overflow-hidden line-clamp-2">
-                  {anime.title.romaji}
-                </h1>
+                <div className="flex flex-1 flex-col gap-2">
+                  <h1 className="text-lg text-main overflow-hidden line-clamp-2">
+                    {anime.title.romaji}
+                  </h1>
 
-                {anime.seasonYear && (
-                  <span className="peer text-second font-medium">
-                    {anime.seasonYear}
-                  </span>
-                )}
+                  {anime.startDate.day == null &&
+                    anime.startDate.month == null &&
+                    anime.startDate.year == null && (
+                      <span className="peer">To Be Announced</span>
+                    )}
 
-                {anime.startDate.day == null &&
-                  anime.startDate.month == null &&
-                  anime.startDate.year == null && (
-                    <span className="peer font-medium">To Be Announced</span>
+                  {(anime.format ?? anime.episodes) && (
+                    <div className="flex gap-2">
+                      {anime.seasonYear && (
+                        <span className="peer text-second font-medium">
+                          {anime.seasonYear}
+                        </span>
+                      )}
+
+                      {anime.format && (
+                        <span className="peer peer-[]:before:content-['·'] peer-[]:before:pr-2 text-md">
+                          {anime.format}
+                        </span>
+                      )}
+
+                      {anime.episodes && (
+                        <span className="peer text-md peer-[]:before:content-['·'] peer-[]:before:pr-2">{`${
+                          anime.episodes
+                        } ${
+                          anime.episodes > 1 ? "episodes" : "episode"
+                        }`}</span>
+                      )}
+                    </div>
                   )}
 
-                {(anime.format ?? anime.episodes) && (
-                  <div className="flex gap-2">
-                    {anime.format && (
-                      <span className="peer peer-[]:before:content-['·'] peer-[]:before:pr-2 text-md">
-                        {anime.format}
-                      </span>
-                    )}
+                  <Tabs.List className="flex justify-center mt-auto w-full px-2 gap-3 md:gap-8 max-w-6xl bg-zinc-700 duration-200 text-zinc-100 text-md font-medium mx-auto rounded">
+                    <Tabs.Trigger
+                      className="uppercase py-2 text-[14px] md:text-[16px] hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
+                      value="overview"
+                    >
+                      Overview
+                    </Tabs.Trigger>
 
-                    {anime.episodes && (
-                      <span className="peer text-md peer-[]:before:content-['·'] peer-[]:before:pr-2">{`${
-                        anime.episodes
-                      } ${anime.episodes > 1 ? "episodes" : "episode"}`}</span>
-                    )}
-                  </div>
-                )}
+                    <Tabs.Trigger
+                      className="uppercase py-2 text-[14px] md:text-[16px] hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
+                      value="characters"
+                    >
+                      Characters
+                    </Tabs.Trigger>
 
-                <div className="flex gap-6">
-                  <div className="flex gap-1 items-center">
-                    <Star size={22} weight="fill" className="text-yellow-500" />
-                    <span className="text-zinc-600 text-sm">
-                      {anime.averageScore > 0 ? anime.averageScore : 0}
-                    </span>
-                  </div>
-
-                  <div className="flex gap-1 items-center">
-                    <Heart size={22} weight="fill" className="text-red-600" />
-                    <span className="text-zinc-600 text-sm">
-                      {anime.favourites > 0 ? anime.favourites : 0}
-                    </span>
-                  </div>
+                    <Tabs.Trigger
+                      className="uppercase py-2 text-[14px] md:text-[16px] hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
+                      value="staff"
+                    >
+                      Staff
+                    </Tabs.Trigger>
+                  </Tabs.List>
                 </div>
               </div>
-            </div>
 
-            <Tabs.Root defaultValue="overview">
-              <Tabs.List className="flex justify-center gap-4 md:gap-8 max-w-6xl bg-zinc-700 duration-200 text-zinc-100 text-md font-medium mx-auto my-4 rounded">
-                <Tabs.Trigger
-                  className="uppercase py-2 hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                  value="overview"
-                >
-                  Overview
-                </Tabs.Trigger>
-                <Tabs.Trigger
-                  className="uppercase py-2 hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                  value="characters"
-                >
-                  Characters
-                </Tabs.Trigger>
-
-                <Tabs.Trigger
-                  className="uppercase py-2 hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                  value="staff"
-                >
-                  Staff
-                </Tabs.Trigger>
-              </Tabs.List>
-
-              <Tabs.Content value="overview" className="outline-none">
+              <Tabs.Content value="overview" className="outline-none mt-4">
                 <Grow in timeout={600}>
                   <div className="max-w-6xl mx-auto">
                     <ul className="flex gap-2 flex-wrap">
@@ -496,7 +498,7 @@ export function Anime() {
                 </Grow>
               </Tabs.Content>
 
-              <Tabs.Content value="characters" className="outline-none">
+              <Tabs.Content value="characters" className="outline-none mt-4">
                 <AnimeCharacters
                   characters={anime.characters}
                   pagingFunction={() => {
@@ -531,7 +533,7 @@ export function Anime() {
                 />
               </Tabs.Content>
 
-              <Tabs.Content value="staff" className="outline-none">
+              <Tabs.Content value="staff" className="outline-none mt-4">
                 <AnimeStaff
                   staff={anime.staff}
                   pagingFunction={() => {
@@ -563,40 +565,14 @@ export function Anime() {
                   isLoading={isLoading}
                 />
               </Tabs.Content>
-            </Tabs.Root>
-          </div>
+            </div>
+          </Tabs.Root>
 
           <MyDivider />
 
           <Footer />
         </>
       )}
-    </div>
-  );
-}
-
-function AnimeHeader() {
-  const navigate = useNavigate();
-
-  return (
-    <div className="sm:block fixed z-30 bg-zinc-800/60 md:hover:bg-zinc-800 backdrop-blur-sm left-0 right-0 top-0 duration-300">
-      <div className="group flex w-full justify-between items-center max-w-6xl mx-auto px-4">
-        <div
-          className="p-2 cursor-pointer transition hover:bg-main/10"
-          onClick={() => navigate(-1)}
-        >
-          <X size={22} className="text-main" />
-        </div>
-
-        <div className="flex flex-1 justify-center">
-          <img
-            src={logo}
-            alt="otakuVERISSIMOlogo"
-            className="w-48 md:w-60 my-auto px-2 cursor-pointer"
-            onClick={() => navigate("/")}
-          />
-        </div>
-      </div>
     </div>
   );
 }
@@ -848,11 +824,11 @@ function RelationsList({ edges }: RelationsListProps) {
                 key={edge.node.id}
                 className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
               >
-                <div className="relative w-32 h-48 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+                <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
                   <img
                     src={edge.node.coverImage.large}
                     alt={edge.node.title.romaji}
-                    className="w-full h-full object-cover object-center group-hover:border-main"
+                    className="w-full h-full object-cover object-center"
                     loading="lazy"
                     style={{
                       opacity: 0,
@@ -931,7 +907,7 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
                 key={edge.node.mediaRecommendation.id}
                 className="group cursor-pointer flex gap-1 flex-col w-32 pt-1 pb-3"
               >
-                <div className="relative w-32 h-48 mb-2 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+                <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
                   <img
                     src={edge.node.mediaRecommendation.coverImage.large}
                     alt={edge.node.mediaRecommendation.title.romaji}

@@ -20,7 +20,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
       <HoverCard.Trigger className="relative" asChild>
         <Link to={`/anime/${anime.id}`}>
           <div className="group cursor-pointer flex flex-col h-full">
-            <div className="relative mb-3 bg-main/80 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+            <div className="relative mb-3 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
               <img
                 src={anime.coverImage.large}
                 alt={anime.title.romaji}
