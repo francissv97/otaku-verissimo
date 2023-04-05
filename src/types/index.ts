@@ -120,10 +120,6 @@ export type AnimeMedia = {
   duration: number;
   studios: StudioConnection;
   synonyms: string[];
-  // extAiringEpisode: {
-  //   edges: { id: number; name: string };
-  //   nodes: { id: number; name: string };
-  // };
   popularity: number;
   favourites: number;
   characters: {
@@ -269,6 +265,34 @@ export type StaffModel = {
       currentPage: number;
       hasNextPage: boolean;
     };
+  };
+};
+
+export type CharacterModel = {
+  id: number;
+  name: {
+    full: string;
+    native: string;
+  };
+  image: {
+    large: string;
+  };
+  description: string;
+  favourites: number;
+  bloodType: string;
+  media: {
+    edges: {
+      node: {
+        id: number;
+        title: {
+          romaji: string;
+        };
+        coverImage: {
+          large: string;
+        };
+        type: "ANIME" | "MANGA";
+      };
+    }[];
   };
 };
 
