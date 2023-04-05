@@ -281,7 +281,7 @@ export const GET_MORE_STAFF = gql`
 `;
 
 export const GET_STAFF = gql`
-  query GetStaff($id: Int) {
+  query staff($id: Int) {
     Staff(id: $id) {
       id
       name {
@@ -316,12 +316,44 @@ export const GET_STAFF = gql`
             coverImage {
               large
             }
-            format
           }
         }
         pageInfo {
           currentPage
           hasNextPage
+        }
+      }
+    }
+  }
+`;
+
+export const GET_CHARACTER = gql`
+  query character($id: Int) {
+    Character(id: $id) {
+      id
+      name {
+        full
+        native
+      }
+      image {
+        large
+      }
+      description(asHtml: false)
+      favourites
+      bloodType
+      media(sort: POPULARITY_DESC) {
+        edges {
+          id
+          node {
+            id
+            title {
+              romaji
+            }
+            coverImage {
+              large
+            }
+            type
+          }
         }
       }
     }
