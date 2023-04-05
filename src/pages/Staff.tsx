@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_STAFF } from "../lib/queries";
 import { CircularLoading } from "../components/Loading";
@@ -27,6 +28,10 @@ export function Staff() {
 
     document.title = title;
   }
+
+  useEffect(() => {
+    scrollTo({ top: 0 });
+  }, []);
 
   if (error)
     return (
@@ -119,25 +124,29 @@ export function Staff() {
                     >
                       <div className="flex items-center gap-2">
                         <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 rounded-full">
-                          <img
-                            src={edge.node.image.large}
-                            alt={edge.node.name.full}
-                            className="object-cover w-24 h-24 md:w-32 md:h-32 shadow-black/20 shadow-lg rounded-full"
-                            loading="lazy"
-                            style={{
-                              opacity: 0,
-                              transitionDuration: "700ms",
-                            }}
-                            onLoad={(t) => {
-                              t.currentTarget.style.opacity = "1";
-                            }}
-                            
-                          />
+                          <Link to={`/character/${edge.node.id}`}>
+                            <img
+                              src={edge.node.image.large}
+                              alt={edge.node.name.full}
+                              className="object-cover w-24 h-24 md:w-32 md:h-32 shadow-black/20 shadow-lg rounded-full"
+                              loading="lazy"
+                              style={{
+                                opacity: 0,
+                                transitionDuration: "700ms",
+                              }}
+                              onLoad={(t) => {
+                                t.currentTarget.style.opacity = "1";
+                              }}
+                            />
+                          </Link>
                         </div>
+
                         <div className="flex flex-col">
-                          <span className="font-medium text-lg">
-                            {edge.node.name.full}
-                          </span>
+                          <Link to={`/character/${edge.node.id}`}>
+                            <span className="font-medium text-lg">
+                              {edge.node.name.full}
+                            </span>
+                          </Link>
                           <span className="text-sm text-main">{edge.role}</span>
                         </div>
                       </div>
@@ -146,7 +155,7 @@ export function Staff() {
 
                       <div className="grid grid-cols-[repeat(auto-fill,minmax(98px,1fr))] lg:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
                         {edge.media.map((media) => (
-                          <a key={media.id} href={`/anime/${media.id}`}>
+                          <Link key={media.id} to={`/anime/${media.id}`}>
                             <div className="rounded">
                               <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
                                 <img
@@ -176,12 +185,12 @@ export function Staff() {
                               </div>
 
                               <div className="bottom-0 left-0 right-0 flex items-center">
-                                <span className="text-sm font-medium line-clamp-2 min-h-[20px]" >
+                                <span className="text-sm font-medium line-clamp-2 min-h-[20px]">
                                   {media.title.romaji}
                                 </span>
                               </div>
                             </div>
-                          </a>
+                          </Link>
                         ))}
                       </div>
 

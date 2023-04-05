@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Grow } from "@mui/material";
 import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
 import { HorizontalCardSkeleton } from "./Loading";
@@ -34,9 +35,9 @@ export function AnimeStaff({
       <div className="grid md:grid-cols-2 gap-4 pb-2 mt-2">
         {staff.edges.map((edge) => (
           <Grow in timeout={600} key={edge.id}>
-            <a href={`/staff/${edge.node.id}`}>
-              <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-                <div className="flex-1 flex">
+            <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
+              <div className="flex-1 flex">
+                <Link to={`/staff/${edge.node.id}`}>
                   <div className="h-32 bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                     <img
                       src={edge.node.image.medium}
@@ -49,19 +50,21 @@ export function AnimeStaff({
                       className="h-full aspect-[6_/_9] object-cover"
                     />
                   </div>
+                </Link>
 
-                  <div className="flex gap-1 p-2">
-                    <div className="flex flex-col gap-1 w-full">
-                      <span className="text-sm font-medium ">
+                <div className="flex gap-1 p-2">
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={`/staff/${edge.node.id}`}>
+                      <span className="text-sm font-medium">
                         {edge.node.name.full}
                       </span>
+                    </Link>
 
-                      <span className="text-xs">{edge.role}</span>
-                    </div>
+                    <span className="text-xs">{edge.role}</span>
                   </div>
                 </div>
               </div>
-            </a>
+            </div>
           </Grow>
         ))}
 

@@ -47,7 +47,7 @@ export function Anime() {
   useEffect(() => {
     const hostname = location.hostname;
 
-    if (hostname != "localhost") scrollTo({ top: 0 });
+    scrollTo({ top: 0 });
   }, []);
 
   return (
@@ -219,9 +219,10 @@ export function Anime() {
                             {anime.characters.edges
                               .filter((character) => character.role == "MAIN")
                               .map((character) => (
-                                <div
+                                <Link
                                   key={character.node.id}
                                   className="flex flex-col gap-1"
+                                  to={`/character/${character.node.id}`}
                                 >
                                   <div className="bg-zinc-300 rounded-full overflow-hidden">
                                     <img
@@ -241,7 +242,7 @@ export function Anime() {
                                   <span className="text-sm text-main font-medium max-w-[80px] text-center mx-auto">
                                     {character.node.name.full}
                                   </span>
-                                </div>
+                                </Link>
                               ))}
                           </div>
                         </ScrollArea.Viewport>
@@ -818,49 +819,92 @@ function RelationsList({ edges }: RelationsListProps) {
       <ScrollArea.Root>
         <ScrollArea.Viewport>
           <div className="flex gap-4 overflow-x-auto mt-2 pb-2">
-            {sortEdges.map((edge) => (
-              <Link
-                to={edge.node.type == "ANIME" ? `/anime/${edge.node.id}` : ""}
-                key={edge.node.id}
-                className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
-              >
-                <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
-                  <img
-                    src={edge.node.coverImage.large}
-                    alt={edge.node.title.romaji}
-                    className="w-full h-full object-cover object-center"
-                    loading="lazy"
-                    style={{
-                      opacity: 0,
-                      transform: "scale(0.86)",
-                      transitionDuration: "700ms",
-                    }}
-                    onLoad={(t) => (
-                      (t.currentTarget.style.opacity = "1"),
-                      (t.currentTarget.style.transform = "initial")
-                    )}
-                  />
+            {sortEdges.map((edge) =>
+              edge.node.type == "ANIME" ? (
+                <Link
+                  to={`/anime/${edge.node.id}`}
+                  key={edge.node.id}
+                  className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
+                >
+                  <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+                    <img
+                      src={edge.node.coverImage.large}
+                      alt={edge.node.title.romaji}
+                      className="w-full h-full object-cover object-center"
+                      loading="lazy"
+                      style={{
+                        opacity: 0,
+                        transform: "scale(0.86)",
+                        transitionDuration: "700ms",
+                      }}
+                      onLoad={(t) => (
+                        (t.currentTarget.style.opacity = "1"),
+                        (t.currentTarget.style.transform = "initial")
+                      )}
+                    />
 
-                  <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
-                    <span className="text-zinc-50 text-xs font-medium">
-                      {edge.node.format
-                        ? edge.node.format.replaceAll("_", " ")
-                        : ""}
-                    </span>
+                    <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                      <span className="text-zinc-50 text-xs font-medium">
+                        {edge.node.format
+                          ? edge.node.format.replaceAll("_", " ")
+                          : ""}
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                      <span className="text-zinc-50 text-xs font-medium">
+                        {edge.relationType.replaceAll("_", " ")}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
-                    <span className="text-zinc-50 text-xs font-medium">
-                      {edge.relationType.replaceAll("_", " ")}
-                    </span>
+                  <span className="block text-[14px] text-center leading-none text-main line-clamp-2">
+                    {edge.node.title.romaji}
+                  </span>
+                </Link>
+              ) : (
+                <div
+                  key={edge.node.id}
+                  className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
+                >
+                  <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+                    <img
+                      src={edge.node.coverImage.large}
+                      alt={edge.node.title.romaji}
+                      className="w-full h-full object-cover object-center"
+                      loading="lazy"
+                      style={{
+                        opacity: 0,
+                        transform: "scale(0.86)",
+                        transitionDuration: "700ms",
+                      }}
+                      onLoad={(t) => (
+                        (t.currentTarget.style.opacity = "1"),
+                        (t.currentTarget.style.transform = "initial")
+                      )}
+                    />
+
+                    <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                      <span className="text-zinc-50 text-xs font-medium">
+                        {edge.node.format
+                          ? edge.node.format.replaceAll("_", " ")
+                          : ""}
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                      <span className="text-zinc-50 text-xs font-medium">
+                        {edge.relationType.replaceAll("_", " ")}
+                      </span>
+                    </div>
                   </div>
+
+                  <span className="block text-[14px] text-center leading-none text-main line-clamp-2">
+                    {edge.node.title.romaji}
+                  </span>
                 </div>
-
-                <span className="block text-[14px] text-center leading-none text-main line-clamp-2">
-                  {edge.node.title.romaji}
-                </span>
-              </Link>
-            ))}
+              )
+            )}
           </div>
         </ScrollArea.Viewport>
 
