@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ViewAllParams } from "../types";
 import logo from "../assets/logo.svg";
 import { X } from "phosphor-react";
@@ -23,7 +23,7 @@ type HeaderResultProps = {
 };
 
 export function HeaderResults({ title, paramViewAll }: HeaderResultProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <div className="flex justify-between items-center max-w-6xl mx-auto my-2">
@@ -54,14 +54,13 @@ export function SimpleHeader() {
           <X size={22} className="text-main" />
         </div>
 
-        <div className="flex flex-1 justify-center">
+        <Link to="/" className="flex flex-1 justify-center">
           <img
             src={logo}
             alt="otakuVERISSIMOlogo"
             className="w-48 md:w-60 my-auto px-2 cursor-pointer"
-            onClick={() => navigate("/")}
           />
-        </div>
+        </Link>
       </div>
     </div>
   );
