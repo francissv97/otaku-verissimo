@@ -10,7 +10,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { HeaderResults } from "../components/Header";
 import { ResultsList, SmallResultsList } from "../components/ResultsList";
-import { MyShadow } from "../components/MyComponents";
+import { MyDivider } from "../components/MyComponents";
 import {
   ButtonMoreOptions,
   InputSearch,
@@ -73,7 +73,7 @@ export function Home() {
           </div> */}
       </div>
 
-      <div className="mb-auto flex-1 shadow-xl pb-6">
+      <div className="mb-auto flex-1">
         {searchTerm.length == 0 ? (
           <>
             <SmallResultsList
@@ -83,7 +83,7 @@ export function Home() {
               <HeaderResults title="trending now" paramViewAll="trending" />
             </SmallResultsList>
 
-            <MyShadow />
+            <MyDivider />
 
             <SmallResultsList
               query={GET_SEARCH_QUERY}
@@ -100,7 +100,7 @@ export function Home() {
               />
             </SmallResultsList>
 
-            <MyShadow />
+            <MyDivider />
 
             <SmallResultsList
               query={GET_SEARCH_QUERY}
@@ -117,7 +117,7 @@ export function Home() {
               />
             </SmallResultsList>
 
-            <MyShadow />
+            <MyDivider />
 
             <SmallResultsList
               query={GET_SEARCH_QUERY}
@@ -142,6 +142,8 @@ export function Home() {
           />
         )}
       </div>
+
+      <MyDivider />
 
       <Footer />
     </div>
