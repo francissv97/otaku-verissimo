@@ -266,6 +266,24 @@ export type StaffModel = {
       hasNextPage: boolean;
     };
   };
+  staffMedia: {
+    edges: {
+      node: {
+        id: number;
+        title: {
+          romaji: string;
+        };
+        coverImage: {
+          large: string;
+        };
+      };
+      staffRole: string;
+    }[];
+    pageInfo: {
+      currentPage: number;
+      hasNextPage: boolean;
+    };
+  };
 };
 
 export type CharacterModel = {
