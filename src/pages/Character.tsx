@@ -71,12 +71,14 @@ export function Character() {
             />
           </div>
 
-          <div className="flex gap-1 items-center place-self-center min-h-[22px]">
-            <Heart size={22} weight="fill" className="text-red-600" />
-            <span className="text-zinc-600 text-sm font-medium">
-              {character.favourites > 0 ? character.favourites : 0}
-            </span>
-          </div>
+          {character.favourites > 0 && (
+            <div className="flex gap-1 items-center place-self-center min-h-[22px]">
+              <Heart size={22} weight="fill" className="text-red-600" />
+              <span className="text-zinc-600 text-sm font-medium">
+                {character.favourites}
+              </span>
+            </div>
+          )}
 
           <MyDivider />
 
