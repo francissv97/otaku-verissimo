@@ -5,7 +5,12 @@ export function CircularLoading() {
   return (
     <Zoom in timeout={300}>
       <div className="fixed z-20 top-0 flex justify-center items-center h-full w-full">
-        <CircleNotch weight="light" className="w-24 h-24 text-main/80 animate-spin border-2 border-zinc-200 rounded-full bg-zinc-50" />
+        <div className="w-24 h-24 rounded-full bg-zinc-50 shadow-lg">
+          <CircleNotch
+            weight="light"
+            className="w-24 h-24 text-orange-400 animate-spin"
+          />
+        </div>
       </div>
     </Zoom>
   );

@@ -91,7 +91,7 @@ export function SmallResultsList({
   const animes: AnimeMediaResults[] = data && data.Page.media;
 
   return (
-    <div className="px-2 pt-4 pb-2 max-w-6xl mx-auto">
+    <div className="p-4 max-w-6xl mx-auto">
       {children}
       <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(118px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
         {animes?.map((anime) => (
