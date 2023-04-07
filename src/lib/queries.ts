@@ -323,6 +323,29 @@ export const GET_STAFF = gql`
           hasNextPage
         }
       }
+      staffMedia(sort: START_DATE_DESC) {
+        edges {
+          staffRole
+          node {
+            id
+            title {
+              romaji
+            }
+            coverImage {
+              large
+            }
+            startDate {
+              day
+              month
+              year
+            }
+          }
+        }
+        pageInfo {
+          currentPage
+          hasNextPage
+        }
+      }
     }
   }
 `;
