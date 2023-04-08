@@ -276,6 +276,11 @@ export type StaffModel = {
         coverImage: {
           large: string;
         };
+        startDate: {
+          day: number | null;
+          month: number | null;
+          year: number | null;
+        };
       };
       staffRole: string;
     }[];
