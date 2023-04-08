@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ViewAllParams } from "../types";
+import { CaretLeft } from "phosphor-react";
 import logo from "../assets/logo.svg";
-import { X } from "phosphor-react";
 
 export function Header() {
   return (
@@ -51,7 +51,7 @@ export function SimpleHeader() {
           className="p-2 cursor-pointer transition hover:bg-main/10"
           onClick={() => navigate(-1)}
         >
-          <X size={22} className="text-main" />
+          <CaretLeft size={22} className="text-main" />
         </div>
 
         <Link to="/" className="flex flex-1 justify-center">
