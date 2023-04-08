@@ -10,6 +10,42 @@ import { Grow } from "@mui/material";
 import { StaffModel } from "../types";
 import { Heart } from "phosphor-react";
 
+type StaffMediaRoleInitialType = {
+  node: {
+    id: number;
+    title: {
+      romaji: string;
+    };
+    coverImage: {
+      large: string;
+    };
+    startDate: {
+      day: number | null;
+      month: number | null;
+      year: number | null;
+    };
+  };
+  staffRole: string;
+};
+
+type StaffMediaRolesGrouped = {
+  node: {
+    id: number;
+    title: {
+      romaji: string;
+    };
+    coverImage: {
+      large: string;
+    };
+    startDate: {
+      day: number | null;
+      month: number | null;
+      year: number | null;
+    };
+  };
+  staffRoles: string[];
+};
+
 export function Staff() {
   const { id } = useParams() as { id: string };
 
@@ -26,6 +62,58 @@ export function Staff() {
     const title = `${staff.name.full} · otakuVERISSIMO`;
 
     document.title = title;
+  }
+
+  function groupStaffRolesByMedia(
+    staffMediaRoleArrayInitial: StaffMediaRoleInitialType[]
+  ): StaffMediaRolesGrouped[] {
+    const grouped: { [key: number]: StaffMediaRolesGrouped } = {};
+
+    staffMediaRoleArrayInitial.forEach((item) => {
+      const id = item.node.id;
+      const staffRole = item.staffRole;
+
+      if (!grouped[id]) {
+        grouped[id] = { staffRoles: [staffRole], node: { ...item.node } };
+      } else {
+        grouped[id].staffRoles.push(staffRole);
+      }
+    });
+
+    return Object.values(grouped);
+  }
+
+  function sortStaffMediaRolesByStartDate(
+    staffMediaRolesGrouped: StaffMediaRolesGrouped[]
+  ): StaffMediaRolesGrouped[] {
+    return staffMediaRolesGrouped.sort((a, b) => {
+      const aStartDate = a.node.startDate;
+      const bStartDate = b.node.startDate;
+
+      if (!aStartDate || !bStartDate) {
+        return 0;
+      }
+
+      const aYear = aStartDate.year ?? Number.MAX_VALUE;
+      const bYear = bStartDate.year ?? Number.MAX_VALUE;
+      if (aYear !== bYear) {
+        return bYear - aYear;
+      }
+
+      const aMonth = aStartDate.month ?? Number.MAX_VALUE;
+      const bMonth = bStartDate.month ?? Number.MAX_VALUE;
+      if (aMonth !== bMonth) {
+        return bMonth - aMonth;
+      }
+
+      const aDay = aStartDate.day ?? Number.MAX_VALUE;
+      const bDay = bStartDate.day ?? Number.MAX_VALUE;
+      if (aDay !== bDay) {
+        return bDay - aDay;
+      }
+
+      return 0;
+    });
   }
 
   useEffect(() => {
@@ -213,47 +301,50 @@ export function Staff() {
                     Anime Staff Roles
                   </strong>
 
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-4">
-                    {staff.staffMedia.edges.map((edge, index) => (
-                      <div
-                        className="flex bg-zinc-50 shadow-md rounded overflow-hidden"
-                        key={index}
-                      >
-                        <Link
-                          to={`/anime/${edge.node.id}`}
-                          title={edge.node.title.romaji}
-                        >
-                          <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 w-28">
+                  <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
+                    {sortStaffMediaRolesByStartDate(
+                      groupStaffRolesByMedia(staff.staffMedia.edges)
+                    ).map((edge, index) => (
+                      <Link to={`/anime/${edge.node.id}`} key={index}>
+                        <div className="flex flex-col gap-2">
+                          <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
                             <img
                               src={edge.node.coverImage.large}
                               alt={edge.node.title.romaji}
+                              loading="lazy"
                               style={{
                                 opacity: 0,
+                                aspectRatio: "6/9",
+                                objectFit: "cover",
+                                width: "100%",
                                 transitionDuration: "700ms",
                               }}
-                              onLoad={(t) =>
-                                (t.currentTarget.style.opacity = "1")
-                              }
-                              className="aspect-[6_/_9] object-cover"
+                              onLoad={(t) => {
+                                t.currentTarget.style.opacity = "1";
+                              }}
+                              className="shadow-black/20 shadow-md rounded"
                             />
                           </div>
-                        </Link>
 
-                        <div className="flex flex-col gap-1 p-2">
-                          <Link
-                            to={`/anime/${edge.node.id}`}
-                            title={edge.node.title.romaji}
-                          >
-                            <span className="text-sm font-medium line-clamp-2">
+                          <div className="flex flex-col gap-1">
+                            <span className="block text-xs font-medium text-main line-clamp-2">
                               {edge.node.title.romaji}
                             </span>
-                          </Link>
 
-                          <span className="text-sm text-main">
-                            {edge.staffRole}
-                          </span>
+                            <div className="flex flex-col gap-1">
+                              {edge.staffRoles.map((staffRole, index) => (
+                                <span
+                                  key={index}
+                                  className="text-xs font-medium line-clamp-1"
+                                  title={staffRole}
+                                >
+                                  {staffRole}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>
