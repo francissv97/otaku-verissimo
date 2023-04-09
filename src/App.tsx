@@ -10,7 +10,7 @@ export function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/anime/:id" element={<Anime />} />
+        <Route path="/anime/:id/:sub?" element={<Anime />} />
         {/* <Route path="/manga/:id" element={<Manga />} /> */}
         <Route path="/staff/:id" element={<Staff />} />
         <Route path="/character/:id" element={<Character />} />
