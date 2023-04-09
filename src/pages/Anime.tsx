@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, NavLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Collapse, Grow } from "@mui/material";
 import { CaretDown, CaretUp, CopySimple, Heart, Star } from "phosphor-react";
@@ -9,7 +9,6 @@ import {
   GET_MORE_STAFF,
 } from "../lib/queries";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import * as Tabs from "@radix-ui/react-tabs";
 import { monthsShort } from "../utils/variablesQueries";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
@@ -20,7 +19,8 @@ import { AnimeStaff } from "../components/AnimeStaff";
 import { SimpleHeader } from "../components/Header";
 
 export function Anime() {
-  const { id } = useParams() as { id: string };
+  const { id, sub } = useParams() as { id: string; sub: string };
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const { data, error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
@@ -45,9 +45,11 @@ export function Anime() {
   }
 
   useEffect(() => {
-    const hostname = location.hostname;
-
     scrollTo({ top: 0 });
+
+    if (![undefined, "staff", "characters"].includes(sub)) {
+      navigate(`/anime/${id}`);
+    }
   }, []);
 
   return (
@@ -85,489 +87,489 @@ export function Anime() {
 
           <SimpleHeader />
 
-          <Tabs.Root defaultValue="overview">
-            <div className="mb-auto pb-4 px-4">
-              <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto pt-4">
-                <div className="flex flex-wrap md:flex-col gap-2">
-                  <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded w-fit z-10 place-self-start shadow-black/40 shadow-md overflow-hidden -mt-32 md:-mt-36">
-                    <img
-                      src={anime.coverImage.large}
-                      alt={anime.title.romaji}
-                      className={`w-28 md:w-44`}
-                      loading="lazy"
-                      style={{
-                        opacity: 0,
-                        transform: "scale(0.84)",
-                        transitionDuration: "200ms",
-                      }}
-                      onLoad={(t) => {
-                        t.currentTarget.style.opacity = "1";
-                        t.currentTarget.style.transform = "initial";
-                      }}
-                    />
-                  </div>
-
-                  <div className="flex gap-6 place-self-end md:place-self-center">
-                    <div className="flex gap-1 items-center">
-                      <Star
-                        size={22}
-                        weight="fill"
-                        className="text-yellow-500"
-                      />
-                      <span className="text-zinc-600 text-sm">
-                        {anime.averageScore > 0 ? anime.averageScore : 0}
-                      </span>
-                    </div>
-
-                    <div className="flex gap-1 items-center">
-                      <Heart size={22} weight="fill" className="text-red-600" />
-                      <span className="text-zinc-600 text-sm">
-                        {anime.favourites > 0 ? anime.favourites : 0}
-                      </span>
-                    </div>
-                  </div>
+          <div className="mb-auto pb-4 px-4">
+            <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto py-4">
+              <div className="flex flex-wrap md:flex-col gap-2">
+                <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded w-fit z-10 place-self-start shadow-black/40 shadow-md overflow-hidden -mt-32 md:-mt-36">
+                  <img
+                    src={anime.coverImage.large}
+                    alt={anime.title.romaji}
+                    className={`w-28 md:w-44`}
+                    loading="lazy"
+                    style={{
+                      opacity: 0,
+                      transform: "scale(0.84)",
+                      transitionDuration: "200ms",
+                    }}
+                    onLoad={(t) => {
+                      t.currentTarget.style.opacity = "1";
+                      t.currentTarget.style.transform = "initial";
+                    }}
+                  />
                 </div>
 
-                <div className="flex flex-1 flex-col gap-2">
-                  <h1 className="text-lg text-main overflow-hidden line-clamp-2">
-                    {anime.title.romaji}
-                  </h1>
+                <div className="flex gap-6 place-self-end md:place-self-center">
+                  <div className="flex gap-1 items-center">
+                    <Star size={22} weight="fill" className="text-yellow-500" />
+                    <span className="text-zinc-600 text-sm">
+                      {anime.averageScore > 0 ? anime.averageScore : 0}
+                    </span>
+                  </div>
 
-                  {anime.startDate.day == null &&
-                    anime.startDate.month == null &&
-                    anime.startDate.year == null && (
-                      <span className="peer">To Be Announced</span>
-                    )}
-
-                  {(anime.format ?? anime.episodes) && (
-                    <div className="flex gap-2">
-                      {anime.seasonYear && (
-                        <span className="peer text-second font-medium">
-                          {anime.seasonYear}
-                        </span>
-                      )}
-
-                      {anime.format && (
-                        <span className="peer peer-[]:before:content-['·'] peer-[]:before:pr-2 text-md">
-                          {anime.format}
-                        </span>
-                      )}
-
-                      {anime.episodes && (
-                        <span className="peer text-md peer-[]:before:content-['·'] peer-[]:before:pr-2">{`${
-                          anime.episodes
-                        } ${
-                          anime.episodes > 1 ? "episodes" : "episode"
-                        }`}</span>
-                      )}
-                    </div>
-                  )}
-
-                  <Tabs.List className="flex justify-center mt-auto w-full px-2 gap-3 md:gap-8 max-w-6xl bg-zinc-700 duration-200 text-zinc-100 text-md font-medium mx-auto rounded">
-                    <Tabs.Trigger
-                      className="uppercase py-2 text-[14px] md:text-[16px] hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                      value="overview"
-                    >
-                      Overview
-                    </Tabs.Trigger>
-
-                    <Tabs.Trigger
-                      className="uppercase py-2 text-[14px] md:text-[16px] hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                      value="characters"
-                    >
-                      Characters
-                    </Tabs.Trigger>
-
-                    <Tabs.Trigger
-                      className="uppercase py-2 text-[14px] md:text-[16px] hover:text-zinc-400 data-[state=active]:text-orange-500 border-b-2 border-transparent data-[state=active]:border-main duration-200"
-                      value="staff"
-                    >
-                      Staff
-                    </Tabs.Trigger>
-                  </Tabs.List>
+                  <div className="flex gap-1 items-center">
+                    <Heart size={22} weight="fill" className="text-red-600" />
+                    <span className="text-zinc-600 text-sm">
+                      {anime.favourites > 0 ? anime.favourites : 0}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <Tabs.Content value="overview" className="outline-none mt-4">
-                <Grow in timeout={600}>
-                  <div className="max-w-6xl mx-auto">
-                    <ul className="flex gap-2 flex-wrap">
-                      {anime.genres.map((genre) => (
-                        <li
-                          key={genre}
-                          className="bg-gradient-to-t from-emerald-800 via-emerald-700 to-emerald-400 font-medium text-zinc-50 text-sm py-1 px-2 rounded"
-                        >
-                          {genre}
-                        </li>
-                      ))}
-                    </ul>
+              <div className="flex flex-1 flex-col gap-2">
+                <h1 className="text-lg text-main overflow-hidden line-clamp-2">
+                  {anime.title.romaji}
+                </h1>
 
-                    {anime.description && (
-                      <>
-                        <MyDivider />
-                        <DescriptionCollapse description={anime.description} />
-                      </>
+                {anime.startDate.day == null &&
+                  anime.startDate.month == null &&
+                  anime.startDate.year == null && (
+                    <span className="peer">To Be Announced</span>
+                  )}
+
+                {(anime.format ?? anime.episodes) && (
+                  <div className="flex gap-2">
+                    {anime.seasonYear && (
+                      <span className="peer text-second font-medium">
+                        {anime.seasonYear}
+                      </span>
                     )}
-                    <MyDivider />
 
-                    <div className="flex flex-col">
-                      <strong className="mb-2">Characters</strong>
+                    {anime.format && (
+                      <span className="peer peer-[]:before:content-['·'] peer-[]:before:pr-2 text-md">
+                        {anime.format}
+                      </span>
+                    )}
 
-                      <ScrollArea.Root>
-                        <ScrollArea.Viewport>
-                          <div className="flex gap-4 pb-2">
-                            {anime.characters.edges
-                              .filter((character) => character.role == "MAIN")
-                              .map((character) => (
-                                <Link
-                                  key={character.node.id}
-                                  className="flex flex-col gap-1"
-                                  to={`/character/${character.node.id}`}
-                                >
-                                  <div className="bg-zinc-300 rounded-full overflow-hidden">
-                                    <img
-                                      src={character.node.image.medium}
-                                      alt={character.node.name.full}
-                                      style={{
-                                        opacity: 0,
-                                        transitionDuration: "900ms",
-                                      }}
-                                      onLoad={(t) =>
-                                        (t.currentTarget.style.opacity = "1")
-                                      }
-                                      className="min-w-[80px] h-[80px] object-cover"
-                                    />
-                                  </div>
+                    {anime.episodes && (
+                      <span className="peer text-md peer-[]:before:content-['·'] peer-[]:before:pr-2">{`${
+                        anime.episodes
+                      } ${anime.episodes > 1 ? "episodes" : "episode"}`}</span>
+                    )}
+                  </div>
+                )}
 
-                                  <span className="text-sm text-main font-medium max-w-[80px] text-center mx-auto">
-                                    {character.node.name.full}
-                                  </span>
-                                </Link>
-                              ))}
-                          </div>
-                        </ScrollArea.Viewport>
+                <div className="flex justify-center mt-auto w-full px-2 gap-2 md:gap-8 max-w-6xl bg-zinc-100 mx-auto rounded shadow-lg font-medium">
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? "uppercase py-2 text-[14px] md:text-[16px] text-main border-b-2 border-main duration-200 pointer-events-none"
+                        : "uppercase py-2 text-[14px] md:text-[16px] text-zinc-400 hover:text-zinc-500 border-b-2 border-transparent duration-200"
+                    }
+                    to={`/anime/${anime.id}`}
+                    end
+                  >
+                    Overview
+                  </NavLink>
 
-                        <ScrollArea.Scrollbar
-                          className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
-                          orientation="horizontal"
-                        >
-                          <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
-                        </ScrollArea.Scrollbar>
-                      </ScrollArea.Root>
-                    </div>
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? "uppercase py-2 text-[14px] md:text-[16px] text-main border-b-2 border-main duration-200 pointer-events-none"
+                        : "uppercase py-2 text-[14px] md:text-[16px] text-zinc-400 hover:text-zinc-500 border-b-2 border-transparent duration-200"
+                    }
+                    to={`/anime/${anime.id}/characters`}
+                    end
+                  >
+                    Characters
+                  </NavLink>
 
-                    <MyDivider />
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? "uppercase py-2 text-[14px] md:text-[16px] text-main border-b-2 border-main duration-200 pointer-events-none"
+                        : "uppercase py-2 text-[14px] md:text-[16px] text-zinc-400 hover:text-zinc-500 border-b-2 border-transparent duration-200"
+                    }
+                    to={`/anime/${anime.id}/staff`}
+                    end
+                  >
+                    Staff
+                  </NavLink>
+                </div>
+              </div>
+            </div>
 
-                    <div className="flex flex-col gap-2">
-                      <strong>Info</strong>
+            {!sub && (
+              <Grow in timeout={600}>
+                <div className="max-w-6xl mx-auto">
+                  <ul className="flex gap-2 flex-wrap">
+                    {anime.genres.map((genre) => (
+                      <li
+                        key={genre}
+                        className="bg-gradient-to-t from-emerald-800 via-emerald-700 to-emerald-400 font-medium text-zinc-50 text-sm py-1 px-2 rounded"
+                      >
+                        {genre}
+                      </li>
+                    ))}
+                  </ul>
 
-                      <div className="flex flex-wrap gap-y-2 gap-x-4">
-                        <span className="text-sm min-w-[110px]">Romaji</span>
-                        <TitleCopyToClipboard title={anime.title.romaji} />
-                      </div>
+                  {anime.description && (
+                    <>
+                      <MyDivider />
+                      <DescriptionCollapse description={anime.description} />
+                    </>
+                  )}
+                  <MyDivider />
 
-                      {anime.title.english && (
-                        <div className="flex flex-wrap gap-y-2 gap-x-4">
-                          <span className="text-sm min-w-[110px]">English</span>
-                          <TitleCopyToClipboard title={anime.title.english} />
-                        </div>
-                      )}
+                  <div className="flex flex-col">
+                    <strong className="mb-2">Characters</strong>
 
-                      <div className="flex flex-wrap gap-y-2 gap-x-4">
-                        <span className="text-sm min-w-[110px]">Native</span>
-                        <TitleCopyToClipboard title={anime.title.native} />
-                      </div>
-
-                      {anime.synonyms.length > 0 && (
-                        <div className="flex flex-wrap gap-y-2 gap-x-4">
-                          <span className="text-sm min-w-[110px]">
-                            Synonyms
-                          </span>
-                          <div className="flex-1 flex flex-col">
-                            {anime.synonyms.map((synonym, index) => (
-                              <span
-                                key={index}
-                                className="text-sm text-zinc-600 text-justify"
+                    <ScrollArea.Root>
+                      <ScrollArea.Viewport>
+                        <div className="flex gap-4 pb-2">
+                          {anime.characters.edges
+                            .filter((character) => character.role == "MAIN")
+                            .map((character) => (
+                              <Link
+                                key={character.node.id}
+                                className="flex flex-col gap-1 w-24"
+                                to={`/character/${character.node.id}`}
                               >
-                                {synonym}
-                              </span>
+                                <div className="bg-zinc-300 h-24 rounded-full overflow-hidden">
+                                  <img
+                                    src={character.node.image.medium}
+                                    alt={character.node.name.full}
+                                    style={{
+                                      opacity: 0,
+                                      transitionDuration: "900ms",
+                                    }}
+                                    onLoad={(t) =>
+                                      (t.currentTarget.style.opacity = "1")
+                                    }
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+
+                                <span className="text-sm text-main w-full text-center mx-auto">
+                                  {character.node.name.full}
+                                </span>
+                              </Link>
                             ))}
-                          </div>
                         </div>
-                      )}
+                      </ScrollArea.Viewport>
+
+                      <ScrollArea.Scrollbar
+                        className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+                        orientation="horizontal"
+                      >
+                        <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+                      </ScrollArea.Scrollbar>
+                    </ScrollArea.Root>
+                  </div>
+
+                  <MyDivider />
+
+                  <div className="flex flex-col gap-2">
+                    <strong>Info</strong>
+
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm min-w-[110px]">Romaji</span>
+                      <TitleCopyToClipboard title={anime.title.romaji} />
                     </div>
 
-                    <MyDivider />
-
-                    <div className="flex flex-col gap-2">
+                    {anime.title.english && (
                       <div className="flex flex-wrap gap-y-2 gap-x-4">
-                        <span className="text-sm min-w-[110px]">Format</span>
-
-                        <span className="flex-1 text-sm text-zinc-600">
-                          {anime.format ? anime.format : "-"}
-                        </span>
+                        <span className="text-sm min-w-[110px]">English</span>
+                        <TitleCopyToClipboard title={anime.title.english} />
                       </div>
+                    )}
 
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm min-w-[110px]">Native</span>
+                      <TitleCopyToClipboard title={anime.title.native} />
+                    </div>
+
+                    {anime.synonyms.length > 0 && (
                       <div className="flex flex-wrap gap-y-2 gap-x-4">
-                        <span className="text-sm min-w-[110px]">Episodes</span>
-
-                        <span className="flex-1 text-sm text-zinc-600">
-                          {anime.episodes ? anime.episodes : "?"}
-                        </span>
-                      </div>
-
-                      {anime.duration && (
-                        <div className="flex flex-wrap gap-y-2 gap-x-4">
-                          <span className="text-sm min-w-[110px]">
-                            Episode Duration
-                          </span>
-
-                          <span className="flex-1 text-sm text-zinc-600">
-                            {anime.duration}
-                            {anime.duration > 1 ? " mins" : " min"}
-                          </span>
+                        <span className="text-sm min-w-[110px]">Synonyms</span>
+                        <div className="flex-1 flex flex-col">
+                          {anime.synonyms.map((synonym, index) => (
+                            <span
+                              key={index}
+                              className="text-sm text-zinc-600 text-justify"
+                            >
+                              {synonym}
+                            </span>
+                          ))}
                         </div>
-                      )}
-
-                      <div className="flex flex-wrap gap-y-2 gap-x-4">
-                        <span className="text-sm leading-none min-w-[110px]">
-                          Source
-                        </span>
-
-                        <span className="text-sm leading-none">
-                          {anime.source ? anime.source.replace("_", " ") : "-"}
-                        </span>
                       </div>
+                    )}
+                  </div>
 
-                      <div className="flex flex-wrap gap-y-2 gap-x-4">
-                        <span className="text-sm min-w-[110px]">Status</span>
+                  <MyDivider />
 
-                        <span className="flex-1 text-sm text-zinc-600">
-                          {anime.status.replaceAll("_", " ")}
-                        </span>
-                      </div>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm min-w-[110px]">Format</span>
 
+                      <span className="flex-1 text-sm text-zinc-600">
+                        {anime.format ? anime.format : "-"}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm min-w-[110px]">Episodes</span>
+
+                      <span className="flex-1 text-sm text-zinc-600">
+                        {anime.episodes ? anime.episodes : "?"}
+                      </span>
+                    </div>
+
+                    {anime.duration && (
                       <div className="flex flex-wrap gap-y-2 gap-x-4">
                         <span className="text-sm min-w-[110px]">
-                          Start Date
+                          Episode Duration
                         </span>
 
-                        {anime.startDate.day ||
-                        anime.startDate.month ||
-                        anime.startDate.year ? (
-                          <span className="flex-1 text-sm text-zinc-600">
-                            {`${
-                              anime.startDate.year ? anime.startDate.year : ""
-                            } ${
-                              anime.startDate.month
-                                ? monthsShort[anime.startDate.month]
-                                : ""
-                            } ${
-                              anime.startDate.day ? anime.startDate.day : ""
-                            }`}
-                          </span>
-                        ) : (
-                          "?"
-                        )}
+                        <span className="flex-1 text-sm text-zinc-600">
+                          {anime.duration}
+                          {anime.duration > 1 ? " mins" : " min"}
+                        </span>
                       </div>
+                    )}
 
-                      <div className="flex flex-wrap gap-y-2 gap-x-4">
-                        <span className="text-sm min-w-[110px]">End Date</span>
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm leading-none min-w-[110px]">
+                        Source
+                      </span>
 
-                        {anime.endDate.day ||
-                        anime.endDate.month ||
-                        anime.endDate.year ? (
-                          <span className="flex-1 text-sm text-zinc-600">
-                            {`${anime.endDate.year ? anime.endDate.year : ""} ${
-                              anime.endDate.month
-                                ? monthsShort[anime.endDate.month]
-                                : ""
-                            } ${anime.endDate.day ? anime.endDate.day : ""}`}
-                          </span>
-                        ) : (
-                          "?"
-                        )}
-                      </div>
+                      <span className="text-sm leading-none">
+                        {anime.source ? anime.source.replace("_", " ") : "-"}
+                      </span>
+                    </div>
 
-                      {anime.season && anime.seasonYear && (
-                        <div className="flex flex-wrap gap-y-2 gap-x-4">
-                          <span className="text-sm min-w-[110px]">Season</span>
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm min-w-[110px]">Status</span>
 
-                          <span className="flex-1 text-sm text-main cursor-pointer">
-                            {`${anime.season} ${anime.seasonYear}`}
-                          </span>
-                        </div>
+                      <span className="flex-1 text-sm text-zinc-600">
+                        {anime.status.replaceAll("_", " ")}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm min-w-[110px]">Start Date</span>
+
+                      {anime.startDate.day ||
+                      anime.startDate.month ||
+                      anime.startDate.year ? (
+                        <span className="flex-1 text-sm text-zinc-600">
+                          {`${
+                            anime.startDate.year ? anime.startDate.year : ""
+                          } ${
+                            anime.startDate.month
+                              ? monthsShort[anime.startDate.month]
+                              : ""
+                          } ${anime.startDate.day ? anime.startDate.day : ""}`}
+                        </span>
+                      ) : (
+                        "?"
                       )}
                     </div>
 
-                    <MyDivider />
+                    <div className="flex flex-wrap gap-y-2 gap-x-4">
+                      <span className="text-sm min-w-[110px]">End Date</span>
 
-                    <StudiosList studios={anime.studios.edges} />
-
-                    <MyDivider />
-
-                    <div className="flex gap-4 md:gap-8 justify-center">
-                      <div className="flex flex-col gap-y-2 justify-center items-center">
-                        <span className="text-xl font-medium text-zinc-600 leading-none">
-                          {anime.averageScore ? anime.averageScore : 0}%
+                      {anime.endDate.day ||
+                      anime.endDate.month ||
+                      anime.endDate.year ? (
+                        <span className="flex-1 text-sm text-zinc-600">
+                          {`${anime.endDate.year ? anime.endDate.year : ""} ${
+                            anime.endDate.month
+                              ? monthsShort[anime.endDate.month]
+                              : ""
+                          } ${anime.endDate.day ? anime.endDate.day : ""}`}
                         </span>
-                        <span className="text-zinc-600 text-sm leading-none">
-                          Average
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col gap-y-2 justify-center items-center">
-                        <span className="text-xl font-medium text-zinc-600 leading-none">
-                          {anime.meanScore ? anime.meanScore : 0}%
-                        </span>
-                        <span className="text-zinc-600 text-sm leading-none">
-                          Mean
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col gap-y-2 justify-center items-center">
-                        <span className="text-xl font-medium text-zinc-600 leading-none">
-                          {anime.popularity}
-                        </span>
-                        <span className="text-zinc-600 text-sm leading-none">
-                          Popularity
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col gap-y-2 justify-center items-center">
-                        <span className="text-xl font-medium text-zinc-600 leading-none">
-                          {anime.favourites}
-                        </span>
-                        <span className="text-zinc-600 text-sm leading-none">
-                          Favourites
-                        </span>
-                      </div>
+                      ) : (
+                        "?"
+                      )}
                     </div>
 
-                    {anime.tags.length > 0 && <TagsList tags={anime.tags} />}
+                    {anime.season && anime.seasonYear && (
+                      <div className="flex flex-wrap gap-y-2 gap-x-4">
+                        <span className="text-sm min-w-[110px]">Season</span>
 
-                    <RelationsList edges={anime.relations.edges} />
-
-                    {anime.recommendations.edges.length > 0 && (
-                      <>
-                        <MyDivider />
-                        <RecommendationsList
-                          edges={anime.recommendations.edges}
-                        />
-                      </>
-                    )}
-
-                    <MyDivider />
-
-                    <div className="flex flex-col gap-3">
-                      <div className="flex justify-between">
-                        <strong className="text-md leading-none">Links</strong>
-                        <span className="text-sm leading-none font-medium text-zinc-500">
-                          Click to copy link
+                        <span className="flex-1 text-sm text-main cursor-pointer">
+                          {`${anime.season} ${anime.seasonYear}`}
                         </span>
                       </div>
+                    )}
+                  </div>
 
-                      <div className="flex flex-wrap gap-2">
-                        {anime.externalLinks.map((link) => (
-                          <div
-                            key={link.id}
-                            className="flex gap-1 p-2 rounded items-center h-fit my-auto cursor-pointer hover:scale-[102%]"
-                            onClick={() =>
-                              navigator.clipboard.writeText(link.url)
-                            }
-                            style={{
-                              backgroundColor: link.color
-                                ? link.color
-                                : "#52525b",
-                            }}
-                          >
-                            {link.icon && (
-                              <img
-                                src={link.icon}
-                                alt={link.site}
-                                className="w-6"
-                              />
-                            )}
-                            <strong className="text-white text-sm">
-                              {link.site}
-                            </strong>
-                          </div>
-                        ))}
-                      </div>
+                  <MyDivider />
+
+                  <StudiosList studios={anime.studios.edges} />
+
+                  <MyDivider />
+
+                  <div className="flex gap-4 md:gap-8 justify-center">
+                    <div className="flex flex-col gap-y-2 justify-center items-center">
+                      <span className="text-xl font-medium text-zinc-600 leading-none">
+                        {anime.averageScore ? anime.averageScore : 0}%
+                      </span>
+                      <span className="text-zinc-600 text-sm leading-none">
+                        Average
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-y-2 justify-center items-center">
+                      <span className="text-xl font-medium text-zinc-600 leading-none">
+                        {anime.meanScore ? anime.meanScore : 0}%
+                      </span>
+                      <span className="text-zinc-600 text-sm leading-none">
+                        Mean
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-y-2 justify-center items-center">
+                      <span className="text-xl font-medium text-zinc-600 leading-none">
+                        {anime.popularity}
+                      </span>
+                      <span className="text-zinc-600 text-sm leading-none">
+                        Popularity
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-y-2 justify-center items-center">
+                      <span className="text-xl font-medium text-zinc-600 leading-none">
+                        {anime.favourites}
+                      </span>
+                      <span className="text-zinc-600 text-sm leading-none">
+                        Favourites
+                      </span>
                     </div>
                   </div>
-                </Grow>
-              </Tabs.Content>
 
-              <Tabs.Content value="characters" className="outline-none mt-4">
-                <AnimeCharacters
-                  characters={anime.characters}
-                  pagingFunction={() => {
-                    setIsLoading(true);
+                  {anime.tags.length > 0 && <TagsList tags={anime.tags} />}
 
-                    fetchMore({
-                      query: GET_MORE_CHARACTERS,
-                      variables: {
-                        charactersPage:
-                          anime.characters.pageInfo.currentPage + 1,
-                        id: anime.id,
-                      },
-                      updateQuery(pv, { fetchMoreResult }) {
-                        if (!fetchMoreResult) return pv;
+                  <RelationsList edges={anime.relations.edges} />
 
-                        return {
-                          Media: {
-                            ...pv.Media,
-                            characters: {
-                              ...fetchMoreResult.Media.characters,
-                              edges: [
-                                ...pv.Media.characters.edges,
-                                ...fetchMoreResult.Media.characters.edges,
-                              ],
-                            },
+                  {anime.recommendations.edges.length > 0 && (
+                    <>
+                      <MyDivider />
+                      <RecommendationsList
+                        edges={anime.recommendations.edges}
+                      />
+                    </>
+                  )}
+
+                  <MyDivider />
+
+                  <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                      <strong className="text-md leading-none">Links</strong>
+                      <span className="text-sm leading-none font-medium text-zinc-500">
+                        Click to copy link
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {anime.externalLinks.map((link) => (
+                        <div
+                          key={link.id}
+                          className="flex gap-1 p-2 rounded items-center h-fit my-auto cursor-pointer hover:scale-[102%]"
+                          onClick={() =>
+                            navigator.clipboard.writeText(link.url)
+                          }
+                          style={{
+                            backgroundColor: link.color
+                              ? link.color
+                              : "#52525b",
+                          }}
+                        >
+                          {link.icon && (
+                            <img
+                              src={link.icon}
+                              alt={link.site}
+                              className="w-6"
+                            />
+                          )}
+                          <strong className="text-white text-sm">
+                            {link.site}
+                          </strong>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Grow>
+            )}
+
+            {sub == "characters" && (
+              <AnimeCharacters
+                characters={anime.characters}
+                pagingFunction={() => {
+                  setIsLoading(true);
+
+                  fetchMore({
+                    query: GET_MORE_CHARACTERS,
+                    variables: {
+                      charactersPage: anime.characters.pageInfo.currentPage + 1,
+                      id: anime.id,
+                    },
+                    updateQuery(pv, { fetchMoreResult }) {
+                      if (!fetchMoreResult) return pv;
+
+                      return {
+                        Media: {
+                          ...pv.Media,
+                          characters: {
+                            ...fetchMoreResult.Media.characters,
+                            edges: [
+                              ...pv.Media.characters.edges,
+                              ...fetchMoreResult.Media.characters.edges,
+                            ],
                           },
-                        };
-                      },
-                    });
-                  }}
-                  isLoading={isLoading}
-                />
-              </Tabs.Content>
+                        },
+                      };
+                    },
+                  });
+                }}
+                isLoading={isLoading}
+              />
+            )}
 
-              <Tabs.Content value="staff" className="outline-none mt-4">
-                <AnimeStaff
-                  staff={anime.staff}
-                  pagingFunction={() => {
-                    setIsLoading(true);
-                    fetchMore({
-                      query: GET_MORE_STAFF,
-                      variables: {
-                        staffPage: anime.staff.pageInfo.currentPage + 1,
-                        id: anime.id,
-                      },
-                      updateQuery(pv, { fetchMoreResult }) {
-                        if (!fetchMoreResult) return pv;
+            {sub == "staff" && (
+              <AnimeStaff
+                staff={anime.staff}
+                pagingFunction={() => {
+                  setIsLoading(true);
+                  fetchMore({
+                    query: GET_MORE_STAFF,
+                    variables: {
+                      staffPage: anime.staff.pageInfo.currentPage + 1,
+                      id: anime.id,
+                    },
+                    updateQuery(pv, { fetchMoreResult }) {
+                      if (!fetchMoreResult) return pv;
 
-                        return {
-                          Media: {
-                            ...pv.Media,
-                            staff: {
-                              ...fetchMoreResult.Media.staff,
-                              edges: [
-                                ...pv.Media.staff.edges,
-                                ...fetchMoreResult.Media.staff.edges,
-                              ],
-                            },
+                      return {
+                        Media: {
+                          ...pv.Media,
+                          staff: {
+                            ...fetchMoreResult.Media.staff,
+                            edges: [
+                              ...pv.Media.staff.edges,
+                              ...fetchMoreResult.Media.staff.edges,
+                            ],
                           },
-                        };
-                      },
-                    });
-                  }}
-                  isLoading={isLoading}
-                />
-              </Tabs.Content>
-            </div>
-          </Tabs.Root>
+                        },
+                      };
+                    },
+                  });
+                }}
+                isLoading={isLoading}
+              />
+            )}
+          </div>
 
           <MyDivider />
 
@@ -735,7 +737,7 @@ function TagsList({ tags }: TagsListProps) {
         <strong>Tags</strong>
         {tags.find((item) => item.isMediaSpoiler === true) && (
           <button
-            className="text-rose-500 text-sm outline-main/50 md:text-base font-medium"
+            className="text-rose-600 text-sm outline-main/50 md:text-base font-medium"
             onClick={() => setShowSpoilerTags(!showSpoilerTags)}
           >
             {showSpoilerTags ? "Hide Spoiler" : "Show Spoiler"}
@@ -750,7 +752,7 @@ function TagsList({ tags }: TagsListProps) {
               <div key={tag.id} className="flex justify-between">
                 <span
                   className={`${
-                    tag.isMediaSpoiler ? "text-second" : "text-main"
+                    tag.isMediaSpoiler ? "text-rose-600" : "text-second"
                   } text-sm`}
                 >
                   {tag.name}
@@ -758,7 +760,7 @@ function TagsList({ tags }: TagsListProps) {
 
                 <span
                   className={`${
-                    tag.isMediaSpoiler ? "text-second" : "text-main"
+                    tag.isMediaSpoiler ? "text-rose-600" : "text-second"
                   } text-sm md:text-base`}
                 >
                   {tag.rank + "%"}
