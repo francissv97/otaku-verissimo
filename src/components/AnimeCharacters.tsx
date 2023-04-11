@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Grow } from "@mui/material";
 import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
 import { HorizontalCardSkeleton } from "./Loading";
+import { handleNavLocationStateFrom } from "../utils";
 
 type AnimeCharactersProps = {
   characters: {
@@ -35,6 +36,8 @@ export function AnimeCharacters({
   pagingFunction,
   isLoading,
 }: AnimeCharactersProps) {
+  const location = useLocation();
+
   return (
     <div className="max-w-6xl mx-auto">
       <strong>Characters</strong>
@@ -45,7 +48,10 @@ export function AnimeCharacters({
             character.voiceActorRoles.map((voiceActorRole) => (
               <Grow in timeout={600} key={voiceActorRole.voiceActor.id}>
                 <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-                  <Link to={`/character/${character.node.id}`}>
+                  <Link
+                    to={`/character/${character.node.id}`}
+                    state={{ from: handleNavLocationStateFrom(location) }}
+                  >
                     <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                       <img
                         src={character.node.image.medium}
@@ -63,7 +69,10 @@ export function AnimeCharacters({
                   <div className="flex-1 flex flex-col justify-between">
                     <div className="flex gap-1 p-2 w-fit">
                       <div className="flex flex-col gap-1 w-full">
-                        <Link to={`/character/${character.node.id}`}>
+                        <Link
+                          to={`/character/${character.node.id}`}
+                          state={{ from: handleNavLocationStateFrom(location) }}
+                        >
                           <span className="text-sm font-medium break-all">
                             {character.node.name.full}
                           </span>
@@ -82,7 +91,10 @@ export function AnimeCharacters({
                           </span>
                         )}
 
-                        <Link to={`/staff/${voiceActorRole.voiceActor.id}`}>
+                        <Link
+                          to={`/staff/${voiceActorRole.voiceActor.id}`}
+                          state={{ from: handleNavLocationStateFrom(location) }}
+                        >
                           <span className="text-sm font-medium text-end">
                             {voiceActorRole.voiceActor.name.full}
                           </span>
@@ -92,7 +104,10 @@ export function AnimeCharacters({
                   </div>
 
                   {voiceActorRole && (
-                    <Link to={`/staff/${voiceActorRole.voiceActor.id}`}>
+                    <Link
+                      to={`/staff/${voiceActorRole.voiceActor.id}`}
+                      state={{ from: handleNavLocationStateFrom(location) }}
+                    >
                       <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                         <img
                           src={voiceActorRole.voiceActor.image.medium}

@@ -1,4 +1,4 @@
-import { useEffect, ReactNode, ClassAttributes } from "react";
+import { ReactNode } from "react";
 import { DocumentNode, useQuery } from "@apollo/client";
 import { AnimeMediaResults, MediaSort } from "../types";
 import { CardAnimeResult } from "./CardAnimeResult";

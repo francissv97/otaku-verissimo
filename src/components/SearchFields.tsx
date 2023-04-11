@@ -8,7 +8,7 @@ import {
 import { debounce } from "lodash";
 import * as Select from "@radix-ui/react-select";
 import { Check, CaretDown, CaretUp } from "phosphor-react";
-import { genres } from "../utils/variablesQueries";
+import { genres } from "../utils";
 
 import {
   MagnifyingGlass,

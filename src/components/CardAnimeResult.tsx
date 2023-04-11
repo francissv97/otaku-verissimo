@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Grow, useMediaQuery } from "@mui/material";
+import { handleNavLocationStateFrom } from "../utils";
 import { AnimeMediaResults } from "../types";
-import * as HoverCard from "@radix-ui/react-hover-card";
 import { Smiley, SmileyMeh, SmileySad } from "phosphor-react";
+import * as HoverCard from "@radix-ui/react-hover-card";
 
 type CardAnimeResultProps = {
   anime: AnimeMediaResults;
@@ -14,11 +15,15 @@ type CardAnimeResultPopoverProps = {
 
 export function CardAnimeResult({ anime }: CardAnimeResultProps) {
   const screenSizeMatches = useMediaQuery("(min-width:768px)");
+  const location = useLocation();
 
   return (
     <HoverCard.Root key={anime.id} openDelay={0} closeDelay={0}>
       <HoverCard.Trigger className="relative" asChild>
-        <Link to={`/anime/${anime.id}`}>
+        <Link
+          to={`/anime/${anime.id}`}
+          state={{ from: handleNavLocationStateFrom(location) }}
+        >
           <div className="group cursor-pointer flex flex-col h-full">
             <div className="relative mb-3 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
               <img
@@ -40,7 +45,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
               <div className="absolute top-0 bg-gradient-to-br rounded from-main/60 via-transparent to-transparent h-full w-0 group-hover:w-full duration-100"></div>
             </div>
 
-            <span className="block min-h-[28px] text-[14px]  leading-none text-zinc-500 font-medium line-clamp-2 group-hover:text-main duration-100">
+            <span className="line-clamp-2 min-h-[28px] text-[14px] leading-none text-zinc-500 font-medium group-hover:text-main duration-100">
               {anime.title.romaji}
             </span>
           </div>

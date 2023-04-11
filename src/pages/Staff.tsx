@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_STAFF } from "../lib/queries";
 import { CircularLoading } from "../components/Loading";
@@ -48,21 +47,20 @@ type StaffMediaRolesGrouped = {
 
 export function Staff() {
   const { id } = useParams() as { id: string };
+  const location = useLocation();
 
   const { data, error } = useQuery(GET_STAFF, {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
+    onCompleted(data) {
+      document.title = `${data.Staff.name.full} · otakuVERISSIMO`;
+    },
+    onError(error) {
+      console.error(error);
+    },
   });
 
   const staff: StaffModel = data && data.Staff;
-
-  if (error) console.error(error);
-
-  if (staff) {
-    const title = `${staff.name.full} · otakuVERISSIMO`;
-
-    document.title = title;
-  }
 
   function groupStaffRolesByMedia(
     staffMediaRoleArrayInitial: StaffMediaRoleInitialType[]
@@ -116,9 +114,12 @@ export function Staff() {
     });
   }
 
-  useEffect(() => {
-    scrollTo({ top: 0 });
-  }, []);
+  function handleNavLocationStateFrom() {
+    if (!location.state?.from) return ["/", location.pathname];
+
+    if (location.state?.from.length > 0)
+      return [...location.state.from, location.pathname];
+  }
 
   if (error)
     return (
@@ -212,7 +213,7 @@ export function Staff() {
                       <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 rounded-full">
                         <Link
                           to={`/character/${edge.node.id}`}
-                          title={edge.node.name.full}
+                          state={{ from: handleNavLocationStateFrom() }}
                         >
                           <img
                             src={edge.node.image.large}
@@ -233,7 +234,7 @@ export function Staff() {
                       <div className="flex flex-col flex-1">
                         <Link
                           to={`/character/${edge.node.id}`}
-                          title={edge.node.name.full}
+                          state={{ from: handleNavLocationStateFrom() }}
                         >
                           <span className="font-medium text-lg break-all">
                             {edge.node.name.full}
@@ -248,7 +249,7 @@ export function Staff() {
                         <Link
                           key={media.id}
                           to={`/anime/${media.id}`}
-                          title={media.title.romaji}
+                          state={{ from: handleNavLocationStateFrom() }}
                         >
                           <div className="rounded">
                             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
@@ -305,7 +306,11 @@ export function Staff() {
                     {sortStaffMediaRolesByStartDate(
                       groupStaffRolesByMedia(staff.staffMedia.edges)
                     ).map((edge, index) => (
-                      <Link to={`/anime/${edge.node.id}`} key={index}>
+                      <Link
+                        to={`/anime/${edge.node.id}`}
+                        key={index}
+                        state={{ from: handleNavLocationStateFrom() }}
+                      >
                         <div className="flex flex-col gap-2">
                           <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
                             <img
@@ -327,7 +332,7 @@ export function Staff() {
                           </div>
 
                           <div className="flex flex-col gap-1">
-                            <span className="block text-xs font-medium text-main line-clamp-2">
+                            <span className="text-xs font-medium text-main line-clamp-2">
                               {edge.node.title.romaji}
                             </span>
 

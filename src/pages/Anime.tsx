@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, NavLink, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  NavLink,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Collapse, Grow } from "@mui/material";
 import { CaretDown, CaretUp, CopySimple, Heart, Star } from "phosphor-react";
@@ -9,7 +15,7 @@ import {
   GET_MORE_STAFF,
 } from "../lib/queries";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { monthsShort } from "../utils/variablesQueries";
+import { handleNavLocationStateFrom, monthsShort } from "../utils";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
@@ -21,28 +27,29 @@ import { SimpleHeader } from "../components/Header";
 export function Anime() {
   const { id, sub } = useParams() as { id: string; sub: string };
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { data, error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
-    onError: () => setIsLoading(false),
-    onCompleted: () => setIsLoading(false),
+    onError: (error) => {
+      setIsLoading(false);
+      console.error(error);
+    },
+    onCompleted: (data) => {
+      setIsLoading(false);
+      document.title = `${data.Media.title.romaji} ${
+        data.Media.title.english != null &&
+        data.Media.title.english != data.Media.title.romaji
+          ? ` (${data.Media.title.english})`
+          : ""
+      } · otakuVERISSIMO`;
+    },
   });
 
   const anime: AnimeMedia = data && data.Media;
-
-  if (error) console.error(error);
-
-  if (anime) {
-    const title = `${anime.title.romaji} ${
-      anime.title.english != null && anime.title.english != anime.title.romaji
-        ? ` (${anime.title.english})`
-        : ""
-    } · otakuVERISSIMO`;
-
-    document.title = title;
-  }
 
   useEffect(() => {
     scrollTo({ top: 0 });
@@ -126,7 +133,7 @@ export function Anime() {
               </div>
 
               <div className="flex flex-1 flex-col gap-2">
-                <h1 className="text-lg text-main overflow-hidden line-clamp-2">
+                <h1 className="text-lg text-main line-clamp-2">
                   {anime.title.romaji}
                 </h1>
 
@@ -233,6 +240,9 @@ export function Anime() {
                                 key={character.node.id}
                                 className="flex flex-col gap-1 w-24"
                                 to={`/character/${character.node.id}`}
+                                state={{
+                                  from: handleNavLocationStateFrom(location),
+                                }}
                               >
                                 <div className="bg-zinc-300 h-24 rounded-full overflow-hidden">
                                   <img
@@ -805,6 +815,8 @@ function RelationsList({ edges }: RelationsListProps) {
     "OTHER",
   ];
 
+  const location = useLocation();
+
   const sortEdges = [...edges].sort((a, b) => {
     if (order.indexOf(a.relationType) > order.indexOf(b.relationType)) return 1;
     if (order.indexOf(a.relationType) < order.indexOf(b.relationType))
@@ -827,6 +839,7 @@ function RelationsList({ edges }: RelationsListProps) {
                   to={`/anime/${edge.node.id}`}
                   key={edge.node.id}
                   className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
+                  state={{ from: handleNavLocationStateFrom(location) }}
                 >
                   <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
                     <img
@@ -860,7 +873,7 @@ function RelationsList({ edges }: RelationsListProps) {
                     </div>
                   </div>
 
-                  <span className="block text-[14px] text-center leading-none text-main line-clamp-2">
+                  <span className="text-[14px] text-center leading-none text-main line-clamp-2">
                     {edge.node.title.romaji}
                   </span>
                 </Link>
@@ -901,7 +914,7 @@ function RelationsList({ edges }: RelationsListProps) {
                     </div>
                   </div>
 
-                  <span className="block text-[14px] text-center leading-none text-main line-clamp-2">
+                  <span className="text-[14px] text-center leading-none text-main line-clamp-2">
                     {edge.node.title.romaji}
                   </span>
                 </div>
@@ -941,6 +954,8 @@ type RecommendationsListProps = {
 };
 
 function RecommendationsList({ edges }: RecommendationsListProps) {
+  const location = useLocation();
+
   return (
     <div className="flex flex-col">
       <strong>Recommendations</strong>
@@ -951,6 +966,7 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
               <Link
                 to={`/anime/${edge.node.mediaRecommendation.id}`}
                 key={edge.node.mediaRecommendation.id}
+                state={{ from: handleNavLocationStateFrom(location) }}
                 className="group cursor-pointer flex gap-1 flex-col w-32 pt-1 pb-3"
               >
                 <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
@@ -998,7 +1014,7 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
                   </div>
                 </div>
 
-                <span className="block text-sm text-center leading-none text-main line-clamp-2">
+                <span className="text-sm text-center leading-none text-main line-clamp-2">
                   {edge.node.mediaRecommendation.title.romaji}
                 </span>
               </Link>

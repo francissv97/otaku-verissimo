@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_CHARACTER } from "../lib/queries";
 import { CircularLoading } from "../components/Loading";
@@ -9,24 +9,24 @@ import { MyDivider } from "../components/MyComponents";
 import { Grow } from "@mui/material";
 import { CharacterModel } from "../types";
 import { Heart } from "phosphor-react";
+import { handleNavLocationStateFrom } from "../utils";
 
 export function Character() {
   const { id } = useParams() as { id: string };
+  const location = useLocation();
 
   const { data, error } = useQuery(GET_CHARACTER, {
-    variables: { id: id, withRoles: false },
+    variables: { id: id },
     notifyOnNetworkStatusChange: true,
+    onCompleted(data) {
+      document.title = `${data.Character.name.full} · otakuVERISSIMO`;
+    },
+    onError(error) {
+      console.error(error);
+    },
   });
 
   const character: CharacterModel = data && data.Character;
-
-  if (error) console.error(error);
-
-  if (character) {
-    const title = `${character.name.full} · otakuVERISSIMO`;
-
-    document.title = title;
-  }
 
   useEffect(() => {
     scrollTo({ top: 0 });
@@ -88,7 +88,11 @@ export function Character() {
               <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] lg:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
                 {character.media.edges.map((edge) =>
                   edge.node.type == "ANIME" ? (
-                    <Link key={edge.node.id} to={`/anime/${edge.node.id}`}>
+                    <Link
+                      key={edge.node.id}
+                      to={`/anime/${edge.node.id}`}
+                      state={{ from: handleNavLocationStateFrom(location) }}
+                    >
                       <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
                         <img
                           src={edge.node.coverImage.large}

@@ -4,7 +4,7 @@ import {
   currentYear,
   nextSeason,
   nextSeasonYear,
-} from "../utils/variablesQueries";
+} from "../utils";
 import { GET_SEARCH_QUERY } from "../lib/queries";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
