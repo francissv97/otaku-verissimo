@@ -46,16 +46,23 @@ export function SimpleHeader() {
   const location = useLocation();
 
   function handleGoBack() {
-    const arrayRoutes: string[] = location.state.from;
+    if (location.state != null) {
+      const arrayRoutes: string[] = location.state?.from
+        ? location.state.from
+        : [location.pathname];
 
-    if (arrayRoutes.length > 0 && arrayRoutes[arrayRoutes.length - 1] !== "/") {
-      const navFor = arrayRoutes.pop() as string;
+      if (
+        arrayRoutes.length > 0 &&
+        arrayRoutes[arrayRoutes.length - 1] !== "/"
+      ) {
+        const navFor = arrayRoutes.pop() as string;
 
-      return navigate(navFor, {
-        state: {
-          from: arrayRoutes,
-        },
-      });
+        return navigate(navFor, {
+          state: {
+            from: arrayRoutes,
+          },
+        });
+      }
     }
 
     return navigate("/");
