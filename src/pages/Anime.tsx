@@ -962,63 +962,74 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
       <ScrollArea.Root>
         <ScrollArea.Viewport>
           <div className="flex gap-4 overflow-x-auto mt-2">
-            {edges.map((edge) => (
-              <Link
-                to={`/anime/${edge.node.mediaRecommendation.id}`}
-                key={edge.node.mediaRecommendation.id}
-                state={{ from: handleNavLocationStateFrom(location) }}
-                className="group cursor-pointer flex gap-1 flex-col w-32 pt-1 pb-3"
-              >
-                <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
-                  <img
-                    src={edge.node.mediaRecommendation.coverImage.large}
-                    alt={edge.node.mediaRecommendation.title.romaji}
-                    className="w-full h-full object-cover object-center group-hover:border-main"
-                    loading="lazy"
-                    style={{
-                      opacity: 0,
-                      transform: "scale(0.86)",
-                      transitionDuration: "700ms",
-                    }}
-                    onLoad={(t) => (
-                      (t.currentTarget.style.opacity = "1"),
-                      (t.currentTarget.style.transform = "initial")
-                    )}
-                  />
+            {edges.map(
+              (edge) =>
+                edge.node.mediaRecommendation != null && (
+                  <Link
+                    to={`/anime/${edge.node.mediaRecommendation.id}`}
+                    key={edge.node.mediaRecommendation.id}
+                    state={{ from: handleNavLocationStateFrom(location) }}
+                    className="group cursor-pointer flex gap-1 flex-col w-32 pt-1 pb-3"
+                  >
+                    <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
+                      <img
+                        src={edge.node.mediaRecommendation.coverImage.large}
+                        alt={edge.node.mediaRecommendation.title.romaji}
+                        className="w-full h-full object-cover object-center group-hover:border-main"
+                        loading="lazy"
+                        style={{
+                          opacity: 0,
+                          transform: "scale(0.86)",
+                          transitionDuration: "700ms",
+                        }}
+                        onLoad={(t) => (
+                          (t.currentTarget.style.opacity = "1"),
+                          (t.currentTarget.style.transform = "initial")
+                        )}
+                      />
 
-                  <div className="absolute top-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
-                    <Star size={18} weight="fill" className="text-yellow-400" />
-                    <span className="text-zinc-50 text-sm font-medium">
-                      {edge.node.mediaRecommendation.averageScore > 0
-                        ? edge.node.mediaRecommendation.averageScore
-                        : 0}
+                      <div className="absolute top-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                        <Star
+                          size={18}
+                          weight="fill"
+                          className="text-yellow-400"
+                        />
+                        <span className="text-zinc-50 text-sm font-medium">
+                          {edge.node.mediaRecommendation.averageScore > 0
+                            ? edge.node.mediaRecommendation.averageScore
+                            : 0}
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                        <Heart
+                          size={18}
+                          weight="fill"
+                          className="text-red-500"
+                        />
+                        <span className="text-zinc-50 text-sm font-medium">
+                          {edge.node.mediaRecommendation.favourites > 0
+                            ? edge.node.mediaRecommendation.favourites
+                            : 0}
+                        </span>
+                      </div>
+
+                      <div className="absolute top-0 right-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                        <span className="text-zinc-50 text-xs font-medium">
+                          {edge.node.mediaRecommendation.format.replaceAll(
+                            "_",
+                            " "
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    <span className="text-sm text-center leading-none text-main line-clamp-2">
+                      {edge.node.mediaRecommendation.title.romaji}
                     </span>
-                  </div>
-
-                  <div className="absolute bottom-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
-                    <Heart size={18} weight="fill" className="text-red-500" />
-                    <span className="text-zinc-50 text-sm font-medium">
-                      {edge.node.mediaRecommendation.favourites > 0
-                        ? edge.node.mediaRecommendation.favourites
-                        : 0}
-                    </span>
-                  </div>
-
-                  <div className="absolute top-0 right-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
-                    <span className="text-zinc-50 text-xs font-medium">
-                      {edge.node.mediaRecommendation.format.replaceAll(
-                        "_",
-                        " "
-                      )}
-                    </span>
-                  </div>
-                </div>
-
-                <span className="text-sm text-center leading-none text-main line-clamp-2">
-                  {edge.node.mediaRecommendation.title.romaji}
-                </span>
-              </Link>
-            ))}
+                  </Link>
+                )
+            )}
           </div>
         </ScrollArea.Viewport>
 
