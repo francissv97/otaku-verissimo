@@ -294,66 +294,66 @@ export function Staff() {
                 ))}
               </div>
 
-              <MyDivider />
+              {staff.staffMedia.edges.length > 0 && (
+                <div className="flex flex-col gap-4">
+                  <div className="grid px-4 flex-col gap-4 rounded">
+                    <strong className="text-lg font-medium uppercase font-sans">
+                      Anime Staff Roles
+                    </strong>
 
-              <div className="flex flex-col gap-4">
-                <div className="grid px-4 flex-col gap-4 rounded">
-                  <strong className="text-lg font-medium uppercase font-sans">
-                    Anime Staff Roles
-                  </strong>
-
-                  <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
-                    {sortStaffMediaRolesByStartDate(
-                      groupStaffRolesByMedia(staff.staffMedia.edges)
-                    ).map((edge, index) => (
-                      <Link
-                        to={`/anime/${edge.node.id}`}
-                        key={index}
-                        state={{ from: handleNavLocationStateFrom() }}
-                      >
-                        <div className="flex flex-col gap-2">
-                          <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
-                            <img
-                              src={edge.node.coverImage.large}
-                              alt={edge.node.title.romaji}
-                              loading="lazy"
-                              style={{
-                                opacity: 0,
-                                aspectRatio: "6/9",
-                                objectFit: "cover",
-                                width: "100%",
-                                transitionDuration: "700ms",
-                              }}
-                              onLoad={(t) => {
-                                t.currentTarget.style.opacity = "1";
-                              }}
-                              className="shadow-black/20 shadow-md rounded"
-                            />
-                          </div>
-
-                          <div className="flex flex-col gap-1">
-                            <span className="text-xs font-medium text-main line-clamp-2">
-                              {edge.node.title.romaji}
-                            </span>
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
+                      {sortStaffMediaRolesByStartDate(
+                        groupStaffRolesByMedia(staff.staffMedia.edges)
+                      ).map((edge, index) => (
+                        <Link
+                          to={`/anime/${edge.node.id}`}
+                          key={index}
+                          state={{ from: handleNavLocationStateFrom() }}
+                        >
+                          <div className="flex flex-col gap-2">
+                            <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
+                              <img
+                                src={edge.node.coverImage.large}
+                                alt={edge.node.title.romaji}
+                                loading="lazy"
+                                style={{
+                                  opacity: 0,
+                                  aspectRatio: "6/9",
+                                  objectFit: "cover",
+                                  width: "100%",
+                                  transitionDuration: "700ms",
+                                }}
+                                onLoad={(t) => {
+                                  t.currentTarget.style.opacity = "1";
+                                }}
+                                className="shadow-black/20 shadow-md rounded"
+                              />
+                            </div>
 
                             <div className="flex flex-col gap-1">
-                              {edge.staffRoles.map((staffRole, index) => (
-                                <span
-                                  key={index}
-                                  className="text-xs font-medium line-clamp-1"
-                                  title={staffRole}
-                                >
-                                  {staffRole}
-                                </span>
-                              ))}
+                              <span className="text-xs font-medium text-main line-clamp-2">
+                                {edge.node.title.romaji}
+                              </span>
+
+                              <div className="flex flex-col gap-1">
+                                {edge.staffRoles.map((staffRole, index) => (
+                                  <span
+                                    key={index}
+                                    className="text-xs font-medium line-clamp-1"
+                                    title={staffRole}
+                                  >
+                                    {staffRole}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </Link>
-                    ))}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </Grow>
         </div>
