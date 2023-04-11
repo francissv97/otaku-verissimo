@@ -1,3 +1,12 @@
+import { Location } from "react-router-dom";
+
+export function handleNavLocationStateFrom(location: Location) {
+  if (!location.state?.from) return ["/", location.pathname];
+
+  if (location.state?.from.length > 0)
+    return [...location.state.from, location.pathname];
+}
+
 export function currentSeason() {
   const currentMonth = new Date().getMonth();
 
