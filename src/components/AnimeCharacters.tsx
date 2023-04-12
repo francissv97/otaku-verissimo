@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import { Grow } from "@mui/material";
 import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
 import { HorizontalCardSkeleton } from "./Loading";
-import { handleNavLocationStateFrom } from "../utils";
 
 type AnimeCharactersProps = {
   characters: {
@@ -50,7 +49,7 @@ export function AnimeCharacters({
                 <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
                   <Link
                     to={`/character/${character.node.id}`}
-                    state={{ from: handleNavLocationStateFrom(location) }}
+                    
                   >
                     <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                       <img
@@ -71,7 +70,7 @@ export function AnimeCharacters({
                       <div className="flex flex-col gap-1 w-full">
                         <Link
                           to={`/character/${character.node.id}`}
-                          state={{ from: handleNavLocationStateFrom(location) }}
+                          
                         >
                           <span className="text-sm font-medium break-all">
                             {character.node.name.full}
@@ -93,7 +92,7 @@ export function AnimeCharacters({
 
                         <Link
                           to={`/staff/${voiceActorRole.voiceActor.id}`}
-                          state={{ from: handleNavLocationStateFrom(location) }}
+                          
                         >
                           <span className="text-sm font-medium text-end">
                             {voiceActorRole.voiceActor.name.full}
@@ -106,7 +105,7 @@ export function AnimeCharacters({
                   {voiceActorRole && (
                     <Link
                       to={`/staff/${voiceActorRole.voiceActor.id}`}
-                      state={{ from: handleNavLocationStateFrom(location) }}
+                      
                     >
                       <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                         <img

@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import { Grow } from "@mui/material";
 import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
 import { HorizontalCardSkeleton } from "./Loading";
-import { handleNavLocationStateFrom } from "../utils";
 
 type AnimeStaffProps = {
   staff: {
@@ -42,7 +41,7 @@ export function AnimeStaff({
               <div className="flex-1 flex">
                 <Link
                   to={`/staff/${edge.node.id}`}
-                  state={{ from: handleNavLocationStateFrom(location) }}
+                  
                 >
                   <div className="h-32 bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                     <img
@@ -62,7 +61,7 @@ export function AnimeStaff({
                   <div className="flex flex-col gap-1 w-full">
                     <Link
                       to={`/staff/${edge.node.id}`}
-                      state={{ from: handleNavLocationStateFrom(location) }}
+                      
                     >
                       <span className="text-sm font-medium">
                         {edge.node.name.full}

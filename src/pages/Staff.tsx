@@ -1,49 +1,17 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
+import { Grow } from "@mui/material";
 import { GET_STAFF } from "../lib/queries";
 import { CircularLoading } from "../components/Loading";
 import { SimpleHeader } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { MyDivider } from "../components/MyComponents";
-import { Grow } from "@mui/material";
 import { StaffModel } from "../types";
 import { Heart } from "phosphor-react";
-
-type StaffMediaRoleInitialType = {
-  node: {
-    id: number;
-    title: {
-      romaji: string;
-    };
-    coverImage: {
-      large: string;
-    };
-    startDate: {
-      day: number | null;
-      month: number | null;
-      year: number | null;
-    };
-  };
-  staffRole: string;
-};
-
-type StaffMediaRolesGrouped = {
-  node: {
-    id: number;
-    title: {
-      romaji: string;
-    };
-    coverImage: {
-      large: string;
-    };
-    startDate: {
-      day: number | null;
-      month: number | null;
-      year: number | null;
-    };
-  };
-  staffRoles: string[];
-};
+import {
+  groupStaffRolesByMedia,
+  sortStaffMediaRolesByStartDate,
+} from "../utils";
 
 export function Staff() {
   const { id } = useParams() as { id: string };
@@ -62,78 +30,18 @@ export function Staff() {
 
   const staff: StaffModel = data && data.Staff;
 
-  function groupStaffRolesByMedia(
-    staffMediaRoleArrayInitial: StaffMediaRoleInitialType[]
-  ): StaffMediaRolesGrouped[] {
-    const grouped: { [key: number]: StaffMediaRolesGrouped } = {};
-
-    staffMediaRoleArrayInitial.forEach((item) => {
-      const id = item.node.id;
-      const staffRole = item.staffRole;
-
-      if (!grouped[id]) {
-        grouped[id] = { staffRoles: [staffRole], node: { ...item.node } };
-      } else {
-        grouped[id].staffRoles.push(staffRole);
-      }
-    });
-
-    return Object.values(grouped);
-  }
-
-  function sortStaffMediaRolesByStartDate(
-    staffMediaRolesGrouped: StaffMediaRolesGrouped[]
-  ): StaffMediaRolesGrouped[] {
-    return staffMediaRolesGrouped.sort((a, b) => {
-      const aStartDate = a.node.startDate;
-      const bStartDate = b.node.startDate;
-
-      if (!aStartDate || !bStartDate) {
-        return 0;
-      }
-
-      const aYear = aStartDate.year ?? Number.MAX_VALUE;
-      const bYear = bStartDate.year ?? Number.MAX_VALUE;
-      if (aYear !== bYear) {
-        return bYear - aYear;
-      }
-
-      const aMonth = aStartDate.month ?? Number.MAX_VALUE;
-      const bMonth = bStartDate.month ?? Number.MAX_VALUE;
-      if (aMonth !== bMonth) {
-        return bMonth - aMonth;
-      }
-
-      const aDay = aStartDate.day ?? Number.MAX_VALUE;
-      const bDay = bStartDate.day ?? Number.MAX_VALUE;
-      if (aDay !== bDay) {
-        return bDay - aDay;
-      }
-
-      return 0;
-    });
-  }
-
-  function handleNavLocationStateFrom() {
-    if (!location.state?.from) return ["/", location.pathname];
-
-    if (location.state?.from.length > 0)
-      return [...location.state.from, location.pathname];
-  }
-
-  if (error)
-    return (
-      <div className="flex flex-col p-4 m-auto bg-zinc-50 shadow-xl">
-        <strong>{error.name}</strong>
-        <span>{error.message}</span>
-      </div>
-    );
-
-  if (!staff && !error) return <CircularLoading />;
-
   return (
     <div className="flex flex-col justify-between min-h-screen pt-10 bg-zinc-100">
       <SimpleHeader />
+
+      {error && (
+        <div className="flex flex-col p-4 m-auto bg-zinc-50 shadow-xl">
+          <strong>{error.name}</strong>
+          <span>{error.message}</span>
+        </div>
+      )}
+
+      {!staff && !error && <CircularLoading />}
 
       {staff && (
         <div className="flex flex-col gap-2 mb-auto py-4 max-w-6xl mx-auto w-full">
@@ -213,7 +121,7 @@ export function Staff() {
                       <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 rounded-full">
                         <Link
                           to={`/character/${edge.node.id}`}
-                          state={{ from: handleNavLocationStateFrom() }}
+                          
                         >
                           <img
                             src={edge.node.image.large}
@@ -234,7 +142,7 @@ export function Staff() {
                       <div className="flex flex-col flex-1">
                         <Link
                           to={`/character/${edge.node.id}`}
-                          state={{ from: handleNavLocationStateFrom() }}
+                          
                         >
                           <span className="font-medium text-lg break-all">
                             {edge.node.name.full}
@@ -249,7 +157,7 @@ export function Staff() {
                         <Link
                           key={media.id}
                           to={`/anime/${media.id}`}
-                          state={{ from: handleNavLocationStateFrom() }}
+                          
                         >
                           <div className="rounded">
                             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
@@ -308,7 +216,7 @@ export function Staff() {
                         <Link
                           to={`/anime/${edge.node.id}`}
                           key={index}
-                          state={{ from: handleNavLocationStateFrom() }}
+                          
                         >
                           <div className="flex flex-col gap-2">
                             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">

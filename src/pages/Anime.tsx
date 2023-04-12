@@ -15,7 +15,7 @@ import {
   GET_MORE_STAFF,
 } from "../lib/queries";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { handleNavLocationStateFrom, monthsShort } from "../utils";
+import { monthsShort } from "../utils";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
@@ -67,7 +67,9 @@ export function Anime() {
           <span>{error.message}</span>
         </div>
       )}
-      {!anime && <CircularLoading />}
+
+      {!anime && !error && <CircularLoading />}
+
       {anime && (
         <>
           {anime.bannerImage ? (
@@ -240,9 +242,6 @@ export function Anime() {
                                 key={character.node.id}
                                 className="flex flex-col gap-1 w-24"
                                 to={`/character/${character.node.id}`}
-                                state={{
-                                  from: handleNavLocationStateFrom(location),
-                                }}
                               >
                                 <div className="bg-zinc-300 h-24 rounded-full overflow-hidden">
                                   <img
@@ -839,7 +838,6 @@ function RelationsList({ edges }: RelationsListProps) {
                   to={`/anime/${edge.node.id}`}
                   key={edge.node.id}
                   className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
-                  state={{ from: handleNavLocationStateFrom(location) }}
                 >
                   <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
                     <img
@@ -968,7 +966,6 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
                   <Link
                     to={`/anime/${edge.node.mediaRecommendation.id}`}
                     key={edge.node.mediaRecommendation.id}
-                    state={{ from: handleNavLocationStateFrom(location) }}
                     className="group cursor-pointer flex gap-1 flex-col w-32 pt-1 pb-3"
                   >
                     <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">

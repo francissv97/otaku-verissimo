@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
 import { Grow, useMediaQuery } from "@mui/material";
-import { handleNavLocationStateFrom } from "../utils";
 import { AnimeMediaResults } from "../types";
 import { Smiley, SmileyMeh, SmileySad } from "phosphor-react";
 import * as HoverCard from "@radix-ui/react-hover-card";
@@ -22,7 +21,7 @@ export function CardAnimeResult({ anime }: CardAnimeResultProps) {
       <HoverCard.Trigger className="relative" asChild>
         <Link
           to={`/anime/${anime.id}`}
-          state={{ from: handleNavLocationStateFrom(location) }}
+          
         >
           <div className="group cursor-pointer flex flex-col h-full">
             <div className="relative mb-3 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
