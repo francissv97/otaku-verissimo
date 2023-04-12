@@ -377,6 +377,16 @@ export const GET_CHARACTER = gql`
             }
             type
           }
+          voiceActors {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+            languageV2
+          }
         }
       }
     }

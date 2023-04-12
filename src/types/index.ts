@@ -315,6 +315,16 @@ export type CharacterModel = {
         };
         type: "ANIME" | "MANGA";
       };
+      voiceActors: {
+        id: number;
+        name: {
+          full: string;
+        };
+        image: {
+          large: string;
+        };
+        languageV2: string;
+      }[];
     }[];
   };
 };
