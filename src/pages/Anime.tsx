@@ -96,14 +96,14 @@ export function Anime() {
 
           <SimpleHeader />
 
-          <div className="mb-auto pb-4 px-4">
-            <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 max-w-6xl mx-auto py-4">
-              <div className="flex flex-wrap md:flex-col gap-2">
+          <div className="mb-auto pb-4">
+            <div className="flex flex-col md:flex-row gap-y-2 max-w-6xl mx-auto py-4">
+              <div className="flex flex-wrap md:flex-col gap-2 pl-4">
                 <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded w-fit z-10 place-self-start shadow-black/40 shadow-md overflow-hidden -mt-32 md:-mt-36">
                   <img
                     src={anime.coverImage.large}
                     alt={anime.title.romaji}
-                    className={`w-28 md:w-44`}
+                    className="w-28 md:w-44"
                     loading="lazy"
                     style={{
                       opacity: 0,
@@ -134,7 +134,7 @@ export function Anime() {
                 </div>
               </div>
 
-              <div className="flex flex-1 flex-col gap-2">
+              <div className="flex flex-1 flex-col gap-2 px-4">
                 <h1 className="text-lg text-main line-clamp-2">
                   {anime.title.romaji}
                 </h1>
@@ -167,7 +167,7 @@ export function Anime() {
                   </div>
                 )}
 
-                <div className="flex justify-center mt-auto w-full px-2 gap-2 md:gap-8 max-w-6xl bg-zinc-100 mx-auto rounded shadow-lg font-medium">
+                <div className="flex justify-center mt-auto w-full px-4 gap-2 md:gap-8 max-w-6xl bg-zinc-100 mx-auto rounded shadow-lg font-medium">
                   <NavLink
                     className={({ isActive }) =>
                       isActive
@@ -210,7 +210,7 @@ export function Anime() {
             {!sub && (
               <Grow in timeout={600}>
                 <div className="max-w-6xl mx-auto">
-                  <ul className="flex gap-2 flex-wrap">
+                  <ul className="flex gap-2 flex-wrap mb-4 px-4">
                     {anime.genres.map((genre) => (
                       <li
                         key={genre}
@@ -222,19 +222,17 @@ export function Anime() {
                   </ul>
 
                   {anime.description && (
-                    <>
-                      <MyDivider />
-                      <DescriptionCollapse description={anime.description} />
-                    </>
+                    <DescriptionCollapse description={anime.description} />
                   )}
+
                   <MyDivider />
 
-                  <div className="flex flex-col">
-                    <strong className="mb-2">Characters</strong>
+                  <div className="flex flex-col mt-4">
+                    <strong className="mb-2 px-4">Characters</strong>
 
-                    <ScrollArea.Root>
-                      <ScrollArea.Viewport>
-                        <div className="flex gap-4 pb-2">
+                    <ScrollArea.Root type="always">
+                      <ScrollArea.Viewport className="duration-100 px-4 md:pb-4">
+                        <div className="flex gap-4">
                           {anime.characters.edges
                             .filter((character) => character.role == "MAIN")
                             .map((character) => (
@@ -258,7 +256,7 @@ export function Anime() {
                                   />
                                 </div>
 
-                                <span className="text-sm text-main w-full text-center mx-auto">
+                                <span className="text-sm text-main w-full text-center mx-auto line-clamp-2">
                                   {character.node.name.full}
                                 </span>
                               </Link>
@@ -267,17 +265,17 @@ export function Anime() {
                       </ScrollArea.Viewport>
 
                       <ScrollArea.Scrollbar
-                        className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+                        className="hidden md:flex rounded bg-transparent duration-100 h-3 px-4"
                         orientation="horizontal"
                       >
-                        <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+                        <ScrollArea.Thumb className="active:bg-zinc-500 bg-zinc-400 duration-100 rounded" />
                       </ScrollArea.Scrollbar>
                     </ScrollArea.Root>
                   </div>
 
                   <MyDivider />
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 mt-4 px-4">
                     <strong>Info</strong>
 
                     <div className="flex flex-wrap gap-y-2 gap-x-4">
@@ -316,7 +314,7 @@ export function Anime() {
 
                   <MyDivider />
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 px-4">
                     <div className="flex flex-wrap gap-y-2 gap-x-4">
                       <span className="text-sm min-w-[110px]">Format</span>
 
@@ -419,7 +417,7 @@ export function Anime() {
 
                   <MyDivider />
 
-                  <div className="flex gap-4 md:gap-8 justify-center">
+                  <div className="flex gap-4 md:gap-8 justify-center px-4">
                     <div className="flex flex-col gap-y-2 justify-center items-center">
                       <span className="text-xl font-medium text-zinc-600 leading-none">
                         {anime.averageScore ? anime.averageScore : 0}%
@@ -472,7 +470,7 @@ export function Anime() {
 
                   <MyDivider />
 
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3 px-4">
                     <div className="flex justify-between">
                       <strong className="text-md leading-none">Links</strong>
                       <span className="text-sm leading-none font-medium text-zinc-500">
@@ -597,30 +595,42 @@ function DescriptionCollapse({ description }: DescriptionCollapseProps) {
   const [showAllDescription, setShowAllDescription] = useState(false);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col px-4">
       <strong className="mb-2">Description</strong>
 
-      {description.length > 112 ? (
+      {description.replaceAll(" ", "").length > 256 ? (
         <>
-          <div className="relative">
-            <Collapse in={showAllDescription} collapsedSize={80}>
-              <p
-                className="text-justify"
-                dangerouslySetInnerHTML={{ __html: description }}
-              ></p>
-            </Collapse>
-          </div>
+          <Collapse in={showAllDescription} collapsedSize={80}>
+            <p
+              className={
+                !showAllDescription
+                  ? "text-justify line-clamp-3"
+                  : "text-justify"
+              }
+              dangerouslySetInnerHTML={{
+                __html: description,
+              }}
+            ></p>
+          </Collapse>
 
           <button
             onClick={() => setShowAllDescription(!showAllDescription)}
-            className={`flex justify-center outline-main/50 bg-zinc-100/70 ${
-              showAllDescription ? "mt-0" : "-mt-8 py-2"
-            } z-10`}
+            className="flex justify-center items-center outline-main/50 w-fit mx-auto"
           >
             {showAllDescription ? (
-              <CaretUp size={26} className="text-zinc-400" weight="bold" />
+              <>
+                <span className="text-zinc-400 text-sm font-medium">
+                  SHOW LESS
+                </span>
+                <CaretUp size={26} className="text-zinc-400" weight="bold" />
+              </>
             ) : (
-              <CaretDown size={26} className="text-zinc-400" weight="bold" />
+              <>
+                <span className="text-zinc-400 text-sm font-medium">
+                  SHOW MORE
+                </span>
+                <CaretDown size={26} className="text-zinc-400" weight="bold" />
+              </>
             )}
           </button>
         </>
@@ -684,7 +694,7 @@ function StudiosList({ studios }: StudiosListProps) {
   const producers = studios.filter((studio) => !studio.isMain);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 px-4">
       <div className="flex flex-wrap gap-y-2 gap-x-4">
         <span className="text-sm min-w-[110px]">Studios</span>
 
@@ -742,7 +752,7 @@ function TagsList({ tags }: TagsListProps) {
     <>
       <MyDivider />
 
-      <div className="flex justify-between mb-2">
+      <div className="flex justify-between mb-2 px-4">
         <strong>Tags</strong>
         {tags.find((item) => item.isMediaSpoiler === true) && (
           <button
@@ -754,7 +764,7 @@ function TagsList({ tags }: TagsListProps) {
         )}
       </div>
 
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 px-4">
         {tags.map((tag) => {
           if (!tag.isMediaSpoiler || showSpoilerTags) {
             return (
@@ -814,8 +824,6 @@ function RelationsList({ edges }: RelationsListProps) {
     "OTHER",
   ];
 
-  const location = useLocation();
-
   const sortEdges = [...edges].sort((a, b) => {
     if (order.indexOf(a.relationType) > order.indexOf(b.relationType)) return 1;
     if (order.indexOf(a.relationType) < order.indexOf(b.relationType))
@@ -827,10 +835,10 @@ function RelationsList({ edges }: RelationsListProps) {
     <div className="flex flex-col">
       <MyDivider />
 
-      <strong>Relations</strong>
+      <strong className="px-4">Relations</strong>
 
-      <ScrollArea.Root>
-        <ScrollArea.Viewport>
+      <ScrollArea.Root type="always">
+        <ScrollArea.Viewport className="duration-100 px-4 md:pb-4">
           <div className="flex gap-4 overflow-x-auto mt-2 pb-2">
             {sortEdges.map((edge) =>
               edge.node.type == "ANIME" ? (
@@ -856,7 +864,7 @@ function RelationsList({ edges }: RelationsListProps) {
                       )}
                     />
 
-                    <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                    <div className="absolute top-0 right-0 bg-zinc-800/70 p-1">
                       <span className="text-zinc-50 text-xs font-medium">
                         {edge.node.format
                           ? edge.node.format.replaceAll("_", " ")
@@ -864,8 +872,8 @@ function RelationsList({ edges }: RelationsListProps) {
                       </span>
                     </div>
 
-                    <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
-                      <span className="text-zinc-50 text-xs font-medium">
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-zinc-800/70 p-1">
+                      <span className="text-zinc-50 text-sm font-medium">
                         {edge.relationType.replaceAll("_", " ")}
                       </span>
                     </div>
@@ -897,7 +905,7 @@ function RelationsList({ edges }: RelationsListProps) {
                       )}
                     />
 
-                    <div className="absolute top-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
+                    <div className="absolute top-0 left-0 bg-zinc-800/70 p-1">
                       <span className="text-zinc-50 text-xs font-medium">
                         {edge.node.format
                           ? edge.node.format.replaceAll("_", " ")
@@ -905,8 +913,8 @@ function RelationsList({ edges }: RelationsListProps) {
                       </span>
                     </div>
 
-                    <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 items-center bg-zinc-700/80 py-[2px]">
-                      <span className="text-zinc-50 text-xs font-medium">
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-zinc-800/70 p-1">
+                      <span className="text-zinc-50 text-sm font-medium">
                         {edge.relationType.replaceAll("_", " ")}
                       </span>
                     </div>
@@ -922,10 +930,10 @@ function RelationsList({ edges }: RelationsListProps) {
         </ScrollArea.Viewport>
 
         <ScrollArea.Scrollbar
-          className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+          className="hidden md:flex rounded bg-transparent duration-100 h-3 px-4"
           orientation="horizontal"
         >
-          <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+          <ScrollArea.Thumb className="active:bg-zinc-500 bg-zinc-400 duration-100 rounded" />
         </ScrollArea.Scrollbar>
       </ScrollArea.Root>
     </div>
@@ -952,13 +960,12 @@ type RecommendationsListProps = {
 };
 
 function RecommendationsList({ edges }: RecommendationsListProps) {
-  const location = useLocation();
-
   return (
     <div className="flex flex-col">
-      <strong>Recommendations</strong>
-      <ScrollArea.Root>
-        <ScrollArea.Viewport>
+      <strong className="px-4">Recommendations</strong>
+
+      <ScrollArea.Root type="always">
+        <ScrollArea.Viewport className="duration-100 px-4 md:pb-4">
           <div className="flex gap-4 overflow-x-auto mt-2">
             {edges.map(
               (edge) =>
@@ -985,7 +992,7 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
                         )}
                       />
 
-                      <div className="absolute top-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                      <div className="absolute top-0 flex gap-1 items-center bg-zinc-800/70 p-1 rounded">
                         <Star
                           size={18}
                           weight="fill"
@@ -998,7 +1005,7 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
                         </span>
                       </div>
 
-                      <div className="absolute bottom-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                      <div className="absolute bottom-0 flex gap-1 items-center bg-zinc-800/70 p-1 rounded">
                         <Heart
                           size={18}
                           weight="fill"
@@ -1011,7 +1018,7 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
                         </span>
                       </div>
 
-                      <div className="absolute top-0 right-0 flex gap-1 items-center bg-zinc-700/70 p-1 rounded">
+                      <div className="absolute top-0 right-0 flex gap-1 items-center bg-zinc-800/70 p-1 rounded">
                         <span className="text-zinc-50 text-xs font-medium">
                           {edge.node.mediaRecommendation.format.replaceAll(
                             "_",
@@ -1031,10 +1038,10 @@ function RecommendationsList({ edges }: RecommendationsListProps) {
         </ScrollArea.Viewport>
 
         <ScrollArea.Scrollbar
-          className="hidden md:flex select-none touch-none rounded bg-zinc-300 transition-colors duration-200 flex-col h-2"
+          className="hidden md:flex rounded bg-transparent duration-100 h-3 px-4"
           orientation="horizontal"
         >
-          <ScrollArea.Thumb className="flex-1 bg-main/60 rounded relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+          <ScrollArea.Thumb className="active:bg-zinc-500 bg-zinc-400 duration-100 rounded" />
         </ScrollArea.Scrollbar>
       </ScrollArea.Root>
     </div>
