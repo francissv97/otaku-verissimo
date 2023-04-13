@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_CHARACTER } from "../lib/queries";
 import { CircularLoading } from "../components/Loading";
@@ -9,11 +9,10 @@ import { MyDivider } from "../components/MyComponents";
 import { Grow } from "@mui/material";
 import { CharacterModel } from "../types";
 import { Heart } from "phosphor-react";
-import { handleNavLocationStateFrom } from "../utils";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 export function Character() {
   const { id } = useParams() as { id: string };
-  const location = useLocation();
 
   const { data, error } = useQuery(GET_CHARACTER, {
     variables: { id: id },
@@ -80,7 +79,44 @@ export function Character() {
             </div>
           )}
 
-          <MyDivider />
+          <div className="flex flex-col gap-4 pb-4">
+            <strong className="text-lg font-medium px-4">Voices Actors</strong>
+
+            <ScrollArea.Root type="always">
+              <ScrollArea.Viewport className="duration-100 px-4 md:pb-4">
+                <div className="flex gap-4">
+                  {character.media.edges[0].voiceActors.map((voiceActor) => (
+                    <Link key={voiceActor.id} to={`/staff/${voiceActor.id}`}>
+                      <div className="w-28">
+                        <div className="bg-zinc-300 h-28 w-full rounded-full overflow-hidden">
+                          <img
+                            src={voiceActor.image.large}
+                            alt={voiceActor.name.full}
+                            className="object-cover h-28 w-full shadow-black/10 shadow-lg rounded-full"
+                          />
+                        </div>
+
+                        <span className="font-medium line-clamp-2 mt-2 text-center">
+                          {voiceActor.name.full}
+                        </span>
+
+                        <span className="text-main font-medium line-clamp-2 text-center">
+                          {voiceActor.languageV2}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </ScrollArea.Viewport>
+
+              <ScrollArea.Scrollbar
+                className="hidden md:flex rounded bg-transparent duration-100 h-3 px-4"
+                orientation="horizontal"
+              >
+                <ScrollArea.Thumb className="active:bg-zinc-500 bg-zinc-400 duration-100 rounded" />
+              </ScrollArea.Scrollbar>
+            </ScrollArea.Root>
+          </div>
 
           <Grow in timeout={600}>
             <div className="flex flex-col gap-4 px-4">
@@ -88,11 +124,7 @@ export function Character() {
               <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] lg:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
                 {character.media.edges.map((edge) =>
                   edge.node.type == "ANIME" ? (
-                    <Link
-                      key={edge.node.id}
-                      to={`/anime/${edge.node.id}`}
-                      state={{ from: handleNavLocationStateFrom(location) }}
-                    >
+                    <Link key={edge.node.id} to={`/anime/${edge.node.id}`}>
                       <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded">
                         <img
                           src={edge.node.coverImage.large}
