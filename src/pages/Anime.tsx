@@ -241,7 +241,7 @@ export function Anime() {
                                 className="flex flex-col gap-1 w-24"
                                 to={`/character/${character.node.id}`}
                               >
-                                <div className="bg-zinc-300 h-24 rounded-full overflow-hidden">
+                                <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 h-24 rounded-full overflow-hidden">
                                   <img
                                     src={character.node.image.medium}
                                     alt={character.node.name.full}
@@ -600,7 +600,7 @@ function DescriptionCollapse({ description }: DescriptionCollapseProps) {
 
       {description.replaceAll(" ", "").length > 256 ? (
         <>
-          <Collapse in={showAllDescription} collapsedSize={80}>
+          <Collapse in={showAllDescription} appear collapsedSize={80}>
             <p
               className={
                 !showAllDescription

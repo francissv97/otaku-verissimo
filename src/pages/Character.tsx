@@ -79,46 +79,58 @@ export function Character() {
             </div>
           )}
 
-          <div className="flex flex-col gap-4 pb-4">
-            <strong className="text-lg font-medium px-4">Voices Actors</strong>
+          <Grow in timeout={400}>
+            <div className="flex flex-col gap-4 pb-4">
+              <strong className="text-lg font-medium px-4">
+                Voices Actors
+              </strong>
 
-            <ScrollArea.Root type="always">
-              <ScrollArea.Viewport className="duration-100 px-4 md:pb-4">
-                <div className="flex gap-4">
-                  {character.media.edges[0].voiceActors.map((voiceActor) => (
-                    <Link key={voiceActor.id} to={`/staff/${voiceActor.id}`}>
-                      <div className="w-28">
-                        <div className="bg-zinc-300 h-28 w-full rounded-full overflow-hidden">
-                          <img
-                            src={voiceActor.image.large}
-                            alt={voiceActor.name.full}
-                            className="object-cover h-28 w-full shadow-black/10 shadow-lg rounded-full"
-                          />
+              <ScrollArea.Root type="always">
+                <ScrollArea.Viewport className="duration-100 px-4 md:pb-4">
+                  <div className="flex gap-4">
+                    {character.media.edges[0].voiceActors.map((voiceActor) => (
+                      <Link key={voiceActor.id} to={`/staff/${voiceActor.id}`}>
+                        <div className="flex flex-col w-28">
+                          <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 h-28 w-full rounded-full overflow-hidden">
+                            <img
+                              src={voiceActor.image.large}
+                              alt={voiceActor.name.full}
+                              className="object-cover h-28 w-full shadow-black/10 shadow-lg rounded-full"
+                              loading="lazy"
+                              style={{
+                                opacity: 0,
+                                transitionDuration: "700ms",
+                              }}
+                              onLoad={(t) => {
+                                t.currentTarget.style.opacity = "1";
+                              }}
+                            />
+                          </div>
+
+                          <span className="font-medium line-clamp-2 mt-2 text-center">
+                            {voiceActor.name.full}
+                          </span>
+
+                          <span className="text-main font-medium line-clamp-2 text-center">
+                            {voiceActor.languageV2}
+                          </span>
                         </div>
+                      </Link>
+                    ))}
+                  </div>
+                </ScrollArea.Viewport>
 
-                        <span className="font-medium line-clamp-2 mt-2 text-center">
-                          {voiceActor.name.full}
-                        </span>
+                <ScrollArea.Scrollbar
+                  className="hidden md:flex rounded bg-transparent duration-100 h-3 px-4"
+                  orientation="horizontal"
+                >
+                  <ScrollArea.Thumb className="active:bg-zinc-500 bg-zinc-400 duration-100 rounded" />
+                </ScrollArea.Scrollbar>
+              </ScrollArea.Root>
+            </div>
+          </Grow>
 
-                        <span className="text-main font-medium line-clamp-2 text-center">
-                          {voiceActor.languageV2}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </ScrollArea.Viewport>
-
-              <ScrollArea.Scrollbar
-                className="hidden md:flex rounded bg-transparent duration-100 h-3 px-4"
-                orientation="horizontal"
-              >
-                <ScrollArea.Thumb className="active:bg-zinc-500 bg-zinc-400 duration-100 rounded" />
-              </ScrollArea.Scrollbar>
-            </ScrollArea.Root>
-          </div>
-
-          <Grow in timeout={600}>
+          <Grow in timeout={900}>
             <div className="flex flex-col gap-4 px-4">
               <strong className="text-lg font-medium">Series</strong>
               <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] lg:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
