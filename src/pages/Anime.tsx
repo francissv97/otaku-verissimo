@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, NavLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Collapse, Grow } from "@mui/material";
-import { CaretDown, CaretUp, CopySimple, Heart, Star } from "phosphor-react";
+import { Grow } from "@mui/material";
+import { CopySimple, Heart, Star } from "phosphor-react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import {
   GET_ANIME_MEDIA,
@@ -12,7 +12,7 @@ import {
 import { formatDateToString } from "../utils";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
-import { MyDivider } from "../components/MyComponents";
+import { MyDivider, ReadMoreReadLess } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
 import { AnimeCharacters } from "../components/AnimeCharacters";
 import { AnimeStaff } from "../components/AnimeStaff";
@@ -83,7 +83,7 @@ export function Anime() {
               />
             </div>
           ) : (
-            <div className="h-48 w-full bg-gradient-to-t from-zinc-800 via-zinc-700 to-zinc-600"></div>
+            <div className="h-10 md:h-11 w-full bg-gradient-to-t from-zinc-800 via-zinc-700 to-zinc-600" />
           )}
 
           <SimpleHeader />
@@ -91,7 +91,11 @@ export function Anime() {
           <div className="mb-auto pb-4">
             <div className="flex flex-col md:flex-row gap-y-2 max-w-6xl mx-auto py-4">
               <div className="flex flex-wrap md:flex-col gap-2 pl-4">
-                <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded w-fit z-10 place-self-start shadow-black/40 shadow-md overflow-hidden -mt-32 md:-mt-36">
+                <div
+                  className={`bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded w-fit z-10 place-self-start shadow-black/40 shadow-md overflow-hidden ${
+                    anime.bannerImage ? "-mt-32 md:-mt-36" : ""
+                  }`}
+                >
                   <img
                     src={anime.coverImage.large}
                     alt={anime.title.romaji}
@@ -214,7 +218,10 @@ export function Anime() {
                   </ul>
 
                   {anime.description && (
-                    <DescriptionCollapse description={anime.description} />
+                    <div className="flex flex-col px-4">
+                      <strong className="mb-2">Description</strong>
+                      <ReadMoreReadLess description={anime.description} />
+                    </div>
                   )}
 
                   <MyDivider />
@@ -572,63 +579,6 @@ export function Anime() {
 
           <Footer />
         </>
-      )}
-    </div>
-  );
-}
-
-type DescriptionCollapseProps = {
-  description: string;
-};
-
-function DescriptionCollapse({ description }: DescriptionCollapseProps) {
-  const [showAllDescription, setShowAllDescription] = useState(false);
-
-  return (
-    <div className="flex flex-col px-4">
-      <strong className="mb-2">Description</strong>
-
-      {description.replaceAll(" ", "").length > 256 ? (
-        <>
-          <Collapse in={showAllDescription} appear collapsedSize={80}>
-            <p
-              className={
-                !showAllDescription
-                  ? "text-justify line-clamp-3"
-                  : "text-justify"
-              }
-              dangerouslySetInnerHTML={{
-                __html: description,
-              }}
-            ></p>
-          </Collapse>
-
-          <button
-            onClick={() => setShowAllDescription(!showAllDescription)}
-            className="flex justify-center items-center outline-main/50 w-fit mx-auto"
-          >
-            {showAllDescription ? (
-              <>
-                <span className="text-zinc-400 text-sm font-medium">
-                  SHOW LESS
-                </span>
-                <CaretUp size={26} className="text-zinc-400" weight="bold" />
-              </>
-            ) : (
-              <>
-                <span className="text-zinc-400 text-sm font-medium">
-                  SHOW MORE
-                </span>
-                <CaretDown size={26} className="text-zinc-400" weight="bold" />
-              </>
-            )}
-          </button>
-        </>
-      ) : (
-        <p
-          className="text-justify"
-          dangerouslySetInnerHTML={{ __html: description }}
-        ></p>
       )}
     </div>
   );
