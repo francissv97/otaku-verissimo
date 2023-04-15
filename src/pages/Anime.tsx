@@ -1,21 +1,15 @@
 import { useEffect, useState } from "react";
-import {
-  Link,
-  useParams,
-  NavLink,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Link, useParams, NavLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Collapse, Grow } from "@mui/material";
 import { CaretDown, CaretUp, CopySimple, Heart, Star } from "phosphor-react";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
 import {
   GET_ANIME_MEDIA,
   GET_MORE_CHARACTERS,
   GET_MORE_STAFF,
 } from "../lib/queries";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { monthsShort } from "../utils";
+import { formatDateToString } from "../utils";
 import { AnimeMedia } from "../types";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider } from "../components/MyComponents";
@@ -25,11 +19,9 @@ import { AnimeStaff } from "../components/AnimeStaff";
 import { SimpleHeader } from "../components/Header";
 
 export function Anime() {
+  const [isLoading, setIsLoading] = useState(false);
   const { id, sub } = useParams() as { id: string; sub: string };
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const { data, error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
     variables: { id: id },
@@ -369,13 +361,11 @@ export function Anime() {
                       anime.startDate.month ||
                       anime.startDate.year ? (
                         <span className="flex-1 text-sm text-zinc-600">
-                          {`${
-                            anime.startDate.year ? anime.startDate.year : ""
-                          } ${
-                            anime.startDate.month
-                              ? monthsShort[anime.startDate.month]
-                              : ""
-                          } ${anime.startDate.day ? anime.startDate.day : ""}`}
+                          {formatDateToString(
+                            anime.startDate.year,
+                            anime.startDate.month,
+                            anime.startDate.day
+                          )}
                         </span>
                       ) : (
                         "?"
@@ -389,11 +379,11 @@ export function Anime() {
                       anime.endDate.month ||
                       anime.endDate.year ? (
                         <span className="flex-1 text-sm text-zinc-600">
-                          {`${anime.endDate.year ? anime.endDate.year : ""} ${
-                            anime.endDate.month
-                              ? monthsShort[anime.endDate.month]
-                              : ""
-                          } ${anime.endDate.day ? anime.endDate.day : ""}`}
+                          {formatDateToString(
+                            anime.endDate.year,
+                            anime.endDate.month,
+                            anime.endDate.day
+                          )}
                         </span>
                       ) : (
                         "?"
@@ -864,7 +854,7 @@ function RelationsList({ edges }: RelationsListProps) {
                       )}
                     />
 
-                    <div className="absolute top-0 right-0 bg-zinc-800/70 p-1">
+                    <div className="absolute top-0 right-0 bg-zinc-800/70 p-1 rounded">
                       <span className="text-zinc-50 text-xs font-medium">
                         {edge.node.format
                           ? edge.node.format.replaceAll("_", " ")
@@ -886,7 +876,7 @@ function RelationsList({ edges }: RelationsListProps) {
               ) : (
                 <div
                   key={edge.node.id}
-                  className="group cursor-pointer flex gap-1 flex-col w-32 py-1"
+                  className="group flex gap-1 flex-col w-32 py-1"
                 >
                   <div className="relative w-32 h-48 mb-2 bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 rounded overflow-hidden shadow-md shadow-zinc-400/70">
                     <img
@@ -905,7 +895,7 @@ function RelationsList({ edges }: RelationsListProps) {
                       )}
                     />
 
-                    <div className="absolute top-0 left-0 bg-zinc-800/70 p-1">
+                    <div className="absolute top-0 left-0 bg-zinc-800/70 p-1 rounded">
                       <span className="text-zinc-50 text-xs font-medium">
                         {edge.node.format
                           ? edge.node.format.replaceAll("_", " ")
