@@ -237,6 +237,14 @@ export type StaffModel = {
   homeTown: string;
   favourites: number;
   bloodType: string;
+  age: number;
+  gender: string;
+  yearsActive: number[];
+  dateOfBirth: {
+    day: number;
+    month: number;
+    year: number;
+  };
   characters: {
     edges: {
       id: number;

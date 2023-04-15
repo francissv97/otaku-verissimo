@@ -291,10 +291,19 @@ export const GET_STAFF = gql`
       image {
         large
       }
-      description(asHtml: false)
+      gender
+      age
+      yearsActive
+      description(asHtml: true)
       favourites
       homeTown
       bloodType
+      modNotes
+      dateOfBirth {
+        day
+        month
+        year
+      }
       characters(sort: FAVOURITES_DESC) {
         edges {
           id
