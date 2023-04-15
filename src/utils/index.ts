@@ -86,6 +86,16 @@ export function sortStaffMediaRolesByStartDate(
   });
 }
 
+export function formatDateToString(year: number, month: number, day: number) {
+  const date = new Date(year, month - 1, day);
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export function currentSeason() {
   const currentMonth = new Date().getMonth();
 
