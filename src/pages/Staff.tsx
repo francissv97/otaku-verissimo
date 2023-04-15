@@ -5,7 +5,11 @@ import { GET_STAFF } from "../lib/queries";
 import { CircularLoading } from "../components/Loading";
 import { SimpleHeader } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { MyDivider, MySpace } from "../components/MyComponents";
+import {
+  MyDivider,
+  MySpace,
+  ReadMoreReadLess,
+} from "../components/MyComponents";
 import { StaffModel } from "../types";
 import { Heart } from "phosphor-react";
 import {
@@ -34,9 +38,9 @@ export function Staff() {
     <div className="flex flex-col justify-between min-h-screen pt-10">
       <SimpleHeader />
 
-      <div className="flex flex-col gap-2 mb-auto w-full bg-zinc-300">
+      <div className="flex flex-col gap-2 my-auto">
         {error && (
-          <div className="flex flex-col p-4 m-auto bg-zinc-50 shadow-xl">
+          <div className="flex flex-col p-4 mx-auto my-4 bg-zinc-50 shadow-xl rounded">
             <strong>{error.name}</strong>
             <span>{error.message}</span>
           </div>
@@ -48,8 +52,8 @@ export function Staff() {
           <div className="bg-zinc-300">
             <div className="bg-gradient-to-t from-transparent via-zinc-100 to-zinc-100 p-4">
               <div className="flex flex-col md:flex-row max-w-6xl mx-auto">
-                <div className="flex flex-col gap-2">
-                  <div className="min-w-max">
+                <div className="flex flex-col-reverse md:flex-col gap-2">
+                  <div className="min-w-max mx-auto">
                     <img
                       src={staff.image.large}
                       alt={staff.name.full}
@@ -136,12 +140,10 @@ export function Staff() {
                   )}
 
                   {staff.description && (
-                    <p
+                    <ReadMoreReadLess
+                      description={staff.description}
                       className="text-justify flex flex-col gap-1 [&_a]:text-main"
-                      dangerouslySetInnerHTML={{
-                        __html: staff.description
-                      }}
-                    ></p>
+                    />
                   )}
                 </div>
               </div>
@@ -151,16 +153,16 @@ export function Staff() {
               <div>
                 {staff.characters.edges.length > 0 && (
                   <div>
-                    <div className="flex flex-col gap-4 py-4 max-w-6xl mx-auto bg-zinc-100 md:rounded shadow-black/20 shadow-lg">
+                    <div className="flex flex-col gap-4 py-4 max-w-6xl mx-auto bg-zinc-100 md:rounded md:rounded-tl-[64px] shadow-black/20 shadow-xl">
                       {staff.characters.edges.map((edge, index, array) => (
                         <div key={edge.id} className="grid px-4 flex-col gap-4">
                           <div className="flex items-center gap-2">
-                            <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 rounded-full">
+                            <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300 rounded-full overflow-hidden shadow-black/20 shadow-md">
                               <Link to={`/character/${edge.node.id}`}>
                                 <img
                                   src={edge.node.image.large}
                                   alt={edge.node.name.full}
-                                  className="object-cover w-24 h-24 md:w-28 md:h-28 shadow-black/20 shadow-md rounded-full"
+                                  className="object-cover w-24 h-24 md:w-28 md:h-28"
                                   loading="lazy"
                                   style={{
                                     opacity: 0,
@@ -188,7 +190,7 @@ export function Staff() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] lg:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
+                          <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,160px)] gap-y-4 gap-x-4 justify-between">
                             {edge.media.map((media) => (
                               <Link key={media.id} to={`/anime/${media.id}`}>
                                 <div className="rounded">
@@ -244,7 +246,7 @@ export function Staff() {
               <div>
                 {staff.staffMedia.edges.length > 0 && (
                   <div>
-                    <div className="flex flex-col py-4 gap-4 max-w-6xl mx-auto bg-zinc-100 md:rounded shadow-black/20 shadow-lg">
+                    <div className="flex flex-col py-4 gap-4 max-w-6xl mx-auto bg-zinc-100 md:rounded shadow-black/20 shadow-xl">
                       <div className="grid px-4 flex-col gap-4 rounded">
                         <strong className="text-lg font-medium uppercase font-sans">
                           Anime Staff Roles
