@@ -43,7 +43,7 @@ export function SimpleHeader() {
   const navigate = useNavigate();
 
   function handleGoBack() {
-    if (window.history.state.idx > 0) {
+    if (window.history.state && window.history.state.idx > 0) {
       return navigate(-1);
     }
 
@@ -51,7 +51,7 @@ export function SimpleHeader() {
   }
 
   return (
-    <div className="sm:block fixed z-30 bg-zinc-800/60 md:hover:bg-zinc-800 backdrop-blur-sm left-0 right-0 top-0 duration-300">
+    <div className="sm:block h-10 md:h-11 fixed z-30 bg-zinc-800/60 md:hover:bg-zinc-800 backdrop-blur-sm left-0 right-0 top-0 duration-300">
       <div className="group flex w-full justify-between items-center max-w-6xl mx-auto px-4">
         <div
           className="p-2 cursor-pointer transition hover:bg-main/10"
