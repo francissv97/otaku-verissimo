@@ -1,6 +1,6 @@
 import { Collapse } from "@mui/material";
 import { CaretDown, CaretUp } from "phosphor-react";
-import { ClassAttributes, HTMLAttributes, useState } from "react";
+import { ClassAttributes, useState } from "react";
 
 type MyDividerProps = ClassAttributes<HTMLDivElement> & {
   className?: string;
@@ -81,7 +81,7 @@ export function ReadMoreReadLess({
         </>
       ) : (
         <p
-          className="text-justify"
+          className={className}
           dangerouslySetInnerHTML={{ __html: description }}
         ></p>
       )}
