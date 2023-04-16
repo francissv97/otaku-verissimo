@@ -6,8 +6,8 @@ import { CopySimple, Heart, Star } from "phosphor-react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import {
   GET_ANIME_MEDIA,
-  GET_MORE_CHARACTERS,
-  GET_MORE_STAFF,
+  GET_ANIME_MORE_CHARACTERS,
+  GET_ANIME_MORE_STAFF,
 } from "../lib/queries";
 import { formatDateToString } from "../utils";
 import { AnimeMedia } from "../types";
@@ -401,7 +401,7 @@ export function Anime() {
                       <div className="flex flex-wrap gap-y-2 gap-x-4">
                         <span className="text-sm min-w-[110px]">Season</span>
 
-                        <span className="flex-1 text-sm text-main cursor-pointer">
+                        <span className="flex-1 text-sm text-main">
                           {`${anime.season} ${anime.seasonYear}`}
                         </span>
                       </div>
@@ -465,44 +465,50 @@ export function Anime() {
                     </>
                   )}
 
-                  <MyDivider />
+                  {anime.externalLinks.length > 0 && (
+                    <>
+                      <MyDivider />
 
-                  <div className="flex flex-col gap-3 px-4">
-                    <div className="flex justify-between">
-                      <strong className="text-md leading-none">Links</strong>
-                      <span className="text-sm leading-none font-medium text-zinc-500">
-                        Click to copy link
-                      </span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      {anime.externalLinks.map((link) => (
-                        <div
-                          key={link.id}
-                          className="flex gap-1 p-2 rounded items-center h-fit my-auto cursor-pointer hover:scale-[102%]"
-                          onClick={() =>
-                            navigator.clipboard.writeText(link.url)
-                          }
-                          style={{
-                            backgroundColor: link.color
-                              ? link.color
-                              : "#52525b",
-                          }}
-                        >
-                          {link.icon && (
-                            <img
-                              src={link.icon}
-                              alt={link.site}
-                              className="w-6"
-                            />
-                          )}
-                          <strong className="text-white text-sm">
-                            {link.site}
+                      <div className="flex flex-col gap-3 px-4">
+                        <div className="flex justify-between">
+                          <strong className="text-md leading-none">
+                            Links
                           </strong>
+                          <span className="text-sm leading-none font-medium text-zinc-500">
+                            Click to copy link
+                          </span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {anime.externalLinks.map((link) => (
+                            <div
+                              key={link.id}
+                              className="flex gap-1 p-2 rounded items-center h-fit my-auto cursor-pointer hover:scale-[102%]"
+                              onClick={() =>
+                                navigator.clipboard.writeText(link.url)
+                              }
+                              style={{
+                                backgroundColor: link.color
+                                  ? link.color
+                                  : "#52525b",
+                              }}
+                            >
+                              {link.icon && (
+                                <img
+                                  src={link.icon}
+                                  alt={link.site}
+                                  className="w-6"
+                                />
+                              )}
+                              <strong className="text-white text-sm">
+                                {link.site}
+                              </strong>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </Grow>
             )}
@@ -514,7 +520,7 @@ export function Anime() {
                   setIsLoading(true);
 
                   fetchMore({
-                    query: GET_MORE_CHARACTERS,
+                    query: GET_ANIME_MORE_CHARACTERS,
                     variables: {
                       charactersPage: anime.characters.pageInfo.currentPage + 1,
                       id: anime.id,
@@ -547,7 +553,7 @@ export function Anime() {
                 pagingFunction={() => {
                   setIsLoading(true);
                   fetchMore({
-                    query: GET_MORE_STAFF,
+                    query: GET_ANIME_MORE_STAFF,
                     variables: {
                       staffPage: anime.staff.pageInfo.currentPage + 1,
                       id: anime.id,
@@ -641,10 +647,7 @@ function StudiosList({ studios }: StudiosListProps) {
         <div className="flex flex-col gap-1">
           {animationStudio && animationStudio.length > 0
             ? animationStudio.map((studio) => (
-                <span
-                  key={studio.node.id}
-                  className="flex-1 text-sm text-main cursor-pointer"
-                >
+                <span key={studio.node.id} className="flex-1 text-sm text-main">
                   {studio.node.name}
                 </span>
               ))
@@ -660,7 +663,7 @@ function StudiosList({ studios }: StudiosListProps) {
             ? producers.map((producer) => (
                 <span
                   key={producer.node.id}
-                  className="flex-1 text-sm text-main cursor-pointer"
+                  className="flex-1 text-sm text-main"
                 >
                   {producer.node.name}
                 </span>
