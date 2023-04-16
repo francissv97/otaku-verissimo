@@ -289,6 +289,7 @@ export type StaffModel = {
           month: number | null;
           year: number | null;
         };
+        type: "ANIME" | "MANGA";
       };
       staffRole: string;
     }[];
