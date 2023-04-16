@@ -12,6 +12,7 @@ type StaffMediaRoleInitialType = {
       month: number | null;
       year: number | null;
     };
+    type: "ANIME" | "MANGA";
   };
   staffRole: string;
 };
@@ -30,6 +31,7 @@ type StaffMediaRolesGrouped = {
       month: number | null;
       year: number | null;
     };
+    type: "ANIME" | "MANGA";
   };
   staffRoles: string[];
 };
