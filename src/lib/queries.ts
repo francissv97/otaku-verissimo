@@ -217,7 +217,7 @@ export const GET_SEARCH_QUERY = gql`
   }
 `;
 
-export const GET_MORE_CHARACTERS = gql`
+export const GET_ANIME_MORE_CHARACTERS = gql`
   query MoreCharacters($id: Int, $charactersPage: Int) {
     Media(id: $id, type: ANIME) {
       characters(sort: [ROLE, ID], page: $charactersPage, perPage: 20) {
@@ -254,7 +254,7 @@ export const GET_MORE_CHARACTERS = gql`
   }
 `;
 
-export const GET_MORE_STAFF = gql`
+export const GET_ANIME_MORE_STAFF = gql`
   query MoreStaff($id: Int, $staffPage: Int) {
     Media(id: $id, type: ANIME) {
       staff(sort: RELEVANCE, page: $staffPage, perPage: 20) {
@@ -348,6 +348,73 @@ export const GET_STAFF = gql`
               month
               year
             }
+            type
+          }
+        }
+        pageInfo {
+          currentPage
+          hasNextPage
+        }
+      }
+    }
+  }
+`;
+
+export const GET_STAFF_MORE_CHARACTERS = gql`
+  query staffMoreCharacters($id: Int, $charactersPage: Int) {
+    Staff(id: $id) {
+      characters(sort: FAVOURITES_DESC, page: $charactersPage) {
+        edges {
+          id
+          role
+          node {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+          }
+          media {
+            id
+            title {
+              romaji
+            }
+            coverImage {
+              large
+            }
+          }
+        }
+        pageInfo {
+          currentPage
+          hasNextPage
+        }
+      }
+    }
+  }
+`;
+
+export const GET_STAFF_MORE_STAFF_MEDIA = gql`
+  query staffMoreStaffMedia($id: Int, $staffMediaPage: Int) {
+    Staff(id: $id) {
+      staffMedia(sort: START_DATE_DESC, page: $staffMediaPage) {
+        edges {
+          staffRole
+          node {
+            id
+            title {
+              romaji
+            }
+            coverImage {
+              large
+            }
+            startDate {
+              day
+              month
+              year
+            }
+            type
           }
         }
         pageInfo {
