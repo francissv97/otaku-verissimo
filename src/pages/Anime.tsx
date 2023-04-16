@@ -11,6 +11,7 @@ import {
 } from "../lib/queries";
 import { formatDateToString } from "../utils";
 import { AnimeMedia } from "../types";
+import { NotFound } from "../pages/NotFound";
 import { CircularLoading } from "../components/Loading";
 import { MyDivider, ReadMoreReadLess } from "../components/MyComponents";
 import { Footer } from "../components/Footer";
@@ -26,9 +27,8 @@ export function Anime() {
   const { data, error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
-    onError: (error) => {
+    onError: () => {
       setIsLoading(false);
-      console.error(error);
     },
     onCompleted: (data) => {
       setIsLoading(false);
@@ -50,6 +50,10 @@ export function Anime() {
       navigate(`/anime/${id}`);
     }
   }, []);
+
+  if (error && error.graphQLErrors.some((g) => g.message == "Not Found.")) {
+    return <NotFound />;
+  }
 
   return (
     <div className="flex flex-col justify-between min-h-screen">
