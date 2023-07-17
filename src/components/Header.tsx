@@ -5,13 +5,9 @@ import logo from "../assets/logo.svg";
 
 export function Header() {
   return (
-    <header className="bg-gradient-to-tr from-zinc-800 via-zinc-700 to-zinc-800">
-      <div className="max-w-screen-lg mx-auto p-4">
-        <img
-          src={logo}
-          alt="otakuVERISSIMOLogo"
-          className="w-44 md:w-60 mx-auto"
-        />
+    <header>
+      <div className="max-w-screen-lg mx-auto px-4 pt-4">
+        <img src={logo} alt="otakuVERISSIMOLogo" className="w-44 md:w-60 mx-auto" />
       </div>
     </header>
   );
@@ -25,13 +21,11 @@ type HeaderResultProps = {
 export function HeaderResults({ title, paramViewAll }: HeaderResultProps) {
   return (
     <div className="flex justify-between items-center max-w-6xl mx-auto my-2">
-      <strong className="text-zinc-500 text-lg font-medium uppercase">
-        {title}
-      </strong>
+      <strong className="text-base font-medium uppercase bg-main py-1 px-2 rounded">{title}</strong>
 
       {/* <button
         onClick={() => navigate(`/${paramViewAll}`)}
-        className="uppercase text-zinc-500 h-fit text-xs hover:text-zinc-600 font-medium duration-100"
+        className="uppercase h-fit text-xs hover:text-zinc-600 font-medium duration-100"
       >
         view all
       </button> */}
@@ -51,12 +45,9 @@ export function SimpleHeader() {
   }
 
   return (
-    <div className="sm:block h-10 md:h-11 fixed z-30 bg-zinc-800/60 md:hover:bg-zinc-800 backdrop-blur-sm left-0 right-0 top-0 duration-300">
+    <div className="sm:block h-10 md:h-11 fixed z-30 bg-zinc-800/60 backdrop-blur-sm left-0 right-0 top-0 duration-300">
       <div className="group flex w-full justify-between items-center max-w-6xl mx-auto px-4">
-        <div
-          className="p-2 cursor-pointer transition hover:bg-main/10"
-          onClick={handleGoBack}
-        >
+        <div className="p-2 cursor-pointer transition hover:bg-main/10" onClick={handleGoBack}>
           <CaretLeft size={22} className="text-main" />
         </div>
 

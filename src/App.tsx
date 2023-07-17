@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Anime } from "./pages/Anime";
 import { Character } from "./pages/Character";
 import { Home } from "./pages/Home";
-import { NotFound } from "./pages/NotFound";
+import { NotFound } from "./components/NotFound";
 import { Staff } from "./pages/Staff";
 
 export function App() {

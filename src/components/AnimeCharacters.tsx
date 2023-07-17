@@ -30,23 +30,19 @@ type AnimeCharactersProps = {
   isLoading: boolean;
 };
 
-export function AnimeCharacters({
-  characters,
-  pagingFunction,
-  isLoading,
-}: AnimeCharactersProps) {
+export function AnimeCharacters({ characters, pagingFunction, isLoading }: AnimeCharactersProps) {
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className="mx-auto max-w-6xl px-4">
       <strong>Characters</strong>
 
-      <div className="grid md:grid-cols-2 gap-4 pb-2 mt-2">
+      <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
         {characters.edges.map((character) =>
           character.voiceActorRoles.length >= 1 ? (
             character.voiceActorRoles.map((voiceActorRole) => (
               <Grow in timeout={600} key={voiceActorRole.voiceActor.id}>
-                <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
+                <div className="flex">
                   <Link to={`/character/${character.node.id}`}>
-                    <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                    <div className="overflow-hidden rounded-lg bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                       <img
                         src={character.node.image.medium}
                         alt={character.node.name.full}
@@ -55,35 +51,31 @@ export function AnimeCharacters({
                           transitionDuration: "600ms",
                         }}
                         onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                        className="h-32 aspect-[6_/_9] object-cover"
+                        className="aspect-[6_/_9] h-32 object-cover"
                       />
                     </div>
                   </Link>
 
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div className="flex gap-1 p-2 w-fit">
-                      <div className="flex flex-col gap-1 w-full">
+                  <div className="flex flex-1 flex-col justify-between">
+                    <div className="flex w-fit gap-1 p-2">
+                      <div className="flex w-full flex-col gap-1">
                         <Link to={`/character/${character.node.id}`}>
-                          <span className="text-sm font-medium break-all">
+                          <span className="break-all text-sm font-medium">
                             {character.node.name.full}
                           </span>
                         </Link>
-                        <span className="text-xs text-main">
-                          {character.role}
-                        </span>
+                        <span className="text-xs text-main">{character.role}</span>
                       </div>
                     </div>
 
                     {voiceActorRole && (
-                      <div className="flex flex-col p-2 w-fit place-self-end">
+                      <div className="flex w-fit flex-col place-self-end p-2">
                         {voiceActorRole.roleNotes && (
-                          <span className="text-xs text-end text-main">
-                            {voiceActorRole.roleNotes}
-                          </span>
+                          <span className="text-end text-xs text-main">{voiceActorRole.roleNotes}</span>
                         )}
 
                         <Link to={`/staff/${voiceActorRole.voiceActor.id}`}>
-                          <span className="text-sm font-medium text-end">
+                          <span className="text-end text-sm font-medium">
                             {voiceActorRole.voiceActor.name.full}
                           </span>
                         </Link>
@@ -93,7 +85,7 @@ export function AnimeCharacters({
 
                   {voiceActorRole && (
                     <Link to={`/staff/${voiceActorRole.voiceActor.id}`}>
-                      <div className="bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                      <div className="overflow-hidden rounded-lg bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                         <img
                           src={voiceActorRole.voiceActor.image.medium}
                           alt={voiceActorRole.voiceActor.name.full}
@@ -102,7 +94,7 @@ export function AnimeCharacters({
                             transitionDuration: "600ms",
                           }}
                           onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                          className="h-32 aspect-[6_/_9] object-cover"
+                          className="aspect-[6_/_9] h-32 object-cover"
                         />
                       </div>
                     </Link>
@@ -112,8 +104,8 @@ export function AnimeCharacters({
             ))
           ) : (
             <Grow in key={character.node.id}>
-              <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-                <div className="flex-1 flex">
+              <div className="flex">
+                <div className="flex flex-1">
                   <img
                     src={character.node.image.medium}
                     alt={character.node.name.full}
@@ -122,18 +114,14 @@ export function AnimeCharacters({
                       transitionDuration: "600ms",
                     }}
                     onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                    className="h-32 aspect-[6_/_9] object-cover"
+                    className="aspect-[6_/_9] h-32 rounded-lg object-cover"
                   />
 
                   <div className="flex gap-1 p-2">
-                    <div className="flex flex-col gap-1 w-full">
-                      <span className="text-sm font-medium ">
-                        {character.node.name.full}
-                      </span>
+                    <div className="flex w-full flex-col gap-1">
+                      <span className="text-sm font-medium ">{character.node.name.full}</span>
 
-                      <span className="text-xs text-main">
-                        {character.role}
-                      </span>
+                      <span className="text-xs text-main">{character.role}</span>
                     </div>
                   </div>
                 </div>

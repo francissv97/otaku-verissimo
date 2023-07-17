@@ -1,21 +1,11 @@
 import { useSearchParams } from "react-router-dom";
-import {
-  currentSeason,
-  currentYear,
-  nextSeason,
-  nextSeasonYear,
-} from "../utils";
-import { GET_SEARCH_QUERY } from "../lib/queries";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
-import { HeaderResults } from "../components/Header";
-import { ResultsList, SmallResultsList } from "../components/ResultsList";
-import { MyDivider } from "../components/MyComponents";
-import {
-  ButtonMoreOptions,
-  InputSearch,
-  SelectFieldGenres,
-} from "../components/SearchFields";
+import { currentSeason, currentYear, nextSeason, nextSeasonYear } from "../../utils";
+import { GET_SEARCH_QUERY } from "../../lib/queries";
+import { Header } from "../../components/Header";
+import { Footer } from "../../components/Footer";
+import { HeaderResults } from "../../components/Header";
+import { ResultsList, SmallResultsList } from "../../components/ResultsList";
+import { ButtonMoreOptions, InputSearch, SelectFieldGenres } from "../../components/SearchFields";
 import { useEffect } from "react";
 
 export function Home() {
@@ -27,16 +17,14 @@ export function Home() {
   // console.log(searchParams.keys().next().value);
 
   useEffect(() => {
-    return () => {
-      if (document.title != "otakuVERISSIMO") document.title = "otakuVERISSIMO";
-    };
+    if (document.title !== "otakuVERISSIMO") document.title = "otakuVERISSIMO";
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <div className="flex min-h-screen flex-col justify-between">
       <Header />
 
-      <div className="flex gap-4 items-center p-4 max-w-6xl justify-between mx-auto flex-wrap">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 p-4">
         <InputSearch
           searchTerm={searchTerm}
           searchParams={searchParams}
@@ -45,27 +33,27 @@ export function Home() {
 
         {/* <div className="flex gap-4">
             <div className="flex flex-col gap-2">
-              <span className="font-medium text-sm text-zinc-500">Genres</span>
+              <span className="font-medium text-sm">Genres</span>
               <SelectFieldGenres />
             </div>
 
             <div className="flex flex-col gap-2">
-              <span className="font-medium text-sm text-zinc-500">Year</span>
+              <span className="font-medium text-sm">Year</span>
               <SelectFieldGenres />
             </div>
 
             <div className="flex flex-col gap-2">
-              <span className="font-medium text-sm text-zinc-500">Season</span>
+              <span className="font-medium text-sm">Season</span>
               <SelectFieldGenres />
             </div>
 
             <div className="flex flex-col gap-2">
-              <span className="font-medium text-sm text-zinc-500">Format</span>
+              <span className="font-medium text-sm">Format</span>
               <SelectFieldGenres />
             </div>
 
             <div className="flex flex-col gap-2">
-              <span className="font-medium text-sm text-zinc-500">Airing Status</span>
+              <span className="font-medium text-sm">Airing Status</span>
               <SelectFieldGenres />
             </div>
 
@@ -76,16 +64,11 @@ export function Home() {
       <div className="mb-auto flex-1">
         {searchTerm.length == 0 ? (
           <>
-            <SmallResultsList
-              query={GET_SEARCH_QUERY}
-              variables={{ perPage: 6, sort: "TRENDING_DESC" }}
-            >
+            <SmallResultsList query={GET_SEARCH_QUERY} variables={{ perPage: 6, sort: "TRENDING_DESC" }}>
               <HeaderResults title="trending now" paramViewAll="trending" />
             </SmallResultsList>
 
-            <MyDivider />
-
-            <SmallResultsList
+            {/* <SmallResultsList
               query={GET_SEARCH_QUERY}
               variables={{
                 season: currentSeason(),
@@ -94,15 +77,10 @@ export function Home() {
                 sort: "POPULARITY_DESC",
               }}
             >
-              <HeaderResults
-                title="popular this season"
-                paramViewAll="this-season"
-              />
-            </SmallResultsList>
+              <HeaderResults title="popular this season" paramViewAll="this-season" />
+            </SmallResultsList> */}
 
-            <MyDivider />
-
-            <SmallResultsList
+            {/* <SmallResultsList
               query={GET_SEARCH_QUERY}
               variables={{
                 season: nextSeason(),
@@ -111,13 +89,8 @@ export function Home() {
                 sort: "POPULARITY_DESC",
               }}
             >
-              <HeaderResults
-                title="upcoming next season"
-                paramViewAll="next-season"
-              />
-            </SmallResultsList>
-
-            <MyDivider />
+              <HeaderResults title="upcoming next season" paramViewAll="next-season" />
+            </SmallResultsList> */}
 
             <SmallResultsList
               query={GET_SEARCH_QUERY}
@@ -143,9 +116,7 @@ export function Home() {
         )}
       </div>
 
-      <MyDivider />
-
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

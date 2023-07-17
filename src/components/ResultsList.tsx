@@ -28,17 +28,15 @@ export function ResultsList({ query, variables }: ResultsListProps) {
   });
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
-      <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(100px,1fr))] min-[375px]:grid-cols-[repeat(auto-fill,minmax(96px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
+    <div className="mx-auto max-w-6xl p-4">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] justify-between gap-4 min-[375px]:grid-cols-[repeat(auto-fill,minmax(96px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
         {data &&
           data.Page.media.map((anime: AnimeMediaResults) => (
             <CardAnimeResult key={anime.id} anime={anime} />
           ))}
 
         {!loading && data && data.Page.media.length == 0 && (
-          <strong className="text-xl font-medium text-zinc-500 place-self-center col-">
-            No results
-          </strong>
+          <strong className="col- place-self-center text-xl font-medium">No results</strong>
         )}
 
         {loading && <CardSkeleton />}
@@ -53,10 +51,7 @@ export function ResultsList({ query, variables }: ResultsListProps) {
               updateQuery(pv, { fetchMoreResult }) {
                 if (!fetchMoreResult) return pv;
 
-                fetchMoreResult.Page.media = [
-                  ...pv.Page.media,
-                  ...fetchMoreResult.Page.media,
-                ];
+                fetchMoreResult.Page.media = [...pv.Page.media, ...fetchMoreResult.Page.media];
 
                 return fetchMoreResult;
               },
@@ -79,11 +74,7 @@ type SmallResultsListProps = {
   children?: ReactNode;
 };
 
-export function SmallResultsList({
-  query,
-  variables,
-  children,
-}: SmallResultsListProps) {
+export function SmallResultsList({ query, variables, children }: SmallResultsListProps) {
   const { data, loading } = useQuery(query, {
     variables,
   });
@@ -91,9 +82,9 @@ export function SmallResultsList({
   const animes: AnimeMediaResults[] = data && data.Page.media;
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
+    <div className="mx-auto max-w-6xl p-4">
       {children}
-      <div className="grid gap-4 justify-between grid-cols-[repeat(auto-fill,minmax(100px,1fr))] min-[375px]:grid-cols-[repeat(auto-fill,minmax(96px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] justify-between gap-4 min-[375px]:grid-cols-[repeat(auto-fill,minmax(96px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
         {animes?.map((anime) => (
           <CardAnimeResult key={anime.id} anime={anime} />
         ))}

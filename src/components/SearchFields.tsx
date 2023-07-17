@@ -76,25 +76,26 @@ export function InputSearch({
 
   return (
     <div className="flex flex-col w-full md:max-w-xs gap-2">
-      <span className="font-medium text-zinc-500">Search</span>
-      <div className="flex gap-2 items-center bg-zinc-50 rounded shadow-zinc-300 shadow-lg px-2">
-        <MagnifyingGlass size={22} className="text-zinc-400" weight="bold" />
+      <span className="font-medium">Search</span>
+      <div className="flex gap-2 items-center shadow-xl px-2 border-b-2 border-main">
+        <MagnifyingGlass size={24} className="text-zinc-400" weight="bold" />
+
         <input
           type="text"
           onChange={handleSearch}
           value={displayValue}
-          className="w-full text-md leading-none text-zinc-500 outline-none caret-main/70 bg-transparent p-2"
+          className="w-full text-lg leading-none text-zinc-300 outline-none caret-main/70 bg-transparent p-2"
         />
         <button
           onClick={handleClear}
           disabled={displayValue.length <= 0}
-          className={`group hover:bg-zinc-200 p-1 duration-300 rounded-full ${
+          className={`group hover:bg-black p-1 duration-300 rounded-full ${
             displayValue ? "opacity-100" : "opacity-0"
           }`}
         >
           <X
             size={18}
-            className="text-zinc-400/70 duration-200 group-hover:text-red-400"
+            className="text-zinc-400 duration-200 group-hover:text-red-500"
             weight="bold"
           />
         </button>

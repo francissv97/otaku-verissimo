@@ -23,22 +23,18 @@ type AnimeStaffProps = {
   isLoading: boolean;
 };
 
-export function AnimeStaff({
-  staff,
-  pagingFunction,
-  isLoading,
-}: AnimeStaffProps) {
+export function AnimeStaff({ staff, pagingFunction, isLoading }: AnimeStaffProps) {
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className="mx-auto max-w-6xl px-4">
       <strong>Staff</strong>
 
-      <div className="grid md:grid-cols-2 gap-4 pb-2 mt-2">
+      <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
         {staff.edges.map((edge) => (
           <Grow in timeout={600} key={edge.id}>
-            <div className="flex bg-zinc-50 shadow-lg rounded overflow-hidden">
-              <div className="flex-1 flex">
+            <div className="flex">
+              <div className="flex flex-1">
                 <Link to={`/staff/${edge.node.id}`}>
-                  <div className="h-32 bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                  <div className="h-32 overflow-hidden rounded-lg bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                     <img
                       src={edge.node.image.medium}
                       alt={edge.node.name.full}
@@ -47,17 +43,15 @@ export function AnimeStaff({
                         transitionDuration: "700ms",
                       }}
                       onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                      className="h-full aspect-[6_/_9] object-cover"
+                      className="aspect-[6_/_9] h-full object-cover"
                     />
                   </div>
                 </Link>
 
                 <div className="flex gap-1 p-2">
-                  <div className="flex flex-col gap-1 w-full">
+                  <div className="flex w-full flex-col gap-1">
                     <Link to={`/staff/${edge.node.id}`}>
-                      <span className="text-sm font-medium">
-                        {edge.node.name.full}
-                      </span>
+                      <span className="text-sm font-medium">{edge.node.name.full}</span>
                     </Link>
 
                     <span className="text-xs">{edge.role}</span>
