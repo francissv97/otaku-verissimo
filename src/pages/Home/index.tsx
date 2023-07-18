@@ -68,7 +68,7 @@ export function Home() {
               <HeaderResults title="trending now" paramViewAll="trending" />
             </SmallResultsList>
 
-            {/* <SmallResultsList
+            <SmallResultsList
               query={GET_SEARCH_QUERY}
               variables={{
                 season: currentSeason(),
@@ -78,9 +78,9 @@ export function Home() {
               }}
             >
               <HeaderResults title="popular this season" paramViewAll="this-season" />
-            </SmallResultsList> */}
+            </SmallResultsList>
 
-            {/* <SmallResultsList
+            <SmallResultsList
               query={GET_SEARCH_QUERY}
               variables={{
                 season: nextSeason(),
@@ -90,7 +90,7 @@ export function Home() {
               }}
             >
               <HeaderResults title="upcoming next season" paramViewAll="next-season" />
-            </SmallResultsList> */}
+            </SmallResultsList>
 
             <SmallResultsList
               query={GET_SEARCH_QUERY}
@@ -116,7 +116,7 @@ export function Home() {
         )}
       </div>
 
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

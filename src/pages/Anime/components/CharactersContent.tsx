@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Grow } from "@mui/material";
-import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
-import { HorizontalCardSkeleton } from "./Loading";
+import { HorizontalCardSkeleton } from "../../../components/Loading";
+import { IntersectionObserverComponent } from "../../../components/IntersectionObserverComponent";
 
-type AnimeCharactersProps = {
+interface CharactersContentProps {
   characters: {
     edges: {
       node: {
@@ -28,20 +28,18 @@ type AnimeCharactersProps = {
   };
   pagingFunction: () => void;
   isLoading: boolean;
-};
+}
 
-export function AnimeCharacters({ characters, pagingFunction, isLoading }: AnimeCharactersProps) {
+export function CharactersContent({ characters, pagingFunction, isLoading }: CharactersContentProps) {
   return (
     <div className="mx-auto max-w-6xl px-4">
-      <strong>Characters</strong>
-
       <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
         {characters.edges.map((character) =>
           character.voiceActorRoles.length >= 1 ? (
-            character.voiceActorRoles.map((voiceActorRole) => (
-              <Grow in timeout={600} key={voiceActorRole.voiceActor.id}>
+            character.voiceActorRoles.map((voiceActorRole, index) => (
+              <Grow in timeout={600} key={index}>
                 <div className="flex">
-                  <Link to={`/character/${character.node.id}`}>
+                  <Link to={`/character/${index}`}>
                     <div className="overflow-hidden rounded-lg bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                       <img
                         src={character.node.image.medium}

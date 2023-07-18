@@ -22,7 +22,7 @@ interface RecommendationsProps {
 
 export function Recommendations({ edges }: RecommendationsProps) {
   return (
-    <div className="flex flex-col mt-4">
+    <div className="mt-4 flex flex-col">
       <strong className="mx-4 w-fit border-t-4 border-main/70">Recommendations</strong>
 
       <div className="mt-2 flex gap-4 overflow-x-auto px-4 [&::-webkit-scrollbar]:hidden">
@@ -32,6 +32,10 @@ export function Recommendations({ edges }: RecommendationsProps) {
               <Link
                 to={`/anime/${edge.node.mediaRecommendation.id}`}
                 key={edge.node.mediaRecommendation.id}
+                onClick={() => {
+                  if (window.scrollY <= document.body.scrollHeight)
+                    scrollTo({ top: 0, behavior: "smooth" });
+                }}
                 className="group flex w-32 cursor-pointer flex-col gap-1 pb-3 pt-1"
               >
                 <div className="relative mb-2 h-48 w-32 overflow-hidden rounded-lg bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 shadow-lg">

@@ -11,19 +11,20 @@ import { SimpleHeader } from "../../components/Header";
 import { Recommendations } from "./components/Recommendations";
 import { Relations } from "./components/Relations";
 import { Tags } from "./components/Tags";
-import { AnimeCharacters } from "../../components/AnimeCharacters";
-import { AnimeStaff } from "../../components/AnimeStaff";
+import { CharactersContent } from "./components/CharactersContent";
+import { StaffContent } from "./components/StaffContent";
 import { CopySimple, Heart, Star } from "phosphor-react";
 import { CollapseParagraph } from "../../components/CollapseParagraph";
+import { CircularLoading } from "../../components/Loading";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 export function Anime() {
   const [isLoading, setIsLoading] = useState(false);
   const [anime, setAnime] = useState<AnimeMedia>();
-  const { id, sub } = useParams() as { id: string; sub: string };
-  const navigate = useNavigate();
+  const [pageContent, setPageContent] = useState<"overview" | "characters" | "staff">("overview");
+  const { id } = useParams() as { id: string };
 
-  const { error, fetchMore } = useQuery(GET_ANIME_MEDIA, {
+  const { error, fetchMore, loading } = useQuery(GET_ANIME_MEDIA, {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
     onError: () => {
@@ -42,11 +43,7 @@ export function Anime() {
   });
 
   useEffect(() => {
-    scrollTo({ top: 0 });
-
-    if (![undefined, "staff", "characters"].includes(sub)) {
-      navigate(`/anime/${id}`);
-    }
+    if (window.scrollY <= document.body.scrollHeight) scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   if (error && error.graphQLErrors.some((g) => g.message == "Not Found.")) {
@@ -55,6 +52,8 @@ export function Anime() {
 
   return (
     <div className="flex min-h-screen flex-col justify-between">
+      {loading && <CircularLoading />}
+
       {error && (
         <div className="m-auto flex flex-col p-4 shadow-xl">
           <strong>{error.name}</strong>
@@ -66,17 +65,21 @@ export function Anime() {
         <>
           {anime.bannerImage ? (
             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
-              <img
-                src={anime.bannerImage}
-                className="h-52 w-full object-cover object-center md:h-72"
-                alt="anime banner image"
-                loading="lazy"
-                style={{
-                  opacity: 0,
-                  transitionDuration: "1000ms",
-                }}
-                onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-              />
+              {loading ? (
+                <div className="h-52 w-full bg-main md:h-72" />
+              ) : (
+                <img
+                  src={anime.bannerImage}
+                  className="h-52 w-full object-cover object-center md:h-72"
+                  alt="anime banner image"
+                  loading="lazy"
+                  style={{
+                    opacity: 0,
+                    transitionDuration: "1000ms",
+                  }}
+                  onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                />
+              )}
             </div>
           ) : (
             <div className="h-10 w-full bg-gradient-to-t from-zinc-800 via-zinc-700 to-zinc-600 md:h-11" />
@@ -92,17 +95,21 @@ export function Anime() {
                     anime.bannerImage ? "-mt-32 md:-mt-36" : ""
                   }`}
                 >
-                  <img
-                    src={anime.coverImage.large}
-                    alt={anime.title.romaji}
-                    className="w-28 md:w-44"
-                    loading="lazy"
-                    style={{
-                      opacity: 0,
-                      transitionDuration: "800ms",
-                    }}
-                    onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                  />
+                  {loading ? (
+                    <div className="w-28 bg-main md:w-44" />
+                  ) : (
+                    <img
+                      src={anime.coverImage.large}
+                      alt={anime.title.romaji}
+                      className="w-28 md:w-44"
+                      loading="lazy"
+                      style={{
+                        opacity: 0,
+                        transitionDuration: "800ms",
+                      }}
+                      onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                    />
+                  )}
                 </div>
 
                 <div className="flex gap-6 place-self-end md:place-self-center">
@@ -145,61 +152,58 @@ export function Anime() {
                   </div>
                 )}
 
-                <div className="mx-auto mt-auto flex w-full max-w-6xl justify-center gap-2 rounded-lg bg-zinc-900 font-medium md:gap-8">
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "pointer-events-none border-b-2 border-main py-2 text-[14px] uppercase text-main duration-200 md:text-[16px]"
-                        : "border-b-2 border-transparent py-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
+                <div className="mx-auto mt-auto flex w-full max-w-6xl justify-center gap-2 rounded-lg font-medium md:gap-8">
+                  <button
+                    className={
+                      pageContent === "overview"
+                        ? "pointer-events-none rounded-lg bg-main p-2 text-[14px] uppercase text-white duration-200 md:text-[16px]"
+                        : "border-b-2 border-transparent p-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
                     }
-                    to={`/anime/${anime.id}`}
-                    end
+                    onClick={() => setPageContent("overview")}
                   >
                     Overview
-                  </NavLink>
+                  </button>
 
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "pointer-events-none border-b-2 border-main py-2 text-[14px] uppercase text-main duration-200 md:text-[16px]"
-                        : "border-b-2 border-transparent py-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
+                  <button
+                    className={
+                      pageContent === "characters"
+                        ? "pointer-events-none rounded-lg bg-main p-2 text-[14px] uppercase text-white duration-200 md:text-[16px]"
+                        : "border-b-2 border-transparent p-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
                     }
-                    to={`/anime/${anime.id}/characters`}
-                    end
+                    onClick={() => setPageContent("characters")}
                   >
                     Characters
-                  </NavLink>
+                  </button>
 
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "pointer-events-none border-b-2 border-main py-2 text-[14px] uppercase text-main duration-200 md:text-[16px]"
-                        : "border-b-2 border-transparent py-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
+                  <button
+                    className={
+                      pageContent === "staff"
+                        ? "pointer-events-none rounded-lg bg-main p-2 text-[14px] uppercase text-white duration-200 md:text-[16px]"
+                        : "border-b-2 border-transparent p-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
                     }
-                    to={`/anime/${anime.id}/staff`}
-                    end
+                    onClick={() => setPageContent("staff")}
                   >
                     Staff
-                  </NavLink>
+                  </button>
                 </div>
               </div>
             </div>
 
-            {!sub && (
+            {pageContent == "overview" && (
               <Grow in timeout={600}>
                 <div className="mx-auto max-w-6xl">
                   <ul className="mb-4 flex flex-wrap px-4">
                     {anime.genres.map((genre, index, array) => (
-                      <div className="flex items-center">
+                      <div key={index} className="flex items-center">
                         <li
                           key={index}
-                          className="peer pointer-events-none rounded-lg font-medium text-emerald-600"
+                          className="peer pointer-events-none rounded-lg font-medium text-emerald-500"
                         >
                           {genre}
                         </li>
 
                         {index != array.length - 1 && (
-                          <div className="mx-2 h-2 w-2 rounded-full bg-zinc-100/40" />
+                          <div className="mx-2 h-2 w-2 rounded-full bg-white/30" />
                         )}
                       </div>
                     ))}
@@ -373,7 +377,7 @@ export function Anime() {
 
                   <StudiosList studios={anime.studios.edges} />
 
-                  {/* <div className="mt-4 flex justify-center gap-4 px-4 md:gap-8">
+                  <div className="mt-4 flex justify-center gap-4 px-4 md:gap-8">
                     <div className="flex flex-col items-center justify-center gap-y-2">
                       <span className="text-xl font-medium leading-none">
                         {anime.averageScore ? anime.averageScore : 0}%
@@ -397,17 +401,17 @@ export function Anime() {
                       <span className="text-xl font-medium leading-none">{anime.favourites}</span>
                       <span className="text-sm leading-none text-main">Favourites</span>
                     </div>
-                  </div> */}
+                  </div>
 
-                  {/* {anime.tags.length > 0 && <Tags tags={anime.tags} />} */}
+                  {anime.tags.length > 0 && <Tags tags={anime.tags} />}
 
-                  {/* <Relations edges={anime.relations.edges} /> */}
+                  <Relations edges={anime.relations.edges} />
 
-                  {/* {anime.recommendations.edges.length > 0 && (
+                  {anime.recommendations.edges.length > 0 && (
                     <Recommendations edges={anime.recommendations.edges} />
-                  )} */}
+                  )}
 
-                  {/* {anime.externalLinks.length > 0 && (
+                  {anime.externalLinks.length > 0 && (
                     <div className="mt-4 flex flex-col gap-3 px-4">
                       <div className="flex justify-between">
                         <strong className="text-md w-fit border-t-4 border-main/70 leading-none">
@@ -434,13 +438,13 @@ export function Anime() {
                         ))}
                       </div>
                     </div>
-                  )} */}
+                  )}
                 </div>
               </Grow>
             )}
 
-            {sub == "characters" && (
-              <AnimeCharacters
+            {pageContent == "characters" && (
+              <CharactersContent
                 characters={anime.characters}
                 pagingFunction={() => {
                   setIsLoading(true);
@@ -473,8 +477,8 @@ export function Anime() {
               />
             )}
 
-            {sub == "staff" && (
-              <AnimeStaff
+            {pageContent == "staff" && (
+              <StaffContent
                 staff={anime.staff}
                 pagingFunction={() => {
                   setIsLoading(true);

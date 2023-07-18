@@ -47,6 +47,10 @@ export function Relations({ edges }: RelationsProps) {
             <Link
               to={`/anime/${edge.node.id}`}
               key={edge.node.id}
+              onClick={() => {
+                if (window.scrollY <= document.body.scrollHeight)
+                  scrollTo({ top: 0, behavior: "smooth" });
+              }}
               className="group flex w-32 cursor-pointer flex-col gap-1 py-1"
             >
               <div className="relative mb-2 h-48 w-32 rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">

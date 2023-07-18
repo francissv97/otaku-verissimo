@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Grow } from "@mui/material";
-import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
-import { HorizontalCardSkeleton } from "./Loading";
+import { HorizontalCardSkeleton } from "../../../components/Loading";
+import { IntersectionObserverComponent } from "../../../components/IntersectionObserverComponent";
 
-type AnimeStaffProps = {
+interface StaffContentProps {
   staff: {
     edges: {
       id: number;
@@ -21,13 +21,11 @@ type AnimeStaffProps = {
   };
   pagingFunction: () => void;
   isLoading: boolean;
-};
+}
 
-export function AnimeStaff({ staff, pagingFunction, isLoading }: AnimeStaffProps) {
+export function StaffContent({ staff, pagingFunction, isLoading }: StaffContentProps) {
   return (
     <div className="mx-auto max-w-6xl px-4">
-      <strong>Staff</strong>
-
       <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
         {staff.edges.map((edge) => (
           <Grow in timeout={600} key={edge.id}>

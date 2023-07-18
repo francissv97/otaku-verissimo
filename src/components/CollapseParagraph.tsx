@@ -12,7 +12,15 @@ export function CollapseParagraph({ description, className }: CollapseParagraphP
 
   if (description.replaceAll(" ", "").length > 256) {
     return (
-      <>
+      <div className="relative">
+        {!collapse && (
+          <div className="absolute bottom-0 right-0 flex gap-1">
+            <div className="h-2 w-2 rounded-full bg-main/90" />
+            <div className="h-2 w-2 rounded-full bg-main/70" />
+            <div className="h-2 w-2 rounded-full bg-main/60" />
+          </div>
+        )}
+
         <Collapse in={collapse} appear collapsedSize={72} sx={{ position: "relative" }}>
           <p
             className={`${className}`}
@@ -20,10 +28,6 @@ export function CollapseParagraph({ description, className }: CollapseParagraphP
               __html: description,
             }}
           />
-
-          {!collapse && (
-            <span className="absolute bottom-0 right-0 text-[24px] leading-none text-main bg-zinc-800">...</span>
-          )}
         </Collapse>
 
         <button
@@ -32,17 +36,17 @@ export function CollapseParagraph({ description, className }: CollapseParagraphP
         >
           {collapse ? (
             <>
-              <span className="text-sm font-medium text-zinc-400">SHOW LESS</span>
-              <CaretUp size={18} className="text-zinc-400" weight="bold" />
+              <span className="text-sm font-medium text-zinc-400 hover:text-zinc-300">SHOW LESS</span>
+              <CaretUp size={18} className="text-main" weight="bold" />
             </>
           ) : (
             <>
-              <span className="text-sm font-medium text-zinc-400">SHOW MORE</span>
-              <CaretDown size={18} className="text-zinc-400" weight="bold" />
+              <span className="text-sm font-medium text-zinc-400 hover:text-zinc-300">SHOW MORE</span>
+              <CaretDown size={18} className="text-main" weight="bold" />
             </>
           )}
         </button>
-      </>
+      </div>
     );
   }
 

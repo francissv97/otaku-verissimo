@@ -1,18 +1,15 @@
-import { Grow, Zoom } from "@mui/material";
+import { Fade, Grow, Zoom } from "@mui/material";
 import { CircleNotch } from "phosphor-react";
 
 export function CircularLoading() {
   return (
-    <Zoom in timeout={300}>
-      <div className="fixed z-20 top-0 flex justify-center items-center h-full w-full">
-        <div className="w-24 h-24 rounded-full bg-zinc-50 shadow-lg">
-          <CircleNotch
-            weight="light"
-            className="w-24 h-24 text-orange-400 animate-spin"
-          />
+    <Fade in timeout={800}>
+      <div className="fixed top-0 z-20 flex h-full w-full items-center justify-center backdrop-blur-sm duration-100">
+        <div className="h-24 w-24 rounded-full shadow-lg">
+          <CircleNotch weight="light" className="h-24 w-24 animate-spin text-orange-600" />
         </div>
       </div>
-    </Zoom>
+    </Fade>
   );
 }
 
@@ -21,10 +18,10 @@ export function CardSkeleton() {
     <>
       {Array.from({ length: 6 }, (v, k) => k).map((item) => (
         <Grow in timeout={400} key={item}>
-          <div className="flex flex-col gap-1 animate-pulse">
-            <div className="h-52 md:h-60 bg-zinc-400 rounded" />
+          <div className="flex animate-pulse flex-col gap-1">
+            <div className="h-52 rounded bg-zinc-400 md:h-60" />
 
-            <span className="h-[10%] bg-zinc-400 rounded"></span>
+            <span className="h-[10%] rounded bg-zinc-400"></span>
           </div>
         </Grow>
       ))}
@@ -37,8 +34,8 @@ export function HorizontalCardSkeleton() {
     <>
       {Array.from({ length: 2 }, (v, k) => k).map((item) => (
         <Grow in timeout={400} key={item}>
-          <div className="flex flex-col gap-1 animate-pulse">
-            <div className="h-32 bg-zinc-400 rounded" />
+          <div className="flex animate-pulse flex-col gap-1">
+            <div className="h-32 rounded bg-zinc-400" />
           </div>
         </Grow>
       ))}
@@ -49,23 +46,23 @@ export function HorizontalCardSkeleton() {
 export function StaffCharactersSkeleton() {
   return (
     <Grow in timeout={600}>
-      <div className="flex flex-col gap-4 animate-pulse">
+      <div className="flex animate-pulse flex-col gap-4">
         <div className="flex gap-2">
-          <div className="bg-zinc-400 rounded-full shadow-lg w-24 h-24 md:w-28 md:h-28" />
+          <div className="h-24 w-24 rounded-full bg-zinc-400 shadow-lg md:h-28 md:w-28" />
 
-          <div className="flex flex-col flex-1 gap-1 justify-center">
-            <div className="bg-zinc-400 w-full h-5 rounded" />
+          <div className="flex flex-1 flex-col justify-center gap-1">
+            <div className="h-5 w-full rounded bg-zinc-400" />
 
-            <div className="bg-zinc-400 w-[80%] h-5 rounded " />
+            <div className="h-5 w-[80%] rounded bg-zinc-400 " />
           </div>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,176px)] gap-y-4 gap-x-4 justify-between">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] justify-between gap-x-4 gap-y-4 md:grid-cols-[repeat(auto-fill,176px)]">
           {Array.from({ length: 6 }, (v, k) => k).map((item) => (
             <div key={item} className="flex flex-col gap-2">
-              <div className="bg-zinc-400 w-full h-full aspect-[6_/_9] rounded" />
+              <div className="aspect-[6_/_9] h-full w-full rounded bg-zinc-400" />
 
-              <div className="bg-zinc-400 h-5 rounded" />
+              <div className="h-5 rounded bg-zinc-400" />
             </div>
           ))}
         </div>
@@ -79,12 +76,12 @@ export function StaffAnimeStaffRolesSkeleton() {
     <>
       {Array.from({ length: 6 }, (v, k) => k).map((item) => (
         <Grow in timeout={400} key={item}>
-          <div className="flex flex-col gap-1 animate-pulse">
-            <div className="aspect-[6_/_9] bg-zinc-400 rounded" />
+          <div className="flex animate-pulse flex-col gap-1">
+            <div className="aspect-[6_/_9] rounded bg-zinc-400" />
 
-            <div className="h-4 bg-zinc-400 rounded" />
-            <div className="h-4 bg-zinc-400 rounded" />
-            <div className="h-4 bg-zinc-400 rounded" />
+            <div className="h-4 rounded bg-zinc-400" />
+            <div className="h-4 rounded bg-zinc-400" />
+            <div className="h-4 rounded bg-zinc-400" />
           </div>
         </Grow>
       ))}
