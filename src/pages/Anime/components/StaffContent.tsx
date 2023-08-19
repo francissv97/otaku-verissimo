@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Grow } from "@mui/material";
+import { Slide } from "@mui/material";
 import { HorizontalCardSkeleton } from "../../../components/Loading";
 import { IntersectionObserverComponent } from "../../../components/IntersectionObserverComponent";
 
@@ -25,14 +25,14 @@ interface StaffContentProps {
 
 export function StaffContent({ staff, pagingFunction, isLoading }: StaffContentProps) {
   return (
-    <div className="mx-auto max-w-6xl px-4">
-      <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
-        {staff.edges.map((edge) => (
-          <Grow in timeout={600} key={edge.id}>
-            <div className="flex">
+    <Slide in direction="up" timeout={500}>
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
+          {staff.edges.map((edge) => (
+            <div key={edge.id} className="flex overflow-hidden rounded-lg bg-zinc-800 shadow-lg">
               <div className="flex flex-1">
                 <Link to={`/staff/${edge.node.id}`}>
-                  <div className="h-32 overflow-hidden rounded-lg bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                  <div className="h-32 overflow-hidden bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                     <img
                       src={edge.node.image.medium}
                       alt={edge.node.name.full}
@@ -57,18 +57,18 @@ export function StaffContent({ staff, pagingFunction, isLoading }: StaffContentP
                 </div>
               </div>
             </div>
-          </Grow>
-        ))}
+          ))}
 
-        {isLoading && <HorizontalCardSkeleton />}
+          {isLoading && <HorizontalCardSkeleton />}
+        </div>
+
+        {!isLoading && staff.pageInfo.hasNextPage && (
+          <IntersectionObserverComponent
+            page={staff.pageInfo.currentPage}
+            doSomething={() => pagingFunction()}
+          />
+        )}
       </div>
-
-      {!isLoading && staff.pageInfo.hasNextPage && (
-        <IntersectionObserverComponent
-          page={staff.pageInfo.currentPage}
-          doSomething={() => pagingFunction()}
-        />
-      )}
-    </div>
+    </Slide>
   );
 }

@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply bg-zinc-800 text-zinc-100 font-main overflow-x-hidden min-h-screen box-border;
+  @apply bg-zinc-900 text-zinc-100 font-main overflow-x-hidden min-h-screen box-border;
   --webkit-font-smoothing: antialiased;
 }

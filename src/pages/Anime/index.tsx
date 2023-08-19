@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, NavLink, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { Grow } from "@mui/material";
+import { Slide } from "@mui/material";
 import { GET_ANIME_MEDIA, GET_ANIME_MORE_CHARACTERS, GET_ANIME_MORE_STAFF } from "../../lib/queries";
 import { formatDateToString } from "../../utils";
 import { AnimeMedia } from "../../types";
@@ -190,7 +190,7 @@ export function Anime() {
             </div>
 
             {pageContent == "overview" && (
-              <Grow in timeout={600}>
+              <Slide in direction="up" timeout={500}>
                 <div className="mx-auto max-w-6xl">
                   <ul className="mb-4 flex flex-wrap px-4">
                     {anime.genres.map((genre, index, array) => (
@@ -440,7 +440,7 @@ export function Anime() {
                     </div>
                   )}
                 </div>
-              </Grow>
+              </Slide>
             )}
 
             {pageContent == "characters" && (

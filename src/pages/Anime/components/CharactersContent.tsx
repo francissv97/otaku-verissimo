@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Grow } from "@mui/material";
+import { Slide } from "@mui/material";
 import { HorizontalCardSkeleton } from "../../../components/Loading";
 import { IntersectionObserverComponent } from "../../../components/IntersectionObserverComponent";
 
@@ -32,15 +32,15 @@ interface CharactersContentProps {
 
 export function CharactersContent({ characters, pagingFunction, isLoading }: CharactersContentProps) {
   return (
-    <div className="mx-auto max-w-6xl px-4">
-      <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
-        {characters.edges.map((character) =>
-          character.voiceActorRoles.length >= 1 ? (
-            character.voiceActorRoles.map((voiceActorRole, index) => (
-              <Grow in timeout={600} key={index}>
-                <div className="flex">
+    <Slide in direction="up" timeout={500}>
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
+          {characters.edges.map((character) =>
+            character.voiceActorRoles.length >= 1 ? (
+              character.voiceActorRoles.map((voiceActorRole, index) => (
+                <div key={index} className="flex overflow-hidden rounded-lg bg-zinc-800 shadow-lg">
                   <Link to={`/character/${index}`}>
-                    <div className="overflow-hidden rounded-lg bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                    <div className="overflow-hidden bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                       <img
                         src={character.node.image.medium}
                         alt={character.node.name.full}
@@ -49,7 +49,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
                           transitionDuration: "600ms",
                         }}
                         onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                        className="aspect-[6_/_9] h-32 object-cover"
+                        className="aspect-[6/9] h-32 object-cover"
                       />
                     </div>
                   </Link>
@@ -83,7 +83,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
 
                   {voiceActorRole && (
                     <Link to={`/staff/${voiceActorRole.voiceActor.id}`}>
-                      <div className="overflow-hidden rounded-lg bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                      <div className="overflow-hidden bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                         <img
                           src={voiceActorRole.voiceActor.image.medium}
                           alt={voiceActorRole.voiceActor.name.full}
@@ -98,11 +98,12 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
                     </Link>
                   )}
                 </div>
-              </Grow>
-            ))
-          ) : (
-            <Grow in key={character.node.id}>
-              <div className="flex">
+              ))
+            ) : (
+              <div
+                key={character.node.id}
+                className="flex overflow-hidden rounded-lg bg-zinc-800 shadow-lg"
+              >
                 <div className="flex flex-1">
                   <img
                     src={character.node.image.medium}
@@ -112,7 +113,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
                       transitionDuration: "600ms",
                     }}
                     onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                    className="aspect-[6_/_9] h-32 rounded-lg object-cover"
+                    className="aspect-[6_/_9] h-32 object-cover"
                   />
 
                   <div className="flex gap-1 p-2">
@@ -124,19 +125,19 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
                   </div>
                 </div>
               </div>
-            </Grow>
-          )
+            )
+          )}
+
+          {isLoading && <HorizontalCardSkeleton />}
+        </div>
+
+        {!isLoading && characters.pageInfo.hasNextPage && (
+          <IntersectionObserverComponent
+            page={characters.pageInfo.currentPage}
+            doSomething={() => pagingFunction()}
+          />
         )}
-
-        {isLoading && <HorizontalCardSkeleton />}
       </div>
-
-      {!isLoading && characters.pageInfo.hasNextPage && (
-        <IntersectionObserverComponent
-          page={characters.pageInfo.currentPage}
-          doSomething={() => pagingFunction()}
-        />
-      )}
-    </div>
+    </Slide>
   );
 }
