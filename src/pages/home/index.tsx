@@ -11,6 +11,7 @@ import { useEffect } from "react";
 export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("search") || "";
+  const perPage = 10;
 
   // console.log(searchParams.has("search"));
   // searchParams.forEach((item, key) => console.log());
@@ -24,7 +25,7 @@ export function Home() {
     <div className="flex min-h-screen flex-col justify-between">
       <Header />
 
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 p-4">
+      <div className="flex max-w-6xl flex-wrap items-center justify-between gap-4 p-4">
         <InputSearch
           searchTerm={searchTerm}
           searchParams={searchParams}
@@ -64,7 +65,7 @@ export function Home() {
       <div className="mb-auto flex-1">
         {searchTerm.length == 0 ? (
           <>
-            <SmallResultsList query={GET_SEARCH_QUERY} variables={{ perPage: 6, sort: "TRENDING_DESC" }}>
+            <SmallResultsList query={GET_SEARCH_QUERY} variables={{ perPage, sort: "TRENDING_DESC" }}>
               <HeaderResults title="trending now" paramViewAll="trending" />
             </SmallResultsList>
 
