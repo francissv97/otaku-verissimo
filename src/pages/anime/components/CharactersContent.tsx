@@ -39,7 +39,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
             character.voiceActorRoles.length >= 1 ? (
               character.voiceActorRoles.map((voiceActorRole, index) => (
                 <div key={index} className="flex overflow-hidden rounded-lg bg-zinc-800 shadow-lg">
-                  <Link to={`/character/${index}`}>
+                  <Link to={`/character/${character.node.id}`}>
                     <div className="overflow-hidden bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                       <img
                         src={character.node.image.medium}
