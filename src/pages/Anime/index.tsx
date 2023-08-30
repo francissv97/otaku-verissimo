@@ -16,7 +16,6 @@ import { StaffContent } from "./components/StaffContent";
 import { CopySimple, Heart, Star } from "phosphor-react";
 import { CollapseParagraph } from "../../components/CollapseParagraph";
 import { CircularLoading } from "../../components/Loading";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 export function Anime() {
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +65,7 @@ export function Anime() {
           {anime.bannerImage ? (
             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
               {loading ? (
-                <div className="h-52 w-full bg-main md:h-72" />
+                <div className="h-52 w-full bg-main md:h-72 " />
               ) : (
                 <img
                   src={anime.bannerImage}
@@ -219,45 +218,34 @@ export function Anime() {
                   <div className="mt-4 flex flex-col">
                     <strong className="mb-2 px-4">Characters</strong>
 
-                    <ScrollArea.Root type="always">
-                      <ScrollArea.Viewport className="px-4 duration-100 md:pb-4">
-                        <div className="flex gap-4">
-                          {anime.characters.edges
-                            .filter((character) => character.role == "MAIN")
-                            .map((character) => (
-                              <Link
-                                key={character.node.id}
-                                className="flex w-24 flex-col gap-1"
-                                to={`/character/${character.node.id}`}
-                              >
-                                <div className="h-24 overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
-                                  <img
-                                    src={character.node.image.medium}
-                                    alt={character.node.name.full}
-                                    style={{
-                                      opacity: 0,
-                                      transitionDuration: "900ms",
-                                    }}
-                                    onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                                    className="h-full w-full object-cover"
-                                  />
-                                </div>
+                    <div className="flex gap-4">
+                      {anime.characters.edges
+                        .filter((character) => character.role == "MAIN")
+                        .map((character) => (
+                          <Link
+                            key={character.node.id}
+                            className="flex w-24 flex-col gap-1"
+                            to={`/character/${character.node.id}`}
+                          >
+                            <div className="h-24 overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                              <img
+                                src={character.node.image.medium}
+                                alt={character.node.name.full}
+                                style={{
+                                  opacity: 0,
+                                  transitionDuration: "900ms",
+                                }}
+                                onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                                className="h-full w-full object-cover"
+                              />
+                            </div>
 
-                                <span className="mx-auto line-clamp-2 w-full text-center text-sm text-main">
-                                  {character.node.name.full}
-                                </span>
-                              </Link>
-                            ))}
-                        </div>
-                      </ScrollArea.Viewport>
-
-                      <ScrollArea.Scrollbar
-                        className="hidden h-3 rounded bg-transparent px-4 duration-100 md:flex"
-                        orientation="horizontal"
-                      >
-                        <ScrollArea.Thumb className="rounded bg-zinc-400 duration-100 active:bg-zinc-500" />
-                      </ScrollArea.Scrollbar>
-                    </ScrollArea.Root>
+                            <span className="mx-auto line-clamp-2 w-full text-center text-sm text-main">
+                              {character.node.name.full}
+                            </span>
+                          </Link>
+                        ))}
+                    </div>
                   </div>
 
                   <div className="mt-4 flex flex-col gap-2 px-4">
