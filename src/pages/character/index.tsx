@@ -2,17 +2,17 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Grow } from "@mui/material";
-import { GET_CHARACTER } from "../../lib/queries";
-import { CircularLoading } from "../../components/Loading";
-import { SimpleHeader } from "../../components/Header";
-import { Footer } from "../../components/Footer";
-import { CharacterModel } from "../../types";
 import { Heart } from "phosphor-react";
+import { GET_CHARACTER_QUERY } from "@/lib/queries/CharacterQuery";
+import { CircularLoading } from "@/components/Loading";
+import { SimpleHeader } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { CharacterModel } from "@/types";
 
 export function Character() {
   const { id } = useParams() as { id: string };
 
-  const { data, error } = useQuery(GET_CHARACTER, {
+  const { data, error } = useQuery(GET_CHARACTER_QUERY, {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
     onCompleted(data) {

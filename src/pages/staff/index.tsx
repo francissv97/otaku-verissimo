@@ -2,25 +2,29 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Fade, Grow } from "@mui/material";
-import { GET_STAFF, GET_STAFF_MORE_CHARACTERS, GET_STAFF_MORE_STAFF_MEDIA } from "../../lib/queries";
+import {
+  GET_STAFF_QUERY,
+  GET_STAFF_CHARACTERS_PAGINATION,
+  GET_STAFF_STAFF_MEDIA_PAGINATION,
+} from "@/lib/queries/StaffQuery";
 import { Heart } from "phosphor-react";
-import { formatDateToString, groupStaffRolesByMedia, sortStaffMediaRolesByStartDate } from "../../utils";
-import { StaffModel } from "../../types";
-import { IntersectionObserverComponent } from "../../components/IntersectionObserverComponent";
+import { formatDateToString, groupStaffRolesByMedia, sortStaffMediaRolesByStartDate } from "@/utils";
+import { StaffModel } from "@/types";
+import { IntersectionObserverComponent } from "@/components/IntersectionObserverComponent";
 import {
   CircularLoading,
   StaffAnimeStaffRolesSkeleton,
   StaffCharactersSkeleton,
-} from "../../components/Loading";
-import { SimpleHeader } from "../../components/Header";
-import { Footer } from "../../components/Footer";
-import { CollapseParagraph } from "../../components/CollapseParagraph";
+} from "@/components/Loading";
+import { SimpleHeader } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { CollapseParagraph } from "@/components/CollapseParagraph";
 
 export function Staff() {
   const { id } = useParams() as { id: string };
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data, error, fetchMore } = useQuery(GET_STAFF, {
+  const { data, error, fetchMore } = useQuery(GET_STAFF_QUERY, {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
     onCompleted(data) {
@@ -232,7 +236,7 @@ export function Staff() {
                       doSomething={() => {
                         setIsLoading(true);
                         fetchMore({
-                          query: GET_STAFF_MORE_CHARACTERS,
+                          query: GET_STAFF_CHARACTERS_PAGINATION,
                           variables: {
                             charactersPage: staff.characters.pageInfo.currentPage + 1,
                             id: staff.id,
@@ -376,7 +380,7 @@ export function Staff() {
                         setIsLoading(true);
 
                         fetchMore({
-                          query: GET_STAFF_MORE_STAFF_MEDIA,
+                          query: GET_STAFF_STAFF_MEDIA_PAGINATION,
                           variables: {
                             staffMediaPage: staff.staffMedia.pageInfo.currentPage + 1,
                             id: staff.id,

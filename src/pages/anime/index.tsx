@@ -2,20 +2,24 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Slide } from "@mui/material";
-import { GET_ANIME_MEDIA, GET_ANIME_MORE_CHARACTERS, GET_ANIME_MORE_STAFF } from "../../lib/queries";
-import { formatDateToString } from "../../utils";
-import { AnimeMedia } from "../../types";
-import { NotFound } from "../../components/NotFound";
-import { Footer } from "../../components/Footer";
-import { SimpleHeader } from "../../components/Header";
+import {
+  GET_ANIME_CHARACTERS_PAGINATION,
+  GET_ANIME_MEDIA_QUERY,
+  GET_ANIME_STAFF_PAGINATION,
+} from "@/lib/queries/AnimeMediaQuery";
+import { CopySimple, Heart, Star } from "phosphor-react";
+import { formatDateToString } from "@/utils";
+import { AnimeMedia } from "@/types";
+import { NotFound } from "@/components/NotFound";
+import { Footer } from "@/components/Footer";
+import { SimpleHeader } from "@/components/Header";
 import { Recommendations } from "./components/Recommendations";
 import { Relations } from "./components/Relations";
 import { Tags } from "./components/Tags";
 import { CharactersContent } from "./components/CharactersContent";
 import { StaffContent } from "./components/StaffContent";
-import { CopySimple, Heart, Star } from "phosphor-react";
-import { CollapseParagraph } from "../../components/CollapseParagraph";
-import { CircularLoading } from "../../components/Loading";
+import { CollapseParagraph } from "@/components/CollapseParagraph";
+import { CircularLoading } from "@/components/Loading";
 
 export function Anime() {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +27,7 @@ export function Anime() {
   const [pageContent, setPageContent] = useState<"overview" | "characters" | "staff">("overview");
   const { id } = useParams() as { id: string };
 
-  const { error, fetchMore, loading } = useQuery(GET_ANIME_MEDIA, {
+  const { error, fetchMore, loading } = useQuery(GET_ANIME_MEDIA_QUERY, {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
     onError: () => {
@@ -438,7 +442,7 @@ export function Anime() {
                   setIsLoading(true);
 
                   fetchMore({
-                    query: GET_ANIME_MORE_CHARACTERS,
+                    query: GET_ANIME_CHARACTERS_PAGINATION,
                     variables: {
                       charactersPage: anime.characters.pageInfo.currentPage + 1,
                       id: anime.id,
@@ -471,7 +475,7 @@ export function Anime() {
                 pagingFunction={() => {
                   setIsLoading(true);
                   fetchMore({
-                    query: GET_ANIME_MORE_STAFF,
+                    query: GET_ANIME_STAFF_PAGINATION,
                     variables: {
                       staffPage: anime.staff.pageInfo.currentPage + 1,
                       id: anime.id,

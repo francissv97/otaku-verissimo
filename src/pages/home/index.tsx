@@ -1,12 +1,12 @@
-import { useSearchParams } from "react-router-dom";
-import { currentSeason, currentYear, nextSeason, nextSeasonYear } from "../../utils";
-import { GET_SEARCH_QUERY } from "../../lib/queries";
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
-import { HeaderResults } from "../../components/Header";
-import { ResultsList, SmallResultsList } from "../../components/ResultsList";
-import { ButtonMoreOptions, InputSearch, SelectFieldGenres } from "../../components/SearchFields";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { currentSeason, currentYear, nextSeason, nextSeasonYear } from "@/utils/index";
+import { GET_SEARCH_QUERY } from "@/lib/queries/SearchQuery";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { HeaderResults } from "@/components/Header";
+import { ResultsList, SmallResultsList } from "@/components/ResultsList";
+import { ButtonMoreOptions, InputSearch, SelectFieldGenres } from "@/components/SearchFields";
 
 export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
