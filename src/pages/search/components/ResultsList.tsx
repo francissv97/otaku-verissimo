@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { DocumentNode, useQuery } from "@apollo/client";
-import { AnimeMediaResults, MediaSort } from "../types";
-import { CardAnimeResult } from "./CardAnimeResult";
-import { CardSkeleton } from "./Loading";
-import { IntersectionObserverComponent } from "./IntersectionObserverComponent";
+import { PageMediaResultQuery, MediaSort } from "@/types";
+import { CoverCard } from "@/components/CoverCard";
+import { CardSkeleton } from "@/components/Loading";
+import { IntersectionObserverComponent } from "@/components/IntersectionObserverComponent";
 
 type ResultsListProps = {
   query: DocumentNode;
@@ -31,12 +31,12 @@ export function ResultsList({ query, variables }: ResultsListProps) {
     <div className="mx-auto max-w-6xl p-4">
       <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] justify-between gap-4 min-[375px]:grid-cols-[repeat(auto-fill,minmax(96px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
         {data &&
-          data.Page.media.map((anime: AnimeMediaResults) => (
-            <CardAnimeResult key={anime.id} anime={anime} />
+          data.Page.media.map((anime: PageMediaResultQuery) => (
+            <CoverCard key={anime.id} anime={anime} />
           ))}
 
         {!loading && data && data.Page.media.length == 0 && (
-          <strong className="col- place-self-center text-xl font-medium">No results</strong>
+          <strong className="col-place-self-center text-xl font-medium">No results</strong>
         )}
 
         {loading && <CardSkeleton />}
@@ -79,14 +79,14 @@ export function SmallResultsList({ query, variables, children }: SmallResultsLis
     variables,
   });
 
-  const animes: AnimeMediaResults[] = data && data.Page.media;
+  const animes: PageMediaResultQuery[] = data && data.Page.media;
 
   return (
     <div className="mx-auto max-w-6xl p-4">
       {children}
       <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] justify-between gap-4 min-[375px]:grid-cols-[repeat(auto-fill,minmax(96px,1fr))] md:grid-cols-[repeat(auto-fill,170px)]">
         {animes?.map((anime) => (
-          <CardAnimeResult key={anime.id} anime={anime} />
+          <CoverCard key={anime.id} anime={anime} />
         ))}
 
         {loading && <CardSkeleton />}
