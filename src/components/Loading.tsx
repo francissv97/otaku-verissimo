@@ -1,4 +1,4 @@
-import { Fade, Grow, Zoom } from "@mui/material";
+import { Fade, Grow } from "@mui/material";
 import { CircleNotch } from "phosphor-react";
 
 export function CircularLoading() {
@@ -60,7 +60,7 @@ export function StaffCharactersSkeleton() {
         <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] justify-between gap-x-4 gap-y-4 md:grid-cols-[repeat(auto-fill,176px)]">
           {Array.from({ length: 6 }, (v, k) => k).map((item) => (
             <div key={item} className="flex flex-col gap-2">
-              <div className="aspect-[6_/_9] h-full w-full rounded bg-zinc-400" />
+              <div className="aspect-[6/9] h-full w-full rounded bg-zinc-400" />
 
               <div className="h-5 rounded bg-zinc-400" />
             </div>
@@ -77,7 +77,7 @@ export function StaffAnimeStaffRolesSkeleton() {
       {Array.from({ length: 6 }, (v, k) => k).map((item) => (
         <Grow in timeout={400} key={item}>
           <div className="flex animate-pulse flex-col gap-1">
-            <div className="aspect-[6_/_9] rounded bg-zinc-400" />
+            <div className="aspect-[6/9] rounded bg-zinc-400" />
 
             <div className="h-4 rounded bg-zinc-400" />
             <div className="h-4 rounded bg-zinc-400" />

@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 body {
-  @apply bg-zinc-900 text-zinc-100 font-main overflow-x-hidden min-h-screen box-border;
+  @apply bg-zinc-800 text-zinc-100 font-main overflow-x-hidden min-h-screen box-border;
   --webkit-font-smoothing: antialiased;
+}
+
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  background-color: #ffffff;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
 }

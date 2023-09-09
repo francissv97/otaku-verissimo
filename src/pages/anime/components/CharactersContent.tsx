@@ -38,7 +38,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
           {characters.edges.map((character) =>
             character.voiceActorRoles.length >= 1 ? (
               character.voiceActorRoles.map((voiceActorRole, index) => (
-                <div key={index} className="flex overflow-hidden rounded-lg bg-zinc-800 shadow-lg">
+                <div key={index} className="flex overflow-hidden rounded-lg bg-zinc-700 shadow-lg">
                   <Link to={`/character/${character.node.id}`}>
                     <div className="overflow-hidden bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
                       <img
@@ -58,7 +58,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
                     <div className="flex w-fit gap-1 p-2">
                       <div className="flex w-full flex-col gap-1">
                         <Link to={`/character/${character.node.id}`}>
-                          <span className="break-all text-sm font-medium">
+                          <span className="break-all text-sm font-medium line-clamp-2">
                             {character.node.name.full}
                           </span>
                         </Link>
@@ -92,7 +92,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
                             transitionDuration: "600ms",
                           }}
                           onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                          className="aspect-[6_/_9] h-32 object-cover"
+                          className="aspect-[6/9] h-32 object-cover"
                         />
                       </div>
                     </Link>
@@ -102,7 +102,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
             ) : (
               <div
                 key={character.node.id}
-                className="flex overflow-hidden rounded-lg bg-zinc-800 shadow-lg"
+                className="flex overflow-hidden rounded-lg bg-zinc-700 shadow-lg"
               >
                 <div className="flex flex-1">
                   <img
@@ -113,7 +113,7 @@ export function CharactersContent({ characters, pagingFunction, isLoading }: Cha
                       transitionDuration: "600ms",
                     }}
                     onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                    className="aspect-[6_/_9] h-32 object-cover"
+                    className="aspect-[6/9] h-32 object-cover"
                   />
 
                   <div className="flex gap-1 p-2">

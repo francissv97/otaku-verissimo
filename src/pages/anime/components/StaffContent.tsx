@@ -29,7 +29,7 @@ export function StaffContent({ staff, pagingFunction, isLoading }: StaffContentP
       <div className="mx-auto max-w-6xl px-4">
         <div className="mt-2 grid gap-4 pb-2 md:grid-cols-2">
           {staff.edges.map((edge) => (
-            <div key={edge.id} className="flex overflow-hidden rounded-lg bg-zinc-800 shadow-lg">
+            <div key={edge.id} className="flex overflow-hidden rounded-lg bg-zinc-700 shadow-lg">
               <div className="flex flex-1">
                 <Link to={`/staff/${edge.node.id}`}>
                   <div className="h-32 overflow-hidden bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
@@ -41,7 +41,7 @@ export function StaffContent({ staff, pagingFunction, isLoading }: StaffContentP
                         transitionDuration: "700ms",
                       }}
                       onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                      className="aspect-[6_/_9] h-full object-cover"
+                      className="aspect-[6/9] h-full object-cover"
                     />
                   </div>
                 </Link>

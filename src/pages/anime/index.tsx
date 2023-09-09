@@ -159,8 +159,8 @@ export function Anime() {
                   <button
                     className={
                       pageContent === "overview"
-                        ? "pointer-events-none rounded-lg bg-main p-2 text-[14px] uppercase text-white duration-200 md:text-[16px]"
-                        : "border-b-2 border-transparent p-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
+                        ? "pointer-events-none rounded-lg text-lg font-bold uppercase text-main duration-200"
+                        : "text-lg uppercase text-zinc-200 duration-200 hover:text-zinc-500"
                     }
                     onClick={() => setPageContent("overview")}
                   >
@@ -170,8 +170,8 @@ export function Anime() {
                   <button
                     className={
                       pageContent === "characters"
-                        ? "pointer-events-none rounded-lg bg-main p-2 text-[14px] uppercase text-white duration-200 md:text-[16px]"
-                        : "border-b-2 border-transparent p-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
+                        ? "pointer-events-none rounded-lg text-lg font-bold uppercase text-main duration-200"
+                        : "text-lg uppercase text-zinc-200 duration-200 hover:text-zinc-500"
                     }
                     onClick={() => setPageContent("characters")}
                   >
@@ -181,8 +181,8 @@ export function Anime() {
                   <button
                     className={
                       pageContent === "staff"
-                        ? "pointer-events-none rounded-lg bg-main p-2 text-[14px] uppercase text-white duration-200 md:text-[16px]"
-                        : "border-b-2 border-transparent p-2 text-[14px] uppercase text-zinc-200 duration-200 hover:text-zinc-500 md:text-[16px]"
+                        ? "pointer-events-none rounded-lg text-lg font-bold uppercase text-main duration-200"
+                        : "text-lg uppercase text-zinc-200 duration-200 hover:text-zinc-500"
                     }
                     onClick={() => setPageContent("staff")}
                   >

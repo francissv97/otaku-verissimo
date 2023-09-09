@@ -19,12 +19,7 @@ type MediaFormat =
   | "NOVEL"
   | "ONE_SHOT";
 
-type MediaStatus =
-  | "FINISHED"
-  | "RELEASING"
-  | "NOT_YET_RELEASED"
-  | "CANCELLED"
-  | "HIATUS";
+type MediaStatus = "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS";
 
 export type MediaSort =
   | "TITLE_ROMAJI_DESC"
@@ -73,7 +68,7 @@ export type PageInfo = {
   perPage: number;
 };
 
-export type AnimeMediaResults = {
+export type PageMediaResultQuery = {
   id: number;
   title: {
     romaji: string;
@@ -364,8 +359,4 @@ export type AllTimePopularType = {
   perPage: number;
 };
 
-export type ViewAllParams =
-  | "trending"
-  | "this-season"
-  | "next-season"
-  | "popular";
+export type ViewAllParams = "trending" | "this-season" | "next-season" | "popular";
