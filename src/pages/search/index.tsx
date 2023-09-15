@@ -1,15 +1,19 @@
 import { useSearchParams } from "react-router-dom";
+import { GET_SEARCH_QUERY } from "@/lib/queries/SearchQuery";
+import { Header } from "@/components/Header";
 import { InputSearch } from "./components/SearchFields";
 import { ResultsList } from "./components/ResultsList";
-import { GET_SEARCH_QUERY } from "@/lib/queries/SearchQuery";
+import girlListeningMusic from "@/assets/girl-listening-music.png";
 
 export function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("search") || "";
 
   return (
-    <div>
-      <div className="flex max-w-6xl flex-wrap items-center justify-between gap-4 p-4">
+    <>
+      <Header hideSearchButton />
+
+      <div className="flex max-w-6xl flex-wrap items-center justify-between gap-4 p-4 pt-20">
         <InputSearch
           searchTerm={searchTerm}
           searchParams={searchParams}
@@ -46,7 +50,7 @@ export function Search() {
           </div> */}
       </div>
 
-      {searchTerm && (
+      {searchTerm ? (
         <ResultsList
           query={GET_SEARCH_QUERY}
           variables={{
@@ -57,7 +61,13 @@ export function Search() {
             isAdult: false,
           }}
         />
+      ) : (
+        <img
+          src={girlListeningMusic}
+          alt="2D girl listeing music."
+          className="mx-auto mt-28 aspect-square w-full max-w-[480px] rounded-full object-cover"
+        />
       )}
-    </div>
+    </>
   );
 }

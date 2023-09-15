@@ -4,10 +4,10 @@ module.exports = {
     extend: {
       colors: {
         main: "#FF5F00",
-        second: "#0369a1",
+        second: "#3b82f6",
       },
       fontFamily: {
-        main: ["Roboto", "sans-serif"],
+        main: ["Poppins", "sans-serif"],
       },
     },
   },

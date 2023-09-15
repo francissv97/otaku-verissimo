@@ -5,7 +5,7 @@ import { Grow } from "@mui/material";
 import { Heart } from "phosphor-react";
 import { GET_CHARACTER_QUERY } from "@/lib/queries/CharacterQuery";
 import { CircularLoading } from "@/components/Loading";
-import { SimpleHeader } from "@/components/Header";
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CharacterModel } from "@/types";
 
@@ -40,8 +40,8 @@ export function Character() {
   if (!character && !error) return <CircularLoading />;
 
   return (
-    <div className="flex min-h-screen flex-col justify-between pt-10">
-      <SimpleHeader />
+    <div className="flex min-h-screen flex-col justify-between pt-20">
+      <Header />
 
       {character && (
         <div className="mx-auto mb-auto flex w-full max-w-6xl flex-col gap-2 py-4">

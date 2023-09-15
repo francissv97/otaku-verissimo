@@ -2,26 +2,37 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Slide } from "@mui/material";
+import { SwiperSlide } from "swiper/react";
+import { Heart, Star } from "phosphor-react";
 import {
   GET_ANIME_CHARACTERS_PAGINATION,
   GET_ANIME_MEDIA_QUERY,
   GET_ANIME_STAFF_PAGINATION,
 } from "@/lib/queries/AnimeMediaQuery";
-import { CopySimple, Heart, Star } from "phosphor-react";
 import { formatDateToString } from "@/utils";
 import { AnimeMedia } from "@/types";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/Footer";
-import { SimpleHeader } from "@/components/Header";
+import { Header } from "@/components/Header";
+import { CollapseParagraph } from "@/components/CollapseParagraph";
+import { CircularLoading } from "@/components/Loading";
+import { Subtitle } from "@/components/Subtitle";
 import { Recommendations } from "./components/Recommendations";
 import { Relations } from "./components/Relations";
 import { Tags } from "./components/Tags";
 import { CharactersContent } from "./components/CharactersContent";
 import { StaffContent } from "./components/StaffContent";
-import { CollapseParagraph } from "@/components/CollapseParagraph";
-import { CircularLoading } from "@/components/Loading";
+import { SwiperCharactersHorizontal } from "./components/SwiperCharactersHorizontal";
+import { TitleCopyToClipboard } from "./components/TitleCopyToClipboard";
 
 export function Anime() {
+  /**
+   * Trabalharemos nisso em breve:
+   * o estado "isLoading" está sendo usando apenas para mostrar um
+   * loading durante a páginação, fetchMore do graphql, dos conteúdos de staff
+   * e character. Seria interessante alcançar este efeito sem utilizar um estado
+   * no componente pai.
+   *  */
   const [isLoading, setIsLoading] = useState(false);
   const [anime, setAnime] = useState<AnimeMedia>();
   const [pageContent, setPageContent] = useState<"overview" | "characters" | "staff">("overview");
@@ -46,7 +57,8 @@ export function Anime() {
   });
 
   useEffect(() => {
-    if (window.scrollY <= document.body.scrollHeight) scrollTo({ top: 0, behavior: "smooth" });
+    if (location.hostname != "localhost" && window.scrollY <= document.body.scrollHeight)
+      scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   if (error && error.graphQLErrors.some((g) => g.message == "Not Found.")) {
@@ -66,45 +78,49 @@ export function Anime() {
 
       {anime && (
         <>
+          <Header />
+
           {anime.bannerImage ? (
             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
               {loading ? (
-                <div className="h-52 w-full bg-main md:h-72 " />
+                <div className="h-80 w-full bg-main md:h-96" />
               ) : (
-                <img
-                  src={anime.bannerImage}
-                  className="h-52 w-full object-cover object-center md:h-72"
-                  alt="anime banner image"
-                  loading="lazy"
-                  style={{
-                    opacity: 0,
-                    transitionDuration: "1000ms",
-                  }}
-                  onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                />
+                <div className="relative">
+                  <img
+                    src={anime.bannerImage}
+                    className="h-80 w-full object-cover object-center md:h-96"
+                    alt="anime banner image"
+                    loading="lazy"
+                    style={{
+                      opacity: 0,
+                      transitionDuration: "1000ms",
+                    }}
+                    onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                  />
+
+                  <div className="absolute bottom-0 h-full w-full bg-gradient-to-r from-zinc-800 via-zinc-800/20 to-transparent md:w-[60%] md:via-zinc-800/70" />
+                </div>
               )}
             </div>
           ) : (
             <div className="h-10 w-full bg-gradient-to-t from-zinc-800 via-zinc-700 to-zinc-600 md:h-11" />
           )}
 
-          <SimpleHeader />
-
           <div className="mb-auto">
             <div className="mx-auto flex max-w-6xl flex-col gap-y-2 py-4 md:flex-row">
               <div className="flex flex-wrap gap-2 pl-4 md:flex-col">
                 <div
                   className={`z-10 w-fit place-self-start overflow-hidden rounded-lg bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 shadow-lg ${
-                    anime.bannerImage ? "-mt-32 md:-mt-36" : ""
+                    anime.bannerImage && "-mt-48 md:-mt-36"
                   }`}
                 >
                   {loading ? (
-                    <div className="w-28 bg-main md:w-44" />
+                    <div className="aspect-[6/9] w-44 bg-main" />
                   ) : (
                     <img
                       src={anime.coverImage.large}
                       alt={anime.title.romaji}
-                      className="w-28 md:w-44"
+                      className="aspect-[6/9] w-36 md:w-44"
                       loading="lazy"
                       style={{
                         opacity: 0,
@@ -115,52 +131,54 @@ export function Anime() {
                   )}
                 </div>
 
-                <div className="flex gap-6 place-self-end md:place-self-center">
+                <div className="flex gap-2 place-self-end md:place-self-center">
                   <div className="flex items-center gap-1">
-                    <Star size={22} weight="fill" className="text-yellow-500" />
+                    <Star size={24} weight="fill" className="text-yellow-400" />
                     <span className="text-sm">{anime.averageScore > 0 ? anime.averageScore : 0}</span>
                   </div>
 
                   <div className="flex items-center gap-1">
-                    <Heart size={22} weight="fill" className="text-red-600" />
+                    <Heart size={24} weight="fill" className="text-red-600" />
                     <span className="text-sm">{anime.favourites > 0 ? anime.favourites : 0}</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-1 flex-col gap-2 px-4">
-                <h1 className="line-clamp-2 text-lg text-main">{anime.title.romaji}</h1>
+                <h1 className="line-clamp-2 text-2xl" style={{ color: anime.coverImage.color }}>
+                  {anime.title.romaji}
+                </h1>
 
                 {anime.startDate.day == null &&
                   anime.startDate.month == null &&
                   anime.startDate.year == null && <span className="peer">To Be Announced</span>}
 
                 {(anime.format ?? anime.episodes) && (
-                  <div className="flex gap-2">
+                  <div className="flex items-center gap-2">
                     {anime.seasonYear && (
-                      <span className="peer font-medium text-second">{anime.seasonYear}</span>
+                      <span className="font-medium text-second">{anime.seasonYear}</span>
                     )}
 
-                    {anime.format && (
-                      <span className="text-md peer peer-[]:before:pr-2 peer-[]:before:content-['·']">
-                        {anime.format}
-                      </span>
-                    )}
+                    <div className="mx-2 h-2 w-2 rounded-full bg-white/80" />
+
+                    {anime.format && <span className="text-md">{anime.format}</span>}
+
+                    <div className="mx-2 h-2 w-2 rounded-full bg-white/80" />
 
                     {anime.episodes && (
-                      <span className="text-md peer peer-[]:before:pr-2 peer-[]:before:content-['·']">{`${
-                        anime.episodes
-                      } ${anime.episodes > 1 ? "episodes" : "episode"}`}</span>
+                      <span className="text-md">{`${anime.episodes} ${
+                        anime.episodes > 1 ? "episodes" : "episode"
+                      }`}</span>
                     )}
                   </div>
                 )}
 
-                <div className="mx-auto mt-auto flex w-full max-w-6xl justify-center gap-2 rounded-lg font-medium md:gap-8">
+                <div className="mx-auto mt-auto grid max-w-6xl grid-flow-col justify-center gap-2 font-medium md:gap-8">
                   <button
                     className={
                       pageContent === "overview"
-                        ? "pointer-events-none rounded-lg text-lg font-bold uppercase text-main duration-200"
-                        : "text-lg uppercase text-zinc-200 duration-200 hover:text-zinc-500"
+                        ? "pointer-events-none truncate rounded-lg bg-zinc-50 px-2 py-1 text-lg uppercase text-main duration-200"
+                        : "truncate rounded-lg bg-main/20 px-2 text-lg uppercase text-zinc-200 duration-200 hover:bg-main/40"
                     }
                     onClick={() => setPageContent("overview")}
                   >
@@ -170,8 +188,8 @@ export function Anime() {
                   <button
                     className={
                       pageContent === "characters"
-                        ? "pointer-events-none rounded-lg text-lg font-bold uppercase text-main duration-200"
-                        : "text-lg uppercase text-zinc-200 duration-200 hover:text-zinc-500"
+                        ? "pointer-events-none truncate rounded-lg bg-zinc-50 px-2 py-1 text-lg uppercase text-main duration-200"
+                        : "truncate rounded-lg bg-main/20 px-2 text-lg uppercase text-zinc-200 duration-200 hover:bg-main/40"
                     }
                     onClick={() => setPageContent("characters")}
                   >
@@ -181,8 +199,8 @@ export function Anime() {
                   <button
                     className={
                       pageContent === "staff"
-                        ? "pointer-events-none rounded-lg text-lg font-bold uppercase text-main duration-200"
-                        : "text-lg uppercase text-zinc-200 duration-200 hover:text-zinc-500"
+                        ? "pointer-events-none truncate rounded-lg bg-zinc-50 px-2 py-1 text-lg uppercase text-main duration-200"
+                        : "truncate rounded-lg bg-main/20 px-2 text-lg uppercase text-zinc-200 duration-200 hover:bg-main/40"
                     }
                     onClick={() => setPageContent("staff")}
                   >
@@ -200,13 +218,14 @@ export function Anime() {
                       <div key={index} className="flex items-center">
                         <li
                           key={index}
-                          className="peer pointer-events-none rounded-lg font-medium text-emerald-500"
+                          className="pointer-events-none text-lg font-medium"
+                          style={{ color: anime.coverImage.color }}
                         >
                           {genre}
                         </li>
 
                         {index != array.length - 1 && (
-                          <div className="mx-2 h-2 w-2 rounded-full bg-white/30" />
+                          <div className="mx-2 h-2 w-2 rounded-full bg-white/80" />
                         )}
                       </div>
                     ))}
@@ -214,46 +233,50 @@ export function Anime() {
 
                   {anime.description && (
                     <div className="flex flex-col px-4">
-                      <strong className="mb-2">Description</strong>
+                      <Subtitle text="description" />
+
                       <CollapseParagraph description={anime.description} />
                     </div>
                   )}
 
                   <div className="mt-4 flex flex-col">
-                    <strong className="mb-2 px-4">Characters</strong>
+                    <Subtitle text="characters" className="px-4" />
 
-                    <div className="flex gap-4">
-                      {anime.characters.edges
-                        .filter((character) => character.role == "MAIN")
-                        .map((character) => (
-                          <Link
-                            key={character.node.id}
-                            className="flex w-24 flex-col gap-1"
-                            to={`/character/${character.node.id}`}
-                          >
-                            <div className="h-24 overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
-                              <img
-                                src={character.node.image.medium}
-                                alt={character.node.name.full}
-                                style={{
-                                  opacity: 0,
-                                  transitionDuration: "900ms",
-                                }}
-                                onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
+                    <div className="flex gap-4 pt-4">
+                      <SwiperCharactersHorizontal>
+                        {anime.characters.edges
+                          .filter((character) => character.role == "MAIN")
+                          .map((character) => (
+                            <SwiperSlide key={character.node.id}>
+                              <Link
+                                className="flex flex-col gap-4"
+                                to={`/character/${character.node.id}`}
+                              >
+                                <div className="aspect-square overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                                  <img
+                                    src={character.node.image.medium}
+                                    alt={character.node.name.full}
+                                    style={{
+                                      opacity: 0,
+                                      transitionDuration: "900ms",
+                                    }}
+                                    onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                                    className="h-full w-full object-cover"
+                                  />
+                                </div>
 
-                            <span className="mx-auto line-clamp-2 w-full text-center text-sm text-main">
-                              {character.node.name.full}
-                            </span>
-                          </Link>
-                        ))}
+                                <span className="mx-auto line-clamp-2 w-full text-center text-base">
+                                  {character.node.name.full}
+                                </span>
+                              </Link>
+                            </SwiperSlide>
+                          ))}
+                      </SwiperCharactersHorizontal>
                     </div>
                   </div>
 
                   <div className="mt-4 flex flex-col gap-2 px-4">
-                    <strong>Info</strong>
+                    <Subtitle text="Info" />
 
                     <div className="flex flex-wrap gap-x-4 gap-y-2">
                       <span className="min-w-[110px] text-sm">Romaji</span>
@@ -406,27 +429,23 @@ export function Anime() {
                   {anime.externalLinks.length > 0 && (
                     <div className="mt-4 flex flex-col gap-3 px-4">
                       <div className="flex justify-between">
-                        <strong className="text-md w-fit border-t-4 border-main/70 leading-none">
-                          Links
-                        </strong>
-                        <span className="pointer-events-none text-sm font-medium leading-none text-zinc-400">
-                          Click to copy link
-                        </span>
+                        <Subtitle text="Links" />
                       </div>
 
                       <div className="flex flex-wrap gap-2">
                         {anime.externalLinks.map((link) => (
-                          <div
+                          <Link
                             key={link.id}
+                            to={link.url}
+                            target="_blank"
                             className="my-auto flex h-fit cursor-pointer items-center gap-1 rounded p-2 hover:scale-[102%]"
-                            onClick={() => navigator.clipboard.writeText(link.url)}
                             style={{
                               backgroundColor: link.color ? link.color : "#52525b",
                             }}
                           >
                             {link.icon && <img src={link.icon} alt={link.site} className="w-6" />}
                             <strong className="text-sm text-white">{link.site}</strong>
-                          </div>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -503,40 +522,6 @@ export function Anime() {
           <Footer />
         </>
       )}
-    </div>
-  );
-}
-
-type TitleCopyToClipboardProps = {
-  title: string;
-};
-
-function TitleCopyToClipboard({ title }: TitleCopyToClipboardProps) {
-  const [showCopyMessage, setShowCopyMessage] = useState(false);
-
-  function handleClick() {
-    setShowCopyMessage(true);
-    navigator.clipboard.writeText(title);
-    setTimeout(() => setShowCopyMessage(false), 1000);
-  }
-
-  return (
-    <div className=" flex flex-1 items-center gap-1">
-      <span
-        onClick={handleClick}
-        className="relative cursor-pointer pr-4 text-justify text-sm text-sky-500"
-        title="click to copy"
-      >
-        {title}
-
-        {showCopyMessage ? (
-          <span className="pointer-events-none absolute -right-5 -top-5 whitespace-nowrap rounded bg-emerald-600 px-2 py-1 text-sm text-zinc-50 duration-500">
-            copied text
-          </span>
-        ) : (
-          <CopySimple className="absolute -right-3 -top-1 h-6 w-6 cursor-pointer rounded-full bg-sky-500/80 p-1 text-[20px] text-zinc-50 duration-500" />
-        )}
-      </span>
     </div>
   );
 }

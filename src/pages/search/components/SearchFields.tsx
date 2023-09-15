@@ -52,7 +52,7 @@ export function InputSearch({ searchTerm, searchParams, setSearchParams }: Input
 
   return (
     <div className="flex w-full flex-col gap-2 md:max-w-xs">
-      <span className="font-medium">Search</span>
+      {/* <span className="font-medium">Search</span> */}
       <div className="flex items-center gap-2 border-b-2 border-main px-2 shadow-xl">
         <MagnifyingGlass size={24} className="text-zinc-400" weight="bold" />
 
@@ -60,6 +60,7 @@ export function InputSearch({ searchTerm, searchParams, setSearchParams }: Input
           type="text"
           onChange={handleSearch}
           value={displayValue}
+          placeholder="Search anime"
           className="w-full bg-transparent p-2 text-lg leading-none text-zinc-300 caret-main/70 outline-none"
         />
         <button

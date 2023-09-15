@@ -101,6 +101,7 @@ export type AnimeMedia = {
   };
   coverImage: {
     large: string;
+    color: string;
   };
   bannerImage: string;
   season: MediaSeason;

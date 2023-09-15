@@ -12,8 +12,8 @@ export function AnimeHome() {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col justify-between">
-      <Header />
+    <div className="flex min-h-screen flex-col justify-between pt-20">
+      <Header hideBackButton />
 
       <div className="mb-auto flex-1">
         <TrendingNow />

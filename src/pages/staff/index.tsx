@@ -16,7 +16,7 @@ import {
   StaffAnimeStaffRolesSkeleton,
   StaffCharactersSkeleton,
 } from "@/components/Loading";
-import { SimpleHeader } from "@/components/Header";
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CollapseParagraph } from "@/components/CollapseParagraph";
 
@@ -40,8 +40,8 @@ export function Staff() {
   const staff: StaffModel = data && data.Staff;
 
   return (
-    <div className="flex min-h-screen flex-col justify-between pt-10">
-      <SimpleHeader />
+    <div className="flex min-h-screen flex-col justify-between pt-20">
+      <Header />
 
       <div className="my-auto flex flex-col gap-2">
         {error && (

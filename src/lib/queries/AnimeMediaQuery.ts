@@ -11,6 +11,7 @@ export const GET_ANIME_MEDIA_QUERY = gql`
       }
       coverImage {
         large
+        color
       }
       bannerImage
       synonyms
