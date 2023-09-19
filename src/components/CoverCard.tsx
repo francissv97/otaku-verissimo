@@ -3,6 +3,7 @@ import { Grow, useMediaQuery } from "@mui/material";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { Smiley, SmileyMeh, SmileySad } from "phosphor-react";
 import { PageMediaResultQuery } from "@/types";
+import { isContrastColorWithSiteBackgroundAppropriate } from "@/utils/isContrastColorWithSiteBackgroundAppropriate";
 
 interface CoverCardProps {
   anime: PageMediaResultQuery;
@@ -24,7 +25,7 @@ export function CoverCard({ anime }: CoverCardProps) {
               <img
                 src={anime.coverImage.large}
                 alt={anime.title.romaji}
-                className="aspect-[6/9] h-full w-full object-cover object-center bg-pink-500"
+                className="aspect-[6/9] h-full w-full object-cover object-center"
                 loading="lazy"
                 style={{
                   opacity: 0,
@@ -34,7 +35,7 @@ export function CoverCard({ anime }: CoverCardProps) {
               />
             </div>
 
-            <span className="line-clamp-2 min-h-[28px] text-[14px] font-medium leading-none duration-100 group-hover:text-main">
+            <span className="line-clamp-2 min-h-[28px] text-[14px] font-medium duration-100 group-hover:text-main">
               {anime.title.romaji}
             </span>
           </div>
@@ -58,6 +59,8 @@ export function CoverCard({ anime }: CoverCardProps) {
 }
 
 function CoverCardPopover({ anime }: CoverCardPopoverProps) {
+  console.log(anime.coverImage);
+  
   const { episodes, studios, averageScore, season, seasonYear, format, startDate } = anime;
 
   const genres = anime.genres.length > 3 ? anime.genres.slice(0, 3) : anime.genres;
@@ -66,15 +69,17 @@ function CoverCardPopover({ anime }: CoverCardPopoverProps) {
 
   const isTBA = !Object.values(restStartDate).some((item) => item != null);
 
+  const isAnimeColorAppropriate = isContrastColorWithSiteBackgroundAppropriate(anime.coverImage.color);
+
   return (
     <Grow in timeout={200}>
-      <div className="-mt-1 flex w-72 flex-col gap-1 rounded-lg border-b-4 border-main bg-gradient-to-t from-zinc-950 via-zinc-800 to-zinc-700 p-4 shadow-xl">
+      <div className="-mt-1 flex w-72 flex-col gap-1 rounded-lg bg-zinc-950 p-4 shadow-2xl">
         <div className="flex items-center justify-between">
           {!isTBA && (
             <div className="flex items-center justify-center">
               {season && <span className="peer text-sm font-medium">{season}</span>}
 
-              <span className="text-sm font-medium text-sky-400 peer-[]:ml-2">
+              <span className="text-sm font-medium text-second peer-[]:ml-2">
                 {seasonYear || startDate.year}
               </span>
             </div>
@@ -90,17 +95,21 @@ function CoverCardPopover({ anime }: CoverCardPopoverProps) {
                 <SmileySad className="text-[26px] text-red-500" />
               )}
 
-              <span className="font-mono text-sm">{averageScore + "%"}</span>
+              <span className="text-base">{averageScore + "%"}</span>
             </div>
           )}
         </div>
 
-        {isTBA && <span className="text-sm font-medium text-rose-600">TBA</span>}
+        {isTBA && <span className="font-medium text-rose-600">TBA</span>}
 
         {studios.nodes.length > 0 && (
           <div>
             {studios.nodes.map((studio, index, array) => (
-              <span key={index} className="text-sm font-medium text-main">
+              <span
+                key={index}
+                className="text-sm font-medium"
+                style={{ color: isAnimeColorAppropriate ? anime.coverImage.color : "#FF5F00" }}
+              >
                 {studio.name}
                 {index != array.length - 1 && ", "}
               </span>
@@ -108,25 +117,29 @@ function CoverCardPopover({ anime }: CoverCardPopoverProps) {
           </div>
         )}
 
-        <div>
-          {format && <span className="text-sm">{format.replaceAll("_", " ")}</span>}
+        <div className="flex">
+          {format && <span>{format.replaceAll("_", " ")}</span>}
 
           {episodes && (
-            <>
-              <span className="mx-1">·</span>
-              <span className="text-sm">{episodes + `${episodes > 1 ? " episodes" : " episode"}`}</span>
-            </>
+            <div className="flex items-center">
+              <div className="mx-2 h-2 w-2 rounded-full bg-white/60" />
+              <span className="">{episodes + `${episodes > 1 ? " episodes" : " episode"}`}</span>
+            </div>
           )}
         </div>
 
-        <div className="flex w-fit flex-wrap items-center justify-center">
-          {genres.map((genre) => (
-            <span
-              key={genre}
-              className="peer py-1 text-sm font-medium text-emerald-400 peer-[]:before:mx-1 peer-[]:before:rounded-full peer-[]:before:bg-zinc-500 peer-[]:before:text-transparent peer-[]:before:content-['.']"
-            >
-              {genre}
-            </span>
+        <div className="flex w-fit flex-wrap items-center">
+          {genres.map((genre, index, array) => (
+            <div key={genre} className="flex items-center">
+              <span
+                className="peer py-1 text-sm font-medium"
+                style={{ color: isAnimeColorAppropriate ? anime.coverImage.color : "#FF5F00" }}
+              >
+                {genre}
+              </span>
+
+              {index != array.length - 1 && <div className="mx-2 h-2 w-2 rounded-full bg-white/60" />}
+            </div>
           ))}
         </div>
       </div>

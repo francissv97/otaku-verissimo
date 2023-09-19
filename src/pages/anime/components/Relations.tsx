@@ -56,7 +56,7 @@ export function Relations({ edges }: RelationsProps) {
                 }}
                 className="flex cursor-pointer flex-col gap-1 py-1"
               >
-                <div className="relative mb-2 overflow-hidden rounded-lg shadow-md">
+                <div className="relative mb-2 aspect-[6/9] overflow-hidden rounded-lg shadow-md">
                   <img
                     src={edge.node.coverImage.large}
                     alt={edge.node.title.romaji}
@@ -82,7 +82,7 @@ export function Relations({ edges }: RelationsProps) {
                   </div>
                 </div>
 
-                <span className="line-clamp-2 text-center text-base leading-none">
+                <span className="line-clamp-2 text-center text-base">
                   {edge.node.title.romaji}
                 </span>
               </Link>
@@ -116,7 +116,7 @@ export function Relations({ edges }: RelationsProps) {
                   </div>
                 </div>
 
-                <span className="line-clamp-2 text-center text-[14px] leading-none">
+                <span className="line-clamp-2 text-center text-[14px]">
                   {edge.node.title.romaji}
                 </span>
               </div>

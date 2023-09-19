@@ -39,7 +39,7 @@ export function Recommendations({ edges }: RecommendationsProps) {
                     if (window.scrollY <= document.body.scrollHeight)
                       scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="group flex cursor-pointer flex-col gap-1 pb-3 pt-1"
+                  className="group flex cursor-pointer flex-col gap-1"
                 >
                   <div className="relative mb-2 aspect-[6/9] overflow-hidden rounded-lg bg-gradient-to-t shadow-lg">
                     <img
@@ -79,7 +79,7 @@ export function Recommendations({ edges }: RecommendationsProps) {
                     </div>
                   </div>
 
-                  <span className="line-clamp-2 text-center text-base leading-none">
+                  <span className="line-clamp-2 text-center">
                     {edge.node.mediaRecommendation.title.romaji}
                   </span>
                 </Link>

@@ -4,6 +4,7 @@ import { PageMediaResultQuery } from "@/types";
 import { GET_ANIME_PAGE_QUERY } from "@/lib/queries/AnimePageQuery";
 import { SwiperSectionHome } from "@/components/SwiperSectionHome";
 import { CoverCard } from "@/components/CoverCard";
+import { Subtitle } from "@/components/Subtitle";
 
 export function TrendingNow() {
   const { data, loading } = useQuery(GET_ANIME_PAGE_QUERY, {
@@ -19,7 +20,7 @@ export function TrendingNow() {
         {loading ? (
           <div className="h-6 w-36 animate-pulse rounded-lg bg-zinc-400 px-4" />
         ) : (
-          <strong className="text-base font-medium uppercase text-main">trending now</strong>
+          <Subtitle text="trending now" />
         )}
 
         {/* <button

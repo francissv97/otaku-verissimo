@@ -8,6 +8,8 @@ import { CircularLoading } from "@/components/Loading";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CharacterModel } from "@/types";
+import { SwiperHorizontal } from "@/components/SwiperHorizontal";
+import { SwiperSlide } from "swiper/react";
 
 export function Character() {
   const { id } = useParams() as { id: string };
@@ -60,7 +62,7 @@ export function Character() {
                 transitionDuration: "700ms",
               }}
               onLoad={(t) => (t.currentTarget.style.opacity = "1")}
-              className="w-52 rounded shadow-lg"
+              className="w-52 rounded-lg shadow-lg"
             />
           </div>
 
@@ -75,37 +77,39 @@ export function Character() {
             <div className="flex flex-col gap-4 pb-4">
               <strong className="px-4 text-lg font-medium">Voices Actors</strong>
 
-              <div className="flex gap-4">
+              <SwiperHorizontal>
                 {character.media.edges[0].voiceActors.map((voiceActor) => (
-                  <Link key={voiceActor.id} to={`/staff/${voiceActor.id}`}>
-                    <div className="flex w-28 flex-col">
-                      <div className="h-28 w-full overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
-                        <img
-                          src={voiceActor.image.large}
-                          alt={voiceActor.name.full}
-                          className="h-28 w-full rounded-full object-cover shadow-lg shadow-black/10"
-                          loading="lazy"
-                          style={{
-                            opacity: 0,
-                            transitionDuration: "700ms",
-                          }}
-                          onLoad={(t) => {
-                            t.currentTarget.style.opacity = "1";
-                          }}
-                        />
+                  <SwiperSlide key={voiceActor.id}>
+                    <Link to={`/staff/${voiceActor.id}`}>
+                      <div className="flex w-28 flex-col">
+                        <div className="h-28 w-full overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                          <img
+                            src={voiceActor.image.large}
+                            alt={voiceActor.name.full}
+                            className="h-28 w-full rounded-full object-cover shadow-lg shadow-black/10"
+                            loading="lazy"
+                            style={{
+                              opacity: 0,
+                              transitionDuration: "700ms",
+                            }}
+                            onLoad={(t) => {
+                              t.currentTarget.style.opacity = "1";
+                            }}
+                          />
+                        </div>
+
+                        <span className="mt-2 line-clamp-2 text-center font-medium">
+                          {voiceActor.name.full}
+                        </span>
+
+                        <span className="line-clamp-2 text-center font-medium text-main">
+                          {voiceActor.languageV2}
+                        </span>
                       </div>
-
-                      <span className="mt-2 line-clamp-2 text-center font-medium">
-                        {voiceActor.name.full}
-                      </span>
-
-                      <span className="line-clamp-2 text-center font-medium text-main">
-                        {voiceActor.languageV2}
-                      </span>
-                    </div>
-                  </Link>
+                    </Link>
+                  </SwiperSlide>
                 ))}
-              </div>
+              </SwiperHorizontal>
             </div>
           </Grow>
 

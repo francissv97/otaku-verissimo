@@ -302,7 +302,7 @@ export function Staff() {
                                   </div>
 
                                   <div className="flex flex-col gap-1">
-                                    <span className="text-md font-medium leading-none text-sky-400">
+                                    <span className="text-md font-medium text-sky-400">
                                       {edge.node.startDate.year}
                                     </span>
 

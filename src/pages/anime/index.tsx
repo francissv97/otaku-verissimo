@@ -22,8 +22,9 @@ import { Relations } from "./components/Relations";
 import { Tags } from "./components/Tags";
 import { CharactersContent } from "./components/CharactersContent";
 import { StaffContent } from "./components/StaffContent";
-import { SwiperCharactersHorizontal } from "./components/SwiperCharactersHorizontal";
+import { SwiperHorizontal } from "@/components/SwiperHorizontal";
 import { TitleCopyToClipboard } from "./components/TitleCopyToClipboard";
+import { isContrastColorWithSiteBackgroundAppropriate } from "@/utils/isContrastColorWithSiteBackgroundAppropriate";
 
 export function Anime() {
   /**
@@ -103,7 +104,7 @@ export function Anime() {
               )}
             </div>
           ) : (
-            <div className="h-10 w-full bg-gradient-to-t from-zinc-800 via-zinc-700 to-zinc-600 md:h-11" />
+            <div className="h-20 w-full bg-gradient-to-t from-zinc-800 via-zinc-700 to-zinc-600 md:h-20" />
           )}
 
           <div className="mb-auto">
@@ -145,7 +146,14 @@ export function Anime() {
               </div>
 
               <div className="flex flex-1 flex-col gap-2 px-4">
-                <h1 className="line-clamp-2 text-2xl" style={{ color: anime.coverImage.color }}>
+                <h1
+                  className="line-clamp-2 text-2xl"
+                  style={{
+                    color: isContrastColorWithSiteBackgroundAppropriate(anime.coverImage.color)
+                      ? anime.coverImage.color
+                      : "#FF5F00",
+                  }}
+                >
                   {anime.title.romaji}
                 </h1>
 
@@ -219,7 +227,11 @@ export function Anime() {
                         <li
                           key={index}
                           className="pointer-events-none text-lg font-medium"
-                          style={{ color: anime.coverImage.color }}
+                          style={{
+                            color: isContrastColorWithSiteBackgroundAppropriate(anime.coverImage.color)
+                              ? anime.coverImage.color
+                              : "#FF5F00",
+                          }}
                         >
                           {genre}
                         </li>
@@ -243,7 +255,7 @@ export function Anime() {
                     <Subtitle text="characters" className="px-4" />
 
                     <div className="flex gap-4 pt-4">
-                      <SwiperCharactersHorizontal>
+                      <SwiperHorizontal>
                         {anime.characters.edges
                           .filter((character) => character.role == "MAIN")
                           .map((character) => (
@@ -271,7 +283,7 @@ export function Anime() {
                               </Link>
                             </SwiperSlide>
                           ))}
-                      </SwiperCharactersHorizontal>
+                      </SwiperHorizontal>
                     </div>
                   </div>
 
@@ -334,9 +346,9 @@ export function Anime() {
                     )}
 
                     <div className="flex flex-wrap gap-x-4 gap-y-2">
-                      <span className="min-w-[110px] text-sm leading-none">Source</span>
+                      <span className="min-w-[110px] text-sm">Source</span>
 
-                      <span className="text-sm leading-none">
+                      <span className="text-sm">
                         {anime.source ? anime.source.replace("_", " ") : "-"}
                       </span>
                     </div>
@@ -394,27 +406,27 @@ export function Anime() {
 
                   <div className="mt-4 flex justify-center gap-4 px-4 md:gap-8">
                     <div className="flex flex-col items-center justify-center gap-y-2">
-                      <span className="text-xl font-medium leading-none">
+                      <span className="text-xl font-medium">
                         {anime.averageScore ? anime.averageScore : 0}%
                       </span>
-                      <span className="text-sm leading-none text-main">Average</span>
+                      <span className="text-sm text-main">Average</span>
                     </div>
 
                     <div className="flex flex-col items-center justify-center gap-y-2">
-                      <span className="text-xl font-medium leading-none">
+                      <span className="text-xl font-medium">
                         {anime.meanScore ? anime.meanScore : 0}%
                       </span>
-                      <span className="text-sm leading-none text-main">Mean</span>
+                      <span className="text-sm text-main">Mean</span>
                     </div>
 
                     <div className="flex flex-col items-center justify-center gap-y-2">
-                      <span className="text-xl font-medium leading-none">{anime.popularity}</span>
-                      <span className="text-sm leading-none text-main">Popularity</span>
+                      <span className="text-xl font-medium">{anime.popularity}</span>
+                      <span className="text-sm text-main">Popularity</span>
                     </div>
 
                     <div className="flex flex-col items-center justify-center gap-y-2">
-                      <span className="text-xl font-medium leading-none">{anime.favourites}</span>
-                      <span className="text-sm leading-none text-main">Favourites</span>
+                      <span className="text-xl font-medium">{anime.favourites}</span>
+                      <span className="text-sm text-main">Favourites</span>
                     </div>
                   </div>
 

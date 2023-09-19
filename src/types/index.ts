@@ -75,6 +75,7 @@ export type PageMediaResultQuery = {
   };
   coverImage: {
     large: string;
+    color: string;
   };
   format: MediaFormat;
   averageScore: number;

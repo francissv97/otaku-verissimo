@@ -5,6 +5,7 @@ import { GET_ANIME_PAGE_QUERY } from "@/lib/queries/AnimePageQuery";
 import { nextSeason, nextSeasonYear } from "@/utils";
 import { SwiperSectionHome } from "@/components/SwiperSectionHome";
 import { CoverCard } from "@/components/CoverCard";
+import { Subtitle } from "@/components/Subtitle";
 
 export function UpcomingNextSeason() {
   const { data, loading } = useQuery(GET_ANIME_PAGE_QUERY, {
@@ -25,7 +26,7 @@ export function UpcomingNextSeason() {
         {loading ? (
           <div className="h-6 w-36 animate-pulse rounded-lg bg-zinc-400 px-4" />
         ) : (
-          <strong className="text-base font-medium uppercase text-main">popular this season</strong>
+          <Subtitle text="upcoming next season" />
         )}
 
         {/* <button

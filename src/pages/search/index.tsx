@@ -62,11 +62,13 @@ export function Search() {
           }}
         />
       ) : (
-        <img
-          src={girlListeningMusic}
-          alt="2D girl listeing music."
-          className="mx-auto mt-28 aspect-square w-full max-w-[480px] rounded-full object-cover"
-        />
+        <div className="px-4">
+          <img
+            src={girlListeningMusic}
+            alt="2D girl listeing music."
+            className="mx-auto mt-28 aspect-square w-full max-w-[480px] rounded-full object-cover"
+          />
+        </div>
       )}
     </>
   );

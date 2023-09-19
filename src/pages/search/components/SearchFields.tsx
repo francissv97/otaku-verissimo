@@ -51,8 +51,7 @@ export function InputSearch({ searchTerm, searchParams, setSearchParams }: Input
   }, []);
 
   return (
-    <div className="flex w-full flex-col gap-2 md:max-w-xs">
-      {/* <span className="font-medium">Search</span> */}
+    <div className="flex w-full flex-col gap-2 md:mx-auto md:max-w-xs">
       <div className="flex items-center gap-2 border-b-2 border-main px-2 shadow-xl">
         <MagnifyingGlass size={24} className="text-zinc-400" weight="bold" />
 
@@ -61,8 +60,9 @@ export function InputSearch({ searchTerm, searchParams, setSearchParams }: Input
           onChange={handleSearch}
           value={displayValue}
           placeholder="Search anime"
-          className="w-full bg-transparent p-2 text-lg leading-none text-zinc-300 caret-main/70 outline-none"
+          className="w-full bg-transparent p-2 text-lg text-zinc-300 caret-main/70 outline-none"
         />
+        
         <button
           onClick={handleClear}
           disabled={displayValue.length <= 0}
@@ -81,7 +81,7 @@ export function SelectFieldGenres() {
   return (
     <Select.Root>
       <Select.Trigger
-        className="inline-flex h-9 min-w-[100px] items-center justify-between gap-1 rounded bg-zinc-50 px-4 text-sm leading-none text-main shadow-[0_2px_10px] shadow-black/10 outline-zinc-400 duration-200 hover:bg-zinc-200/50 hover:shadow-md data-[placeholder]:text-zinc-500"
+        className="inline-flex h-9 min-w-[100px] items-center justify-between gap-1 rounded bg-zinc-50 px-4 text-sm text-main shadow-[0_2px_10px] shadow-black/10 outline-zinc-400 duration-200 hover:bg-zinc-200/50 hover:shadow-md data-[placeholder]:text-zinc-500"
         aria-label="Select"
       >
         <Select.Value placeholder="Any" />
@@ -126,7 +126,7 @@ function SelectItem({ value, children }: SelectItemProps) {
   return (
     <Select.Item
       value={value}
-      className="text-md relative flex h-6 select-none items-center rounded pl-6 pr-9 leading-none text-zinc-500 duration-200 data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200/70 data-[disabled]:text-zinc-400 data-[highlighted]:text-zinc-700 data-[highlighted]:outline-zinc-400"
+      className="text-md relative flex h-6 select-none items-center rounded pl-6 pr-9 text-zinc-500 duration-200 data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200/70 data-[disabled]:text-zinc-400 data-[highlighted]:text-zinc-700 data-[highlighted]:outline-zinc-400"
     >
       <Select.ItemText>{children}</Select.ItemText>
       <Select.ItemIndicator className="absolute left-0 inline-flex w-6 items-center justify-center">
