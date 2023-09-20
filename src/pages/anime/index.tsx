@@ -109,30 +109,38 @@ export function Anime() {
 
           <div className="mb-auto">
             <div className="mx-auto flex max-w-6xl flex-col gap-y-2 py-4 md:flex-row">
-              <div className="flex flex-wrap gap-2 pl-4 md:flex-col">
+              <div className="flex flex-col gap-2 px-4">
                 <div
-                  className={`z-10 w-fit place-self-start overflow-hidden rounded-lg bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500 shadow-lg ${
-                    anime.bannerImage && "-mt-48 md:-mt-36"
+                  id="anime_cover"
+                  className={`z-10 w-fit place-self-center overflow-hidden rounded-lg bg-gradient-to-t from-orange-700 via-orange-600 to-orange-600 shadow-lg ${
+                    anime.bannerImage && "-mt-40 md:-mt-36"
                   }`}
                 >
                   {loading ? (
-                    <div className="aspect-[6/9] w-44 bg-main" />
+                    <div className="h-full w-full bg-main" />
                   ) : (
                     <img
                       src={anime.coverImage.large}
                       alt={anime.title.romaji}
-                      className="aspect-[6/9] w-36 md:w-44"
+                      className="h-full w-full"
                       loading="lazy"
                       style={{
                         opacity: 0,
                         transitionDuration: "800ms",
                       }}
-                      onLoad={(t) => (t.currentTarget.style.opacity = "1")}
+                      onLoad={(t) => {
+                        t.currentTarget.style.opacity = "1";
+                        // if (t.currentTarget.width >= t.currentTarget.height) {
+                        //   const animeCoverEl = document.querySelector("#anime_cover");
+                        //   // animeCoverEl?.classList.add("max-w-[320px]");
+                        //   // animeCoverEl?.classList.add("w-full");
+                        // }
+                      }}
                     />
                   )}
                 </div>
 
-                <div className="flex gap-2 place-self-end md:place-self-center">
+                <div className="flex gap-2 place-self-center">
                   <div className="flex items-center gap-1">
                     <Star size={24} weight="fill" className="text-yellow-400" />
                     <span className="text-sm">{anime.averageScore > 0 ? anime.averageScore : 0}</span>
@@ -145,9 +153,9 @@ export function Anime() {
                 </div>
               </div>
 
-              <div className="flex flex-1 flex-col gap-2 px-4">
+              <div className="flex flex-col items-center gap-2 px-4 md:items-start">
                 <h1
-                  className="line-clamp-2 text-2xl"
+                  className="line-clamp-2 text-center text-2xl md:text-left"
                   style={{
                     color: isContrastColorWithSiteBackgroundAppropriate(anime.coverImage.color)
                       ? anime.coverImage.color
@@ -221,7 +229,7 @@ export function Anime() {
             {pageContent == "overview" && (
               <Slide in direction="up" timeout={500}>
                 <div className="mx-auto max-w-6xl">
-                  <ul className="mb-4 flex flex-wrap px-4">
+                  <ul className="mb-4 flex flex-wrap justify-center px-4">
                     {anime.genres.map((genre, index, array) => (
                       <div key={index} className="flex items-center">
                         <li

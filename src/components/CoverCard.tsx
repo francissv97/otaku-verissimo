@@ -59,8 +59,6 @@ export function CoverCard({ anime }: CoverCardProps) {
 }
 
 function CoverCardPopover({ anime }: CoverCardPopoverProps) {
-  console.log(anime.coverImage);
-  
   const { episodes, studios, averageScore, season, seasonYear, format, startDate } = anime;
 
   const genres = anime.genres.length > 3 ? anime.genres.slice(0, 3) : anime.genres;
