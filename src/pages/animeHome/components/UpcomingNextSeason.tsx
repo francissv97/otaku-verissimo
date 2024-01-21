@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { SwiperSlide } from "swiper/react";
+import { CircleNotch } from "phosphor-react";
 import { PageMediaResultQuery } from "@/types";
 import { GET_ANIME_PAGE_QUERY } from "@/lib/queries/AnimePageQuery";
 import { nextSeason, nextSeasonYear } from "@/utils";
@@ -24,7 +25,7 @@ export function UpcomingNextSeason() {
     <div className="mx-auto md:max-w-6xl">
       <div className="mx-auto my-2 flex max-w-6xl items-center justify-between px-4">
         {loading ? (
-          <div className="h-6 w-36 animate-pulse rounded-lg bg-zinc-400 px-4" />
+          <div className="h-7 w-36 animate-pulse rounded-lg bg-zinc-600 px-4" />
         ) : (
           <Subtitle text="upcoming next season" />
         )}
@@ -38,7 +39,11 @@ export function UpcomingNextSeason() {
       </div>
 
       {loading ? (
-        <div className="mx-4 h-72 w-full animate-pulse rounded-lg bg-zinc-400" />
+        <div className="px-4">
+          <div className="flex h-72 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-600">
+            <CircleNotch size={60} className="absolute animate-spin text-main" />
+          </div>
+        </div>
       ) : (
         <SwiperSectionHome>
           {animes?.map((media, index) => (

@@ -1,26 +1,30 @@
-import logo from "../assets/logo-black.svg";
+import logo from "../assets/logo.svg";
 
 export function Footer() {
   return (
-    <footer className="flex flex-col items-center max-w-6xl w-full sm:flex-row sm:justify-between gap-2 mx-auto p-4">
-      <img src={logo} alt="otakuVERISSIMOlogo" className="w-48 opacity-60" />
+    <footer className="bg-gradient-to-t from-black via-black/30 to-transparent">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-2 p-4 sm:flex-row sm:justify-between">
+        <img src={logo} alt="otakuVERISSIMOlogo" className="w-28 invert" />
 
-      <div className="flex flex-col gap-1 items-center md:items-end">
-        <p className="text-sm font-medium">
-          <span>Powered by Anilist</span>
-        </p>
+        <div className="flex flex-col items-center gap-2 md:flex-row md:items-end">
+          <p className="text-sm font-medium">
+            <span>Powered by Anilist</span>
+          </p>
 
-        <p className="text-sm space-x-1">
-          <a
-            href="https://francissportfolio.vercel.app/"
-            target="_blank"
-            className="text-main hover:text-orange-500 font-semibold inline-block rounded duration-200"
-          >
-            Francis Verissimo
-          </a>
+          <div className="hidden md:block w-2 h-2 rounded-full bg-main my-auto" />
 
-          <span className="inline-block">&copy; {new Date().getFullYear()}</span>
-        </p>
+          <p className="space-x-1 text-sm">
+            <a
+              href="https://francissportfolio.vercel.app/"
+              target="_blank"
+              className="inline-block rounded font-semibold text-main invert duration-200 hover:text-orange-500"
+            >
+              Francis Verissimo
+            </a>
+
+            <span className="inline-block">&copy; {new Date().getFullYear()}</span>
+          </p>
+        </div>
       </div>
     </footer>
   );
