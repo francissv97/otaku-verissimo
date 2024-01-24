@@ -1,7 +1,24 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+
+const httpLink = createHttpLink({
+  uri: "https://graphql.anilist.co",
+});
+
+const authLink = setContext((_, { headers }) => {
+  
+  const token = localStorage.getItem("access_token");
+  
+  return {
+    headers: {
+      ...headers,
+      ...(token && { authorization: `Bearer ${token}` }),
+    },
+  };
+});
 
 export const client = new ApolloClient({
-  uri: "https://graphql.anilist.co",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
       Page: {
