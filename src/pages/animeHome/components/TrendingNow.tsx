@@ -7,9 +7,11 @@ import { SwiperSectionHome } from "@/components/SwiperSectionHome";
 import { CoverCard } from "@/components/CoverCard";
 import { Subtitle } from "@/components/Subtitle";
 
+const isLocalHost = location.href.includes("localhost");
+
 export function TrendingNow() {
   const { data, loading } = useQuery(GET_ANIME_PAGE_QUERY, {
-    variables: { perPage: 10, sort: "TRENDING_DESC" },
+    variables: { perPage: isLocalHost ? 3 : 10, sort: "TRENDING_DESC" },
     notifyOnNetworkStatusChange: true,
   });
 
