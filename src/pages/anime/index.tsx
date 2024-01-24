@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Slide } from "@mui/material";
 import { SwiperSlide } from "swiper/react";
@@ -13,7 +13,6 @@ import { formatDateToString } from "@/utils";
 import { AnimeMedia } from "@/types";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import { CollapseParagraph } from "@/components/CollapseParagraph";
 import { CircularLoading } from "@/components/Loading";
 import { Subtitle } from "@/components/Subtitle";
@@ -25,6 +24,7 @@ import { StaffContent } from "./components/StaffContent";
 import { SwiperHorizontal } from "@/components/SwiperHorizontal";
 import { TitleCopyToClipboard } from "./components/TitleCopyToClipboard";
 import { isContrastColorWithSiteBackgroundAppropriate } from "@/utils/isContrastColorWithSiteBackgroundAppropriate";
+import { CaretLeft } from "@phosphor-icons/react";
 
 export function Anime() {
   /**
@@ -38,6 +38,7 @@ export function Anime() {
   const [anime, setAnime] = useState<AnimeMedia>();
   const [pageContent, setPageContent] = useState<"overview" | "characters" | "staff">("overview");
   const { id } = useParams() as { id: string };
+  const navigate = useNavigate();
 
   const { error, fetchMore, loading } = useQuery(GET_ANIME_MEDIA_QUERY, {
     variables: { id: id },
@@ -79,7 +80,16 @@ export function Anime() {
 
       {anime && (
         <>
-          <Header />
+          <div className="fixed top-0 left-0 right-0 z-20 w-full">
+            <div className="max-w-6xl w-full mx-auto">
+              <div
+                className="w-16 cursor-pointer h-16 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-full"
+                onClick={() => navigate(-1)}
+              >
+                <CaretLeft size={24} className="text-white" />
+              </div>
+            </div>
+          </div>
 
           {anime.bannerImage ? (
             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
