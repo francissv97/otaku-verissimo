@@ -9,34 +9,28 @@ interface SwiperSectionHomeProps {
 
 export function SwiperSectionHome({ children }: SwiperSectionHomeProps) {
   return (
-    <div className="px-4">
-      <Swiper
-        slidesPerView={2}
-        spaceBetween={10}
-        pagination={{ dynamicBullets: true }}
-        modules={[Pagination]}
-        breakpoints={{
-          360: {
-            slidesPerView: 3,
-            spaceBetween: 14,
-          },
-          480: {
-            slidesPerView: 4,
-            spaceBetween: 16,
-          },
-          768: {
-            slidesPerView: 5,
-            spaceBetween: 18,
-          },
-          1024: {
-            slidesPerView: 6,
-            spaceBetween: 20,
-          },
-        }}
-        style={{ paddingBottom: 24 }}
-      >
-        {children}
-      </Swiper>
-    </div>
+    <Swiper
+      slidesPerView={2}
+      spaceBetween={16}
+      pagination={{ dynamicBullets: true }}
+      modules={[Pagination]}
+      breakpoints={{
+        360: {
+          slidesPerView: 3,
+        },
+        480: {
+          slidesPerView: 4,
+        },
+        768: {
+          slidesPerView: 5,
+        },
+        1024: {
+          slidesPerView: 6,
+        },
+      }}
+      style={{ paddingBottom: 24, paddingInline: 16 }}
+    >
+      {children}
+    </Swiper>
   );
 }

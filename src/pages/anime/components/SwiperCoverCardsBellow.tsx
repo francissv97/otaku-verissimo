@@ -10,7 +10,7 @@ export function SwiperCoverCardsBellow({ children }: SwiperCoverCardsBellowProps
     <div className="w-full">
       <Swiper
         slidesPerView={3}
-        spaceBetween={10}
+        spaceBetween={16}
         pagination={{ dynamicBullets: true }}
         modules={[Pagination]}
         breakpoints={{

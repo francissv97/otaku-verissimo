@@ -10,21 +10,21 @@ export function SwiperHorizontal({ children }: SwiperHorizontalProps) {
     <div className="w-full">
       <Swiper
         slidesPerView={3}
-        spaceBetween={8}
+        spaceBetween={16}
         pagination={{ dynamicBullets: true }}
         modules={[Pagination]}
         breakpoints={{
           360: {
-            slidesPerView: 3,
+            slidesPerView: 4,
           },
           480: {
-            slidesPerView: 4,
+            slidesPerView: 5,
           },
           768: {
             slidesPerView: 6,
           },
           1024: {
-            slidesPerView: 7,
+            slidesPerView: 8,
           },
         }}
         style={{ paddingBottom: 24, paddingInline: 16 }}
