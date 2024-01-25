@@ -25,6 +25,7 @@ import { SwiperHorizontal } from "@/components/SwiperHorizontal";
 import { TitleCopyToClipboard } from "./components/TitleCopyToClipboard";
 import { isContrastColorWithSiteBackgroundAppropriate } from "@/utils/isContrastColorWithSiteBackgroundAppropriate";
 import { CaretLeft } from "@phosphor-icons/react";
+import { AnimeHeader } from "./components/AnimeHeader";
 
 export function Anime() {
   /**
@@ -80,16 +81,7 @@ export function Anime() {
 
       {anime && (
         <>
-          <div className="fixed top-0 left-0 right-0 z-20 w-full">
-            <div className="max-w-6xl w-full mx-auto">
-              <div
-                className="w-16 cursor-pointer h-16 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-full"
-                onClick={() => navigate(-1)}
-              >
-                <CaretLeft size={24} className="text-white" />
-              </div>
-            </div>
-          </div>
+          <AnimeHeader />
 
           {anime.bannerImage ? (
             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
