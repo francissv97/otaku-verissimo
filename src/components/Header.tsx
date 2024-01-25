@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { CaretLeft, MagnifyingGlass, Video } from "@phosphor-icons/react";
+import { CaretLeft, MagnifyingGlass, SignIn, Video } from "@phosphor-icons/react";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo-inline.svg";
 
@@ -61,13 +61,17 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
               <CaretLeft size={24} className="text-zinc-400" />
             </div>
           ) : (
-            <img src={logo} alt="otakuVERISSIMOlogo" className="my-auto w-32 cursor-pointer" />
+            <img src={logo} alt="otakuVERISSIMOlogo" className="my-auto w-44 cursor-pointer" />
           )}
         </div>
 
         {location.href.includes("localhost") && (
-          <button className="text-pink-500" onClick={handleLoginWithAniList}>
-            Login with AniList
+          <button
+            className="text-pink-500 truncate flex flex-col bg-pink-400/30 items-center justify-center px-2 h-full"
+            onClick={handleLoginWithAniList}
+          >
+            Log in with AniList
+            <span>{`window.open (event: message)`}</span>
           </button>
         )}
 
@@ -79,6 +83,18 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
           >
             <Video size={32} className="text-zinc-300 w-full" />
             <span className="flex min-w-max text-zinc-300">Anime List</span>
+          </div>
+        )}
+
+        {!user && (
+          <div
+            title="Sign in with AniList"
+            className="hidden md:flex h-full p-2 cursor-pointer items-center justify-center bg-gradient-to-r from-sky-600 via-cyan-500 to-cyan-300 transition"
+          >
+            <SignIn size={32} className="text-black" />
+            <strong className="p-1 text-center font-medium text-black min-w-max">
+              Log in with AniList
+            </strong>
           </div>
         )}
 
