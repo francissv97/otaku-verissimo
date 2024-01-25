@@ -1,5 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { CaretLeft, MagnifyingGlass, SignIn, Video } from "@phosphor-icons/react";
+import {
+  CaretLeft,
+  MagnifyingGlass,
+  SignIn,
+  Video,
+} from "@phosphor-icons/react";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo-inline.svg";
 
@@ -24,7 +29,7 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
     const popUp = window.open(
       `https://anilist.co/api/v2/oauth/authorize?client_id=${import.meta.env.VITE_ID_CLIENT}&response_type=token`,
       "AniListAuth",
-      "width=500,height=600"
+      "width=500,height=600",
     );
 
     window.addEventListener("message", (event) => {
@@ -40,9 +45,6 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
 
         if (token) {
           localStorage.setItem("access_token", token);
-
-          // const mensagemParaEnviar = "access_token=" + token;
-          // window.opener.postMessage(mensagemParaEnviar, "https://otakuverissimo.com");
         }
       }
     });
@@ -61,13 +63,17 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
               <CaretLeft size={24} className="text-zinc-400" />
             </div>
           ) : (
-            <img src={logo} alt="otakuVERISSIMOlogo" className="my-auto w-44 cursor-pointer" />
+            <img
+              src={logo}
+              alt="otakuVERISSIMOlogo"
+              className="my-auto w-44 cursor-pointer"
+            />
           )}
         </div>
 
         {location.href.includes("localhost") && (
           <button
-            className="text-pink-500 truncate flex flex-col bg-pink-400/30 items-center justify-center px-2 h-full"
+            className="flex h-full flex-col items-center justify-center truncate bg-pink-400/30 px-2 text-pink-500"
             onClick={handleLoginWithAniList}
           >
             Log in with AniList
@@ -78,24 +84,25 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
         {user && (
           <div
             title="go to anime list page"
-            className="hidden md:flex gap-2 cursor-pointer items-center p-2 h-full justify-center bg-zinc-700 hover:bg-zinc-600"
+            className="hidden h-full cursor-pointer items-center justify-center gap-2 bg-zinc-700 p-2 hover:bg-zinc-600 md:flex"
             // onClick={() => navigate("/search")}
           >
-            <Video size={32} className="text-zinc-300 w-full" />
+            <Video size={32} className="w-full text-zinc-300" />
             <span className="flex min-w-max text-zinc-300">Anime List</span>
           </div>
         )}
 
         {!user && (
-          <div
+          <a
+            href={`https://anilist.co/api/v2/oauth/authorize?client_id=${import.meta.env.VITE_ID_CLIENT}&response_type=token`}
             title="Sign in with AniList"
-            className="hidden md:flex h-full p-2 cursor-pointer items-center justify-center bg-gradient-to-r from-sky-600 via-cyan-500 to-cyan-300 transition"
+            className="hidden h-full cursor-pointer items-center justify-center bg-gradient-to-r from-sky-600 via-cyan-500 to-cyan-300 p-2 transition md:flex"
           >
             <SignIn size={32} className="text-black" />
-            <strong className="p-1 text-center font-medium text-black min-w-max">
+            <strong className="min-w-max p-1 text-center font-medium text-black">
               Log in with AniList
             </strong>
-          </div>
+          </a>
         )}
 
         <div className="flex items-center gap-2">
@@ -105,7 +112,11 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
               className="flex h-14 w-14 cursor-pointer items-center justify-center hover:bg-zinc-900"
               onClick={() => navigate("/search")}
             >
-              <MagnifyingGlass size={24} weight="bold" className="text-zinc-400" />
+              <MagnifyingGlass
+                size={24}
+                weight="bold"
+                className="text-zinc-400"
+              />
             </div>
           ) : (
             <div className="w-14" />
@@ -114,7 +125,7 @@ export function Header({ hideBackButton, hideSearchButton }: HeaderProps) {
           {user && (
             <div
               title={user.name}
-              className="hidden md:flex h-14 w-14 cursor-pointer items-center justify-center rounded-lg transition hover:bg-main/10"
+              className="hidden h-14 w-14 cursor-pointer items-center justify-center rounded-lg transition hover:bg-main/10 md:flex"
               onClick={() => navigate("/profile")}
             >
               <img src={user.avatar.medium} className="w-8" />

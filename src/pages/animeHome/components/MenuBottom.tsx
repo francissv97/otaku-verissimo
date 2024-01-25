@@ -9,7 +9,7 @@ export function MenuBottom() {
       <div className="group mx-auto flex h-full w-full max-w-6xl items-center justify-center gap-4 px-4">
         <div
           title="Home"
-          className="deco flex h-20 w-20 cursor-pointer flex-col items-center justify-center p-2 md:h-28 md:w-28"
+          className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center p-2 md:h-28 md:w-28"
         >
           <HouseSimple size={32} />
           <span>Home</span>
@@ -26,7 +26,8 @@ export function MenuBottom() {
         )}
 
         {!user ? (
-          <div
+          <a
+            href={`https://anilist.co/api/v2/oauth/authorize?client_id=${import.meta.env.VITE_ID_CLIENT}&response_type=token`}
             title="Sign in with AniList"
             className="flex h-20 cursor-pointer items-center justify-center bg-gradient-to-r from-sky-600 via-cyan-500 to-cyan-300 p-2 transition md:h-28 md:w-28"
           >
@@ -34,7 +35,7 @@ export function MenuBottom() {
             <strong className="min-w-max p-1 text-center font-medium text-black">
               Log in with AniList
             </strong>
-          </div>
+          </a>
         ) : (
           <div
             title="Anime List"
