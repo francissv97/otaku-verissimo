@@ -21,11 +21,16 @@ export function useViewer() {
     return viewer ? (JSON.parse(viewer) as IViewerLocalStorage) : null;
   }
 
-  async function performViewerFetch(token: string): Promise<IViewer | undefined> {
+  async function performViewerFetch(
+    token: string,
+  ): Promise<IViewerLocalStorage | undefined> {
     try {
       const viewerFetch = await fetch("https://graphql.anilist.co", {
         method: "POST",
-        headers: { "Content-Type": "application/json", authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ query: GET_VIEWER }),
       });
 
@@ -34,32 +39,31 @@ export function useViewer() {
       }
 
       const viewerData = await viewerFetch.json();
+      const viewerLocalStorage = {
+        ...viewerData.data.Viewer,
+        lastAccess: Date.now(),
+      };
 
-      localStorage.setItem(
-        "viewer",
-        JSON.stringify({ ...viewerData.data.Viewer, lastAccess: Date.now() })
-      );
+      localStorage.setItem("viewer", JSON.stringify(viewerLocalStorage));
 
-      return viewerData.data.Viewer;
+      return viewerLocalStorage as IViewerLocalStorage;
     } catch (error) {
       console.error("Error on request Viewer:", error);
       return undefined;
     }
   }
 
-  async function refreshViewerDataIfNeeded(): Promise<IViewer | undefined> {
+  async function refreshViewerDataIfNeeded(): Promise<
+    IViewerLocalStorage | undefined
+  > {
     const urlToken = getURLToken();
 
-    if (urlToken) {
-      localStorage.setItem("access_token", urlToken);
-
-      await performViewerFetch(urlToken);
-    } else {
+    if (!urlToken) {
       const accessToken = getLocalStorageToken();
 
       if (!accessToken) return;
 
-      const viewer = getLocalStorageViewer();
+      const viewer = getLocalStorageViewer() as IViewerLocalStorage;
 
       if (!viewer) return;
 
@@ -67,11 +71,15 @@ export function useViewer() {
       const oneHourInMs = 60 * 60 * 1000;
 
       if (timestampDifference > oneHourInMs) {
-        await performViewerFetch(accessToken);
+        return await performViewerFetch(accessToken);
       } else {
         return viewer;
       }
     }
+
+    localStorage.setItem("access_token", urlToken);
+
+    return await performViewerFetch(urlToken);
   }
 
   return {
