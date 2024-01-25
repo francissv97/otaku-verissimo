@@ -12,7 +12,7 @@ export function useToken() {
       const cleanUrl = currentUrl.split("#")[0];
       window.history.replaceState({}, document.title, cleanUrl);
 
-      window.opener.postMessage(accessToken, "https://otakuverissimo.com");
+      // window.opener.postMessage(accessToken, "https://otakuverissimo.com");
       
       return accessToken;
     },
