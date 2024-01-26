@@ -7,7 +7,7 @@ import {
   GET_STAFF_CHARACTERS_PAGINATION,
   GET_STAFF_STAFF_MEDIA_PAGINATION,
 } from "@/lib/queries/StaffQuery";
-import { Heart } from "phosphor-react";
+import { Heart } from "@phosphor-icons/react";
 import { formatDateToString, groupStaffRolesByMedia, sortStaffMediaRolesByStartDate } from "@/utils";
 import { StaffModel } from "@/types";
 import { IntersectionObserverComponent } from "@/components/IntersectionObserverComponent";

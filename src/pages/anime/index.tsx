@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Slide } from "@mui/material";
 import { SwiperSlide } from "swiper/react";
-import { Heart, Star } from "phosphor-react";
+import { Heart, Star } from "@phosphor-icons/react";
 import {
   GET_ANIME_CHARACTERS_PAGINATION,
   GET_ANIME_MEDIA_QUERY,
@@ -23,8 +23,7 @@ import { CharactersContent } from "./components/CharactersContent";
 import { StaffContent } from "./components/StaffContent";
 import { SwiperHorizontal } from "@/components/SwiperHorizontal";
 import { TitleCopyToClipboard } from "./components/TitleCopyToClipboard";
-import { isContrastColorWithSiteBackgroundAppropriate } from "@/utils/isContrastColorWithSiteBackgroundAppropriate";
-import { CaretLeft } from "@phosphor-icons/react";
+import { isContrastAppropriate } from "@/utils/isContrastAppropriate";
 import { AnimeHeader } from "./components/AnimeHeader";
 
 export function Anime() {
@@ -39,7 +38,6 @@ export function Anime() {
   const [anime, setAnime] = useState<AnimeMedia>();
   const [pageContent, setPageContent] = useState<"overview" | "characters" | "staff">("overview");
   const { id } = useParams() as { id: string };
-  const navigate = useNavigate();
 
   const { error, fetchMore, loading } = useQuery(GET_ANIME_MEDIA_QUERY, {
     variables: { id: id },
@@ -159,7 +157,7 @@ export function Anime() {
                 <h1
                   className="line-clamp-2 text-center text-2xl md:text-left"
                   style={{
-                    color: isContrastColorWithSiteBackgroundAppropriate(anime.coverImage.color)
+                    color: isContrastAppropriate(anime.coverImage.color)
                       ? anime.coverImage.color
                       : "#FF5F00",
                   }}
@@ -238,7 +236,7 @@ export function Anime() {
                           key={index}
                           className="pointer-events-none text-lg font-medium"
                           style={{
-                            color: isContrastColorWithSiteBackgroundAppropriate(anime.coverImage.color)
+                            color: isContrastAppropriate(anime.coverImage.color)
                               ? anime.coverImage.color
                               : "#FF5F00",
                           }}

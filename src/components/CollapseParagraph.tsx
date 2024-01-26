@@ -1,6 +1,6 @@
 import { ClassAttributes, useState } from "react";
 import { Collapse } from "@mui/material";
-import { CaretDown, CaretUp } from "phosphor-react";
+import { CaretDown, CaretUp } from "@phosphor-icons/react";
 
 type CollapseParagraphProps = ClassAttributes<HTMLDivElement> & {
   description: string;

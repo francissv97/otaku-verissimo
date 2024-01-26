@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Heart, Star } from "phosphor-react";
+import { Heart, Star } from "@phosphor-icons/react";
 import { Subtitle } from "@/components/Subtitle";
 import { SwiperCoverCardsBellow } from "./SwiperCoverCardsBellow";
 import { SwiperSlide } from "swiper/react";

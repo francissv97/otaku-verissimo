@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { SwiperSlide } from "swiper/react";
-import { CircleNotch } from "phosphor-react";
+import { CircleNotch } from "@phosphor-icons/react";
 import { PageMediaResultQuery } from "@/types";
 import { GET_ANIME_PAGE_QUERY } from "@/lib/queries/AnimePageQuery";
 import { SwiperSectionHome } from "@/components/SwiperSectionHome";

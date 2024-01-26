@@ -1,4 +1,4 @@
-import { CopySimple } from "phosphor-react";
+import { CopySimple } from "@phosphor-icons/react";
 import toast from "react-hot-toast";
 
 type TitleCopyToClipboardProps = {

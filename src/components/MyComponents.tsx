@@ -1,18 +1,14 @@
-import { Collapse } from "@mui/material";
-import { CaretDown, CaretUp } from "phosphor-react";
-import { ClassAttributes, useState } from "react";
+import { ClassAttributes } from "react";
 
 type MyDividerProps = ClassAttributes<HTMLDivElement> & {
   className?: string;
 };
 
-type SpaceProps = { pxHeight?: number };
-
 export function MyDivider({ className }: MyDividerProps) {
   return <div className={`my-4 bg-zinc-300 ${className} h-[1px]`} />;
 }
 
-export function MySpace({ pxHeight }: SpaceProps) {
+export function MySpace({ pxHeight }: { pxHeight?: number }) {
   return <div style={{ height: pxHeight ? pxHeight : 8 }}></div>;
 }
 

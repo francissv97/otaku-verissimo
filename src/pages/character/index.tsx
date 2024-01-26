@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Grow } from "@mui/material";
-import { Heart } from "phosphor-react";
+import { Heart } from "@phosphor-icons/react";
 import { GET_CHARACTER_QUERY } from "@/lib/queries/CharacterQuery";
 import { CircularLoading } from "@/components/Loading";
 import { Header } from "@/components/Header";

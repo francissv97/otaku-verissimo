@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { HouseSimple } from "phosphor-react";
+import { HouseSimple } from "@phosphor-icons/react";
 import logo from "../assets/logo.svg";
 
 export function NotFound() {
