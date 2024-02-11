@@ -3,12 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Grow } from "@mui/material";
 import { Heart } from "@phosphor-icons/react";
-import { GET_CHARACTER_QUERY } from "@/lib/queries/CharacterQuery";
-import { CircularLoading } from "@/components/Loading";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { GET_CHARACTER_QUERY } from "@/lib/queries/character-query";
+import { CircularLoading } from "@/components/loading";
+import { Footer } from "@/components/footer";
 import { CharacterModel } from "@/types";
-import { SwiperHorizontal } from "@/components/SwiperHorizontal";
+import { SwiperHorizontal } from "@/components/swiper-horizontal";
 import { SwiperSlide } from "swiper/react";
 
 export function Character() {
@@ -43,10 +42,8 @@ export function Character() {
 
   return (
     <div className="flex min-h-screen flex-col justify-between pt-20">
-      <Header />
-
       {character && (
-        <div className="mx-auto mb-auto flex w-full max-w-6xl flex-col gap-2 py-4">
+        <div className="mx-auto mb-auto flex w-full max-w-5xl flex-col gap-2 py-4">
           <div className="flex flex-col items-center">
             <strong className="text-2xl">{character.name.full}</strong>
             <span>{character.name.native}</span>
@@ -75,7 +72,9 @@ export function Character() {
 
           <Grow in timeout={400}>
             <div className="flex flex-col gap-4 pb-4">
-              <strong className="px-4 text-lg font-medium">Voices Actors</strong>
+              <strong className="px-4 text-lg font-medium">
+                Voices Actors
+              </strong>
 
               <SwiperHorizontal>
                 {character.media.edges[0].voiceActors.map((voiceActor) => (
@@ -168,7 +167,7 @@ export function Character() {
                         {edge.node.title.romaji}
                       </span>
                     </div>
-                  )
+                  ),
                 )}
               </div>
             </div>

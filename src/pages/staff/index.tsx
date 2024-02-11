@@ -6,19 +6,19 @@ import {
   GET_STAFF_QUERY,
   GET_STAFF_CHARACTERS_PAGINATION,
   GET_STAFF_STAFF_MEDIA_PAGINATION,
-} from "@/lib/queries/StaffQuery";
+} from "@/lib/queries/staff-query";
 import { Heart } from "@phosphor-icons/react";
-import { formatDateToString, groupStaffRolesByMedia, sortStaffMediaRolesByStartDate } from "@/utils";
 import { StaffModel } from "@/types";
-import { IntersectionObserverComponent } from "@/components/IntersectionObserverComponent";
 import {
   CircularLoading,
   StaffAnimeStaffRolesSkeleton,
   StaffCharactersSkeleton,
-} from "@/components/Loading";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { CollapseParagraph } from "@/components/CollapseParagraph";
+} from "@/components/loading";
+import { CollapseParagraph } from "@/components/collapse-paragraph";
+import { IntersectionObserverComponent } from "@/components/intersection-observer-component";
+import { Footer } from "@/components/footer";
+import {  staffMediaRolesUtils as staffUtils } from "@/utils/staff-media-roles";
+import { formatDateToString } from "@/utils/format-date-to-string";
 
 export function Staff() {
   const { id } = useParams() as { id: string };
@@ -41,8 +41,6 @@ export function Staff() {
 
   return (
     <div className="flex min-h-screen flex-col justify-between pt-20">
-      <Header />
-
       <div className="my-auto flex flex-col gap-2">
         {error && (
           <div className="mx-auto my-4 flex flex-col rounded bg-zinc-50 p-4 shadow-xl">
@@ -57,7 +55,7 @@ export function Staff() {
           <div>
             <Fade in timeout={700}>
               <div className="px-4 py-4">
-                <div className="mx-auto flex max-w-6xl flex-col md:flex-row">
+                <div className="mx-auto flex max-w-5xl flex-col md:flex-row">
                   <div className="flex flex-col-reverse gap-2 md:flex-col">
                     <div className="mx-auto min-w-max">
                       <img
@@ -75,8 +73,14 @@ export function Staff() {
 
                     {staff.favourites > 0 && (
                       <div className="flex min-h-[22px] items-center gap-1 place-self-center">
-                        <Heart size={22} weight="fill" className="text-red-600" />
-                        <span className="text-sm font-medium">{staff.favourites}</span>
+                        <Heart
+                          size={22}
+                          weight="fill"
+                          className="text-red-600"
+                        />
+                        <span className="text-sm font-medium">
+                          {staff.favourites}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -94,7 +98,7 @@ export function Staff() {
                           {formatDateToString(
                             staff.dateOfBirth.year,
                             staff.dateOfBirth.month,
-                            staff.dateOfBirth.day
+                            staff.dateOfBirth.day,
                           )}
                         </span>
                       </div>
@@ -119,7 +123,9 @@ export function Staff() {
                         <span className="font-medium">Years active: </span>
                         <span>
                           {staff.yearsActive.length > 1
-                            ? staff.yearsActive.map((year) => <span key={year}>{year}</span>)
+                            ? staff.yearsActive.map((year) => (
+                                <span key={year}>{year}</span>
+                              ))
                             : `${staff.yearsActive[0]} - Present`}
                         </span>
                       </div>
@@ -153,7 +159,7 @@ export function Staff() {
             <div>
               {staff.characters.edges.length > 0 && (
                 <div className="px-4">
-                  <div className="mx-auto flex max-w-6xl flex-col gap-8 py-4">
+                  <div className="mx-auto flex max-w-5xl flex-col gap-8 py-4">
                     {staff.characters.edges.map((edge, index, array) => (
                       <Grow in key={index} timeout={500}>
                         <div className="grid flex-col gap-4">
@@ -177,12 +183,17 @@ export function Staff() {
                             </div>
 
                             <div className="flex flex-1 flex-col">
-                              <Link to={`/character/${edge.node.id}`} className="w-fit">
+                              <Link
+                                to={`/character/${edge.node.id}`}
+                                className="w-fit"
+                              >
                                 <span className="break-all text-lg font-medium">
                                   {edge.node.name.full}
                                 </span>
                               </Link>
-                              <span className="text-sm text-main">{edge.role}</span>
+                              <span className="text-sm text-main">
+                                {edge.role}
+                              </span>
                             </div>
                           </div>
 
@@ -211,7 +222,9 @@ export function Staff() {
 
                                   <div className="left-0 right-0 top-0 flex items-center pt-2">
                                     <span className="text-sm text-main">
-                                      {media.format ? media.format.replaceAll("_", " ") : ""}
+                                      {media.format
+                                        ? media.format.replaceAll("_", " ")
+                                        : ""}
                                     </span>
                                   </div>
 
@@ -233,12 +246,14 @@ export function Staff() {
 
                   {!isLoading && staff.characters.pageInfo.hasNextPage && (
                     <IntersectionObserverComponent
-                      doSomething={() => {
+                      callback={() => {
                         setIsLoading(true);
+
                         fetchMore({
                           query: GET_STAFF_CHARACTERS_PAGINATION,
                           variables: {
-                            charactersPage: staff.characters.pageInfo.currentPage + 1,
+                            charactersPage:
+                              staff.characters.pageInfo.currentPage + 1,
                             id: staff.id,
                           },
                           updateQuery(pv, { fetchMoreResult }) {
@@ -266,148 +281,158 @@ export function Staff() {
             </div>
 
             <div>
-              {staff.staffMedia.edges.length > 0 && !staff.characters.pageInfo.hasNextPage && (
-                <div className="px-4 py-4">
-                  <div className="mx-auto flex max-w-6xl flex-col gap-4">
-                    <div className="grid flex-col gap-4 rounded">
-                      <strong className="w-fit border-t-4 border-main/70 font-sans text-lg font-medium uppercase">
-                        Anime Staff Roles
-                      </strong>
+              {staff.staffMedia.edges.length > 0 &&
+                !staff.characters.pageInfo.hasNextPage && (
+                  <div className="px-4 py-4">
+                    <div className="mx-auto flex max-w-5xl flex-col gap-4">
+                      <div className="grid flex-col gap-4 rounded">
+                        <strong className="w-fit border-t-4 border-main/70 font-sans text-lg font-medium uppercase">
+                          Anime Staff Roles
+                        </strong>
 
-                      <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] justify-between gap-x-4 gap-y-8 md:grid-cols-[repeat(auto-fill,176px)]">
-                        {sortStaffMediaRolesByStartDate(
-                          groupStaffRolesByMedia(staff.staffMedia.edges)
-                        ).map((edge, index) =>
-                          edge.node.type == "ANIME" ? (
-                            <Grow in timeout={500} key={index}>
-                              <Link to={`/anime/${edge.node.id}`}>
-                                <div className="flex flex-col gap-2">
-                                  <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
-                                    <img
-                                      src={edge.node.coverImage.large}
-                                      alt={edge.node.title.romaji}
-                                      loading="lazy"
-                                      style={{
-                                        opacity: 0,
-                                        aspectRatio: "6/9",
-                                        objectFit: "cover",
-                                        width: "100%",
-                                        transitionDuration: "700ms",
-                                      }}
-                                      onLoad={(t) => {
-                                        t.currentTarget.style.opacity = "1";
-                                      }}
-                                      className="rounded shadow-md shadow-black/20"
-                                    />
-                                  </div>
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] justify-between gap-x-4 gap-y-8 md:grid-cols-[repeat(auto-fill,176px)]">
+                          {staffUtils
+                            .sort(
+                              staffUtils.group(
+                                staff.staffMedia.edges,
+                              ),
+                            )
+                            .map((edge, index) =>
+                              edge.node.type == "ANIME" ? (
+                                <Grow in timeout={500} key={index}>
+                                  <Link to={`/anime/${edge.node.id}`}>
+                                    <div className="flex flex-col gap-2">
+                                      <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
+                                        <img
+                                          src={edge.node.coverImage.large}
+                                          alt={edge.node.title.romaji}
+                                          loading="lazy"
+                                          style={{
+                                            opacity: 0,
+                                            aspectRatio: "6/9",
+                                            objectFit: "cover",
+                                            width: "100%",
+                                            transitionDuration: "700ms",
+                                          }}
+                                          onLoad={(t) => {
+                                            t.currentTarget.style.opacity = "1";
+                                          }}
+                                          className="rounded shadow-md shadow-black/20"
+                                        />
+                                      </div>
 
-                                  <div className="flex flex-col gap-1">
-                                    <span className="text-md font-medium text-sky-400">
-                                      {edge.node.startDate.year}
-                                    </span>
+                                      <div className="flex flex-col gap-1">
+                                        <span className="text-md font-medium text-sky-400">
+                                          {edge.node.startDate.year}
+                                        </span>
 
-                                    <span className="line-clamp-2 text-xs font-medium text-main">
-                                      {edge.node.title.romaji}
-                                    </span>
+                                        <span className="line-clamp-2 text-xs font-medium text-main">
+                                          {edge.node.title.romaji}
+                                        </span>
+
+                                        <div className="flex flex-col gap-1">
+                                          {edge.staffRoles.map(
+                                            (staffRole, index) => (
+                                              <span
+                                                key={index}
+                                                className="line-clamp-1 text-xs font-medium"
+                                                title={staffRole}
+                                              >
+                                                {staffRole}
+                                              </span>
+                                            ),
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Link>
+                                </Grow>
+                              ) : (
+                                <Grow in timeout={500} key={index}>
+                                  <div className="flex flex-col gap-2">
+                                    <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
+                                      <img
+                                        src={edge.node.coverImage.large}
+                                        alt={edge.node.title.romaji}
+                                        loading="lazy"
+                                        style={{
+                                          opacity: 0,
+                                          aspectRatio: "6/9",
+                                          objectFit: "cover",
+                                          width: "100%",
+                                          transitionDuration: "700ms",
+                                        }}
+                                        onLoad={(t) => {
+                                          t.currentTarget.style.opacity = "1";
+                                        }}
+                                        className="rounded shadow-md shadow-black/20"
+                                      />
+                                    </div>
 
                                     <div className="flex flex-col gap-1">
-                                      {edge.staffRoles.map((staffRole, index) => (
-                                        <span
-                                          key={index}
-                                          className="line-clamp-1 text-xs font-medium"
-                                          title={staffRole}
-                                        >
-                                          {staffRole}
-                                        </span>
-                                      ))}
+                                      <span className="line-clamp-2 text-xs font-medium text-main">
+                                        {edge.node.title.romaji}
+                                      </span>
+
+                                      <div className="flex flex-col gap-1">
+                                        {edge.staffRoles.map(
+                                          (staffRole, index) => (
+                                            <span
+                                              key={index}
+                                              className="line-clamp-1 text-xs font-medium"
+                                              title={staffRole}
+                                            >
+                                              {staffRole}
+                                            </span>
+                                          ),
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </Link>
-                            </Grow>
-                          ) : (
-                            <Grow in timeout={500} key={index}>
-                              <div className="flex flex-col gap-2">
-                                <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
-                                  <img
-                                    src={edge.node.coverImage.large}
-                                    alt={edge.node.title.romaji}
-                                    loading="lazy"
-                                    style={{
-                                      opacity: 0,
-                                      aspectRatio: "6/9",
-                                      objectFit: "cover",
-                                      width: "100%",
-                                      transitionDuration: "700ms",
-                                    }}
-                                    onLoad={(t) => {
-                                      t.currentTarget.style.opacity = "1";
-                                    }}
-                                    className="rounded shadow-md shadow-black/20"
-                                  />
-                                </div>
+                                </Grow>
+                              ),
+                            )}
 
-                                <div className="flex flex-col gap-1">
-                                  <span className="line-clamp-2 text-xs font-medium text-main">
-                                    {edge.node.title.romaji}
-                                  </span>
-
-                                  <div className="flex flex-col gap-1">
-                                    {edge.staffRoles.map((staffRole, index) => (
-                                      <span
-                                        key={index}
-                                        className="line-clamp-1 text-xs font-medium"
-                                        title={staffRole}
-                                      >
-                                        {staffRole}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </Grow>
-                          )
-                        )}
-
-                        {isLoading && <StaffAnimeStaffRolesSkeleton />}
+                          {isLoading && <StaffAnimeStaffRolesSkeleton />}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {!isLoading && staff.staffMedia.pageInfo.hasNextPage && (
-                    <IntersectionObserverComponent
-                      doSomething={() => {
-                        setIsLoading(true);
+                    {!isLoading && staff.staffMedia.pageInfo.hasNextPage && (
+                      <IntersectionObserverComponent
+                        callback={() => {
+                          setIsLoading(true);
 
-                        fetchMore({
-                          query: GET_STAFF_STAFF_MEDIA_PAGINATION,
-                          variables: {
-                            staffMediaPage: staff.staffMedia.pageInfo.currentPage + 1,
-                            id: staff.id,
-                          },
-                          updateQuery(pv, { fetchMoreResult }) {
-                            if (!fetchMoreResult) return pv;
+                          fetchMore({
+                            query: GET_STAFF_STAFF_MEDIA_PAGINATION,
+                            variables: {
+                              staffMediaPage:
+                                staff.staffMedia.pageInfo.currentPage + 1,
+                              id: staff.id,
+                            },
+                            updateQuery(pv, { fetchMoreResult }) {
+                              if (!fetchMoreResult) return pv;
 
-                            return {
-                              Staff: {
-                                ...pv.Staff,
-                                staffMedia: {
-                                  ...fetchMoreResult.Staff.staffMedia,
-                                  edges: [
-                                    ...pv.Staff.staffMedia.edges,
-                                    ...fetchMoreResult.Staff.staffMedia.edges,
-                                  ],
+                              return {
+                                Staff: {
+                                  ...pv.Staff,
+                                  staffMedia: {
+                                    ...fetchMoreResult.Staff.staffMedia,
+                                    edges: [
+                                      ...pv.Staff.staffMedia.edges,
+                                      ...fetchMoreResult.Staff.staffMedia.edges,
+                                    ],
+                                  },
                                 },
-                              },
-                            };
-                          },
-                        });
-                      }}
-                      page={staff.staffMedia.pageInfo.currentPage}
-                    />
-                  )}
-                </div>
-              )}
+                              };
+                            },
+                          });
+                        }}
+                        page={staff.staffMedia.pageInfo.currentPage}
+                      />
+                    )}
+                  </div>
+                )}
             </div>
           </div>
         )}

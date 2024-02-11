@@ -8,23 +8,23 @@ import {
   GET_ANIME_CHARACTERS_PAGINATION,
   GET_ANIME_MEDIA_QUERY,
   GET_ANIME_STAFF_PAGINATION,
-} from "@/lib/queries/AnimeMediaQuery";
-import { formatDateToString } from "@/utils";
+} from "@/lib/queries/anime-media-query";
+import { formatDateToString } from "@/utils/format-date-to-string";
 import { AnimeMedia } from "@/types";
-import { NotFound } from "@/components/NotFound";
-import { Footer } from "@/components/Footer";
-import { CollapseParagraph } from "@/components/CollapseParagraph";
-import { CircularLoading } from "@/components/Loading";
-import { Subtitle } from "@/components/Subtitle";
-import { Recommendations } from "./components/Recommendations";
-import { Relations } from "./components/Relations";
-import { Tags } from "./components/Tags";
-import { CharactersContent } from "./components/CharactersContent";
-import { StaffContent } from "./components/StaffContent";
-import { SwiperHorizontal } from "@/components/SwiperHorizontal";
-import { TitleCopyToClipboard } from "./components/TitleCopyToClipboard";
-import { isContrastAppropriate } from "@/utils/isContrastAppropriate";
-import { AnimeHeader } from "./components/AnimeHeader";
+import { NotFound } from "@/components/not-found";
+import { Footer } from "@/components/footer";
+import { CollapseParagraph } from "@/components/collapse-paragraph";
+import { CircularLoading } from "@/components/loading";
+import { Subtitle } from "@/components/subtitle";
+import { SwiperHorizontal } from "@/components/swiper-horizontal";
+import { isContrastAppropriate } from "@/utils/is-contrast-appropriate";
+import { AnimeHeader as Header } from "./anime-header";
+import { AnimeTitle as Title } from "./anime-title";
+import { AnimeTags as Tags } from "./anime-tags";
+import { AnimeRelations as Relations } from "./anime-relations";
+import { AnimeRecommendations as Recommendations } from "./anime-recommendations";
+import { AnimeTabCharacters as TabCharacters } from "./anime-tab-characters";
+import { AnimeTabStaff as TabStaff } from "./anime-tab-staff";
 
 export function Anime() {
   /**
@@ -79,7 +79,7 @@ export function Anime() {
 
       {anime && (
         <>
-          <AnimeHeader />
+          <Header />
 
           {anime.bannerImage ? (
             <div className="bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
@@ -108,7 +108,7 @@ export function Anime() {
           )}
 
           <div className="mb-auto">
-            <div className="mx-auto flex max-w-6xl flex-col gap-y-2 py-4 md:flex-row">
+            <div className="mx-auto flex max-w-5xl flex-col gap-y-2 py-4 md:flex-row">
               <div className="flex flex-col gap-2 px-4">
                 <div
                   id="anime_cover"
@@ -189,7 +189,7 @@ export function Anime() {
                   </div>
                 )}
 
-                <div className="mx-auto mt-auto grid max-w-6xl grid-flow-col justify-center gap-2 font-medium md:gap-8">
+                <div className="mx-auto mt-auto grid max-w-5xl grid-flow-col justify-center gap-2 font-medium md:gap-8">
                   <button
                     className={
                       pageContent === "overview"
@@ -228,7 +228,7 @@ export function Anime() {
 
             {pageContent == "overview" && (
               <Slide in direction="up" timeout={500}>
-                <div className="mx-auto max-w-6xl">
+                <div className="mx-auto max-w-5xl">
                   <ul className="mb-4 flex flex-wrap justify-center px-4">
                     {anime.genres.map((genre, index, array) => (
                       <div key={index} className="flex items-center">
@@ -300,19 +300,19 @@ export function Anime() {
 
                     <div className="flex flex-wrap gap-x-4 gap-y-2">
                       <span className="min-w-[110px] text-sm">Romaji</span>
-                      <TitleCopyToClipboard title={anime.title.romaji} />
+                      <Title title={anime.title.romaji} />
                     </div>
 
                     {anime.title.english && (
                       <div className="flex flex-wrap gap-x-4 gap-y-2">
                         <span className="min-w-[110px] text-sm">English</span>
-                        <TitleCopyToClipboard title={anime.title.english} />
+                        <Title title={anime.title.english} />
                       </div>
                     )}
 
                     <div className="flex flex-wrap gap-x-4 gap-y-2">
                       <span className="min-w-[110px] text-sm">Native</span>
-                      <TitleCopyToClipboard title={anime.title.native} />
+                      <Title title={anime.title.native} />
                     </div>
 
                     {anime.synonyms.length > 0 && (
@@ -475,7 +475,7 @@ export function Anime() {
             )}
 
             {pageContent == "characters" && (
-              <CharactersContent
+              <TabCharacters
                 characters={anime.characters}
                 pagingFunction={() => {
                   setIsLoading(true);
@@ -509,7 +509,7 @@ export function Anime() {
             )}
 
             {pageContent == "staff" && (
-              <StaffContent
+              <TabStaff
                 staff={anime.staff}
                 pagingFunction={() => {
                   setIsLoading(true);
