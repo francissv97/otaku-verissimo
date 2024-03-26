@@ -1,36 +1,57 @@
-import shortLogo from "@/assets/logo-short.svg";
+import shortLogo from '@/assets/logo-short.svg'
 
 class LoadingHandler {
-  private element: HTMLElement | null;
+  private element: HTMLElement | null
 
   constructor() {
-    const container = document.createElement("div");
-    container.id = "center-loading-bounce";
-    container.className = "fixed top-0 z-40 flex h-full w-full items-center justify-center duration-300 pointer-events-none";
+    this.element = this.loading()
+  }
 
-    const child = document.createElement("div");
-    child.className = "w-44";
+  private loading() {
+    const container = document.createElement('div')
+    container.id = 'center-loading-bounce'
+    container.className =
+      'fixed top-0 z-40 flex h-full w-full items-center justify-center pointer-events-none'
 
-    const img = document.createElement("img");
-    img.src = shortLogo;
-    img.alt = "Center loading with logo (ov)";
-    img.className = "animate-bounce opacity-40";
+    const child = document.createElement('div')
+    child.className = 'w-44 animete-ping'
 
-    child.appendChild(img);
-    container.appendChild(child);
+    const img = document.createElement('img')
+    img.src = shortLogo
+    img.alt = 'Center loading with logo (ov)'
+    img.className = 'opacity-75 animate-pulse'
 
-    this.element = container;
+    child.appendChild(img)
+    container.appendChild(child)
+
+    return container
   }
 
   show() {
-    if (!this.element) return;
-    document.body.appendChild(this.element);
+    if (!this.element) return
+    this.element.style.opacity = '0'
+    this.element.style.transform = 'scale(0.1)'
+    document.body.appendChild(this.element)
+    requestAnimationFrame(() => {
+      if (this.element) {
+        this.element.style.transition = 'all 300ms ease-in-out'
+        this.element.style.transform = 'scale(1)'
+        this.element.style.opacity = '1'
+      }
+    })
   }
 
   hidde() {
-    if (!this.element) return;
-    this.element.remove();
+    if (!this.element) return
+    this.element.style.transform = 'scale(2)'
+    this.element.style.opacity = '0'
+    this.element.addEventListener('transitionend', () => {
+      if (this.element) {
+        this.element?.remove()
+      }
+      this.element = this.loading()
+    })
   }
 }
 
-export const loadingHandler = new LoadingHandler();
+export const loadingHandler = new LoadingHandler()
