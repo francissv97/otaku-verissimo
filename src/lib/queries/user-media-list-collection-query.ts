@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_USER_MEDIA_LIST_COLLECTION_QUERY = gql`
   query MediaListCollectionQuery($userId: Int) {
-    MediaListCollection(userId: $userId, type: ANIME, chunk: 20, perChunk: 20) {
+    MediaListCollection(userId: $userId, type: ANIME) {
       lists {
         name
         isCustomList

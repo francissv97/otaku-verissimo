@@ -1,16 +1,15 @@
-import { ClassAttributes, useState } from "react";
-import { Collapse } from "@mui/material";
-import { CaretDown, CaretUp } from "@phosphor-icons/react";
+import { ClassAttributes, useState } from 'react'
+import { CaretDown, CaretUp } from '@phosphor-icons/react'
 
 type TCollapseParagraphProps = ClassAttributes<HTMLDivElement> & {
-  description: string;
-  className?: string;
-};
+  description: string
+  className?: string
+}
 
 export function CollapseParagraph({ description, className }: TCollapseParagraphProps) {
-  const [collapse, setCollapse] = useState(false);
+  const [collapse, setCollapse] = useState(false)
 
-  if (description.replaceAll(" ", "").length > 256) {
+  if (description.replaceAll(' ', '').length >= 256) {
     return (
       <div className="relative">
         {!collapse && (
@@ -21,14 +20,12 @@ export function CollapseParagraph({ description, className }: TCollapseParagraph
           </div>
         )}
 
-        <Collapse in={collapse} appear collapsedSize={72} sx={{ position: "relative" }}>
-          <p
-            className={`${className}`}
-            dangerouslySetInnerHTML={{
-              __html: description,
-            }}
-          />
-        </Collapse>
+        <p
+          className={`${className}`}
+          dangerouslySetInnerHTML={{
+            __html: description,
+          }}
+        />
 
         <button
           onClick={() => setCollapse((prev) => !prev)}
@@ -36,19 +33,23 @@ export function CollapseParagraph({ description, className }: TCollapseParagraph
         >
           {collapse ? (
             <>
-              <span className="text-sm font-medium text-zinc-400 hover:text-zinc-300">SHOW LESS</span>
+              <span className="text-sm font-medium text-zinc-400 hover:text-zinc-300">
+                SHOW LESS
+              </span>
               <CaretUp size={18} className="text-main" weight="bold" />
             </>
           ) : (
             <>
-              <span className="text-sm font-medium text-zinc-400 hover:text-zinc-300">SHOW MORE</span>
+              <span className="text-sm font-medium text-zinc-400 hover:text-zinc-300">
+                SHOW MORE
+              </span>
               <CaretDown size={18} className="text-main" weight="bold" />
             </>
           )}
         </button>
       </div>
-    );
+    )
   }
 
-  return <p className={className} dangerouslySetInnerHTML={{ __html: description }}></p>;
+  return <p className={className} dangerouslySetInnerHTML={{ __html: description }}></p>
 }

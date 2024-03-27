@@ -3,7 +3,7 @@ import { DocumentNode, useQuery } from "@apollo/client";
 import { PageMediaResultQuery, MediaSort } from "@/types";
 import { CoverCard } from "@/components/cover-card";
 import { CardSkeleton } from "@/components/loading";
-import { IntersectionObserverComponent } from "@/components/intersection-observer-component";
+// import { IntersectionObserverComponent } from "@/components/intersection-observer-component";
 
 type ResultsListProps = {
   query: DocumentNode;
@@ -44,7 +44,7 @@ export function ResultsList({ query, variables }: ResultsListProps) {
         {loading && <CardSkeleton />}
       </div>
 
-      {!loading && data.Page.pageInfo.hasNextPage && (
+      {/* {!loading && data.Page.pageInfo.hasNextPage && (
         <IntersectionObserverComponent
           page={data.Page.pageInfo.currentPage}
           callback={() =>
@@ -63,7 +63,7 @@ export function ResultsList({ query, variables }: ResultsListProps) {
             })
           }
         />
-      )}
+      )} */}
     </div>
   );
 }
