@@ -4,6 +4,7 @@ import { TViewer } from '@/types/t-viewer'
 type TAuthContext = {
   user: TViewer | null | undefined
   signin: (user: TViewer | null) => void
+  signout: () => void
 }
 
 export const AuthContext = createContext({} as TAuthContext)
@@ -19,5 +20,9 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     setUser(user)
   }
 
-  return <AuthContext.Provider value={{ user, signin }}>{children}</AuthContext.Provider>
+  function signout() {
+    setUser(null)
+  }
+
+  return <AuthContext.Provider value={{ user, signin, signout }}>{children}</AuthContext.Provider>
 }
