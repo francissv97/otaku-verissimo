@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Anime } from './pages/anime'
-import { Character } from './pages/character'
-import { Staff } from './pages/staff'
-import { Search } from './pages/search'
 import { useViewer } from './hooks/use-viewer'
 import { useAuth } from './hooks/use-auth'
-import { NotFound } from './components/not-found'
+import { Anime } from './pages/anime'
+import { Staff } from './pages/staff'
+import { Search } from './pages/search'
+import { Character } from './pages/character'
 import { Dashboard } from './pages/dashboard'
+import { NotFound } from './components/not-found'
 
 const router = createBrowserRouter([
   { path: '/', element: <Dashboard /> },
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
 ])
 
 export function App() {
-  const { signin } = useAuth()
+  const { user, signin } = useAuth()
 
   async function checkViewerDataIfNeeded() {
     const { refreshViewerDataIfNeeded } = useViewer()
@@ -36,6 +36,10 @@ export function App() {
   useEffect(() => {
     checkViewerDataIfNeeded()
   }, [])
+
+  if (user === undefined) {
+    return
+  }
 
   return <RouterProvider router={router} />
 }
