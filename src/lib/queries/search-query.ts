@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const GET_SEARCH_QUERY = gql`
   query SearchQuery(
@@ -26,7 +26,7 @@ export const GET_SEARCH_QUERY = gql`
       ) {
         id
         title {
-           userPreferred
+          userPreferred
         }
         coverImage {
           large
@@ -57,4 +57,4 @@ export const GET_SEARCH_QUERY = gql`
       }
     }
   }
-`;
+`

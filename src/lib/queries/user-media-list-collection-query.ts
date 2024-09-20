@@ -7,6 +7,7 @@ export const GET_USER_MEDIA_LIST_COLLECTION_QUERY = gql`
         name
         isCustomList
         isCompletedList: isSplitCompletedList
+        status
         entries {
           ...mediaListEntry
         }
@@ -43,13 +44,10 @@ export const GET_USER_MEDIA_LIST_COLLECTION_QUERY = gql`
       id
       title {
         userPreferred
-        romaji
-        english
-        native
       }
       coverImage {
-        extraLarge
         large
+        color
       }
       type
       format

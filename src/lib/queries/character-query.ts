@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const GET_CHARACTER_QUERY = gql`
   query CharacterQuery($id: Int) {
@@ -20,7 +20,7 @@ export const GET_CHARACTER_QUERY = gql`
           node {
             id
             title {
-               userPreferred
+              userPreferred
             }
             coverImage {
               large
@@ -41,4 +41,4 @@ export const GET_CHARACTER_QUERY = gql`
       }
     }
   }
-`;
+`

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const GET_STAFF_QUERY = gql`
   query StaffQuery($id: Int) {
@@ -40,7 +40,7 @@ export const GET_STAFF_QUERY = gql`
           media {
             id
             title {
-               userPreferred
+              userPreferred
             }
             coverImage {
               large
@@ -58,7 +58,7 @@ export const GET_STAFF_QUERY = gql`
           node {
             id
             title {
-               userPreferred
+              userPreferred
             }
             coverImage {
               large
@@ -78,7 +78,7 @@ export const GET_STAFF_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const GET_STAFF_CHARACTERS_PAGINATION = gql`
   query StaffCharactersPagination($id: Int, $charactersPage: Int) {
@@ -99,7 +99,7 @@ export const GET_STAFF_CHARACTERS_PAGINATION = gql`
           media {
             id
             title {
-               userPreferred
+              userPreferred
             }
             coverImage {
               large
@@ -113,7 +113,7 @@ export const GET_STAFF_CHARACTERS_PAGINATION = gql`
       }
     }
   }
-`;
+`
 
 export const GET_STAFF_STAFF_MEDIA_PAGINATION = gql`
   query StaffStaffMediaPagination($id: Int, $staffMediaPage: Int) {
@@ -124,7 +124,7 @@ export const GET_STAFF_STAFF_MEDIA_PAGINATION = gql`
           node {
             id
             title {
-               userPreferred
+              userPreferred
             }
             coverImage {
               large
@@ -144,4 +144,4 @@ export const GET_STAFF_STAFF_MEDIA_PAGINATION = gql`
       }
     }
   }
-`;
+`

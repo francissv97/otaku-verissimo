@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const GET_ANIME_MEDIA_QUERY = gql`
   query AnimeMediaQuery($id: Int) {
@@ -157,7 +157,7 @@ export const GET_ANIME_MEDIA_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const GET_ANIME_CHARACTERS_PAGINATION = gql`
   query AnimeCharactersPagination($id: Int, $charactersPage: Int) {
@@ -194,7 +194,7 @@ export const GET_ANIME_CHARACTERS_PAGINATION = gql`
       }
     }
   }
-`;
+`
 
 export const GET_ANIME_STAFF_PAGINATION = gql`
   query AnimeStaffPagination($id: Int, $staffPage: Int) {
@@ -220,4 +220,4 @@ export const GET_ANIME_STAFF_PAGINATION = gql`
       }
     }
   }
-`;
+`

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const GET_ANIME_PAGE_QUERY = gql`
   query AnimePageQuery(
@@ -60,4 +60,4 @@ export const GET_ANIME_PAGE_QUERY = gql`
       }
     }
   }
-`;
+`
