@@ -26,7 +26,7 @@ export const GET_ANIME_PAGE_QUERY = gql`
       ) {
         id
         title {
-          romaji
+          userPreferred
         }
         coverImage {
           large

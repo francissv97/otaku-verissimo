@@ -20,7 +20,7 @@ export const GET_CHARACTER_QUERY = gql`
           node {
             id
             title {
-              romaji
+               userPreferred
             }
             coverImage {
               large

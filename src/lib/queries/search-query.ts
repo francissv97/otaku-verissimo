@@ -26,7 +26,7 @@ export const GET_SEARCH_QUERY = gql`
       ) {
         id
         title {
-          romaji
+           userPreferred
         }
         coverImage {
           large

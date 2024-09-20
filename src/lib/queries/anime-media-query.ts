@@ -5,9 +5,7 @@ export const GET_ANIME_MEDIA_QUERY = gql`
     Media(id: $id, type: ANIME) {
       id
       title {
-        romaji
-        english
-        native
+        userPreferred
       }
       coverImage {
         large
@@ -118,11 +116,12 @@ export const GET_ANIME_MEDIA_QUERY = gql`
           node {
             id
             title {
-              romaji
+              userPreferred
             }
             format
             coverImage {
               large
+              color
             }
             type
           }
@@ -136,11 +135,12 @@ export const GET_ANIME_MEDIA_QUERY = gql`
             mediaRecommendation {
               id
               title {
-                romaji
+                userPreferred
               }
               format
               coverImage {
                 large
+                color
               }
               averageScore
               favourites

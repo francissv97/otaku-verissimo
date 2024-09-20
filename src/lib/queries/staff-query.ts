@@ -40,7 +40,7 @@ export const GET_STAFF_QUERY = gql`
           media {
             id
             title {
-              romaji
+               userPreferred
             }
             coverImage {
               large
@@ -58,7 +58,7 @@ export const GET_STAFF_QUERY = gql`
           node {
             id
             title {
-              romaji
+               userPreferred
             }
             coverImage {
               large
@@ -99,7 +99,7 @@ export const GET_STAFF_CHARACTERS_PAGINATION = gql`
           media {
             id
             title {
-              romaji
+               userPreferred
             }
             coverImage {
               large
@@ -124,7 +124,7 @@ export const GET_STAFF_STAFF_MEDIA_PAGINATION = gql`
           node {
             id
             title {
-              romaji
+               userPreferred
             }
             coverImage {
               large
