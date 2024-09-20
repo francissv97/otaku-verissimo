@@ -23,12 +23,10 @@ export function Dashboard() {
     setModule(selectDashboardContent)
   }, [tabParams])
 
-  console.log('dashboard')
-
   return (
     <>
       <Sidebar />
-      <div className="flex min-h-screen items-center justify-center md:pl-14">{module}</div>
+      <div className="flex min-h-screen justify-center md:pl-14">{module}</div>
       <BottomBar />
     </>
   )
