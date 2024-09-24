@@ -1,52 +1,30 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/use-auth'
-import { CaretLeft, House, SignIn } from '@phosphor-icons/react'
+import { UnauthenticatedView } from '@/components/unauthenticated-view'
 
 export function Profile() {
-  const { user } = useAuth()
+  const { user, signout } = useAuth()
   const navigate = useNavigate()
-  const aniListAuthUrl = `https://anilist.co/api/v2/oauth/authorize?client_id=${import.meta.env.VITE_ID_CLIENT}&response_type=token`
 
-  if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 pt-28">
-        <span className="text-xl">It looks like you are not logged in.</span>
+  if (user === undefined) return <span className="p-4 text-2xl">Loading...</span>
 
-        <a
-          href={aniListAuthUrl}
-          title="Sign in with AniList"
-          className="flex h-full cursor-pointer items-center justify-center rounded bg-gradient-to-r from-sky-600 via-cyan-500 to-cyan-300 p-2 transition"
-        >
-          <SignIn size={40} className="text-black" />
-          <span className="min-w-max p-1 text-center text-xl text-black">Log in with AniList</span>
-        </a>
-
-        <Link
-          to="/"
-          className="mx-auto mt-4 flex w-fit items-center justify-center gap-2 rounded-lg p-2 text-xl text-main transition hover:bg-main/10 hover:text-main"
-        >
-          <span className="text-zinc-200">or</span> back to home
-          <House weight="duotone" size={24} />
-        </Link>
-      </div>
-    )
-  }
+  if (user === null) return <UnauthenticatedView />
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 p-4 pt-20">
       {user && (
         <>
-          <img className="w-20" src={user.avatar.medium} alt="" />
+          <img className="w-20" src={user.avatar.medium} alt="profile picture" />
 
-          <strong className="text-xl font-medium text-main invert">{user.name}</strong>
+          <span className="text-2xl text-main">{user.name}</span>
 
           <button
-            className="ml-auto mt-auto rounded bg-red-600 p-1 transition hover:bg-red-500"
+            className="ml-auto mt-auto w-full rounded p-1 text-red-600 ring-2 ring-red-600 transition hover:text-red-500 hover:ring-red-500"
             onClick={() => {
               localStorage.removeItem('access_token')
               localStorage.removeItem('viewer')
               navigate('/')
-              window.location.reload()
+              signout()
             }}
           >
             Sign Out
