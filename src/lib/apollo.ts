@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 
-const token = import.meta.env.VITE_TOKEN
+const token = localStorage.getItem('access_token')
 
 const link = createHttpLink({
   uri: 'https://graphql.anilist.co',
