@@ -12,8 +12,8 @@ import { formatDateToString } from '@/utils/format-date-to-string'
 import { Subtitle } from '@/components/subtitle'
 import { CollapseParagraph } from '@/components/collapse-paragraph'
 import { Footer } from '@/components/footer'
-import { NotFound } from '@/components/not-found'
 import { SwiperHorizontal } from '@/components/swiper-horizontal'
+import { Loader } from '@/components/loader'
 import { AnimeMedia } from '@/types'
 import { isContrastAppropriate } from '@/utils/is-contrast-appropriate'
 
@@ -25,7 +25,6 @@ import { AnimeRelations as Relations } from './anime-relations'
 import { AnimeRecommendations as Recommendations } from './anime-recommendations'
 import { AnimeTabCharacters as TabCharacters } from './anime-tab-characters'
 import { AnimeTabStaff as TabStaff } from './anime-tab-staff'
-import { log } from 'console'
 
 type AnimeMediaResponse = {
   Media: AnimeMedia
@@ -49,16 +48,10 @@ export function Anime() {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       setAnime(data.Media)
-      const title = data.Media.title
-      document.title = `${title.romaji} ${
-        title.english != null && title.english != title.romaji && ` (${title.english})`
-      } · otakuVERISSIMO`
     },
-    fetchPolicy: 'cache-first'
   })
 
-  if (loading || anime === undefined)
-    return <Circle size={44} className="fixed inset-0 text-main" />
+  if (loading || anime === undefined) return <Loader />
 
   if (error)
     return (
@@ -114,7 +107,7 @@ export function Anime() {
                   ) : (
                     <img
                       src={anime.coverImage.large}
-                      alt={anime.title.romaji}
+                      alt={anime.title.userPreferred}
                       className="h-full w-full"
                       loading="lazy"
                       style={{
@@ -157,7 +150,7 @@ export function Anime() {
                       : '#FF5F00',
                   }}
                 >
-                  {anime.title.romaji}
+                  {anime.title.userPreferred}
                 </h1>
 
                 {anime.startDate.day == null &&
@@ -260,31 +253,31 @@ export function Anime() {
                     <SwiperHorizontal>
                       {anime.characters.edges
                         .filter((character) => character.role == 'MAIN')
-                        .map((character) => (
-                          <SwiperSlide key={character.node.id}>
-                            <Link
-                              className="flex flex-col gap-4"
-                              to={`/character/${character.node.id}`}
-                            >
-                              <div className="aspect-square overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
-                                <img
-                                  src={character.node.image.medium}
-                                  alt={character.node.name.full}
-                                  style={{
-                                    opacity: 0,
-                                    transitionDuration: '900ms',
-                                  }}
-                                  onLoad={(t) => (t.currentTarget.style.opacity = '1')}
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
+                        .map((character) => {
+                          const { id, name, image } = character.node
+                          return (
+                            <SwiperSlide key={id}>
+                              <Link className="flex flex-col gap-4" to={`/character/${id}`}>
+                                <div className="aspect-square overflow-hidden rounded-full bg-gradient-to-t from-zinc-600 via-zinc-400 to-zinc-300">
+                                  <img
+                                    src={image.medium}
+                                    alt={name.full}
+                                    style={{
+                                      opacity: 0,
+                                      transitionDuration: '900ms',
+                                    }}
+                                    onLoad={(t) => (t.currentTarget.style.opacity = '1')}
+                                    className="h-full w-full object-cover"
+                                  />
+                                </div>
 
-                              <span className="mx-auto line-clamp-2 w-full text-center text-base">
-                                {character.node.name.full}
-                              </span>
-                            </Link>
-                          </SwiperSlide>
-                        ))}
+                                <span className="mx-auto line-clamp-2 w-full text-center text-base">
+                                  {name.full}
+                                </span>
+                              </Link>
+                            </SwiperSlide>
+                          )
+                        })}
                     </SwiperHorizontal>
                   </div>
                 </div>
@@ -293,20 +286,8 @@ export function Anime() {
                   <Subtitle text="Info" />
 
                   <div className="flex flex-wrap gap-x-4 gap-y-2">
-                    <span className="min-w-[110px] text-sm">Romaji</span>
-                    <Title title={anime.title.romaji} />
-                  </div>
-
-                  {anime.title.english && (
-                    <div className="flex flex-wrap gap-x-4 gap-y-2">
-                      <span className="min-w-[110px] text-sm">English</span>
-                      <Title title={anime.title.english} />
-                    </div>
-                  )}
-
-                  <div className="flex flex-wrap gap-x-4 gap-y-2">
-                    <span className="min-w-[110px] text-sm">Native</span>
-                    <Title title={anime.title.native} />
+                    <span className="min-w-[110px] text-sm"> userPreferred</span>
+                    <Title title={anime.title.userPreferred} />
                   </div>
 
                   {anime.synonyms.length > 0 && (

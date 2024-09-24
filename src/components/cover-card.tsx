@@ -13,15 +13,17 @@ type TCoverCardPopoverProps = {
 }
 
 export function CoverCard({ anime }: TCoverCardProps) {
+  const { id, title, coverImage } = anime
+  
   return (
-    <HoverCard.Root key={anime.id} openDelay={0} closeDelay={0}>
+    <HoverCard.Root key={id} openDelay={0} closeDelay={0}>
       <HoverCard.Trigger className="relative" asChild>
-        <Link to={`/anime/${anime.id}`}>
+        <Link to={`/anime/${id}`}>
           <div className="group flex h-full cursor-pointer flex-col">
             <div className="relative mb-3 overflow-hidden rounded-lg shadow-md">
               <img
-                src={anime.coverImage.large}
-                alt={anime.title.romaji}
+                src={coverImage.large}
+                alt={title.userPreferred}
                 className="aspect-[6/9] h-full w-full object-cover object-center"
                 loading="lazy"
                 style={{
@@ -34,9 +36,9 @@ export function CoverCard({ anime }: TCoverCardProps) {
 
             <span
               className="line-clamp-2 min-h-[28px] text-[14px] font-medium"
-              style={{ color: anime.coverImage.color }}
+              style={{ color: coverImage.color }}
             >
-              {anime.title.romaji}
+              {title.userPreferred}
             </span>
           </div>
         </Link>

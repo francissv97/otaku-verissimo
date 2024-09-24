@@ -113,7 +113,7 @@ export function Character() {
                     <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
                       <img
                         src={edge.node.coverImage.large}
-                        alt={edge.node.title.romaji}
+                        alt={edge.node.title.userPreferred}
                         loading="lazy"
                         style={{
                           opacity: 0,
@@ -130,7 +130,7 @@ export function Character() {
                     </div>
 
                     <span className="mt-2 line-clamp-2 min-h-[20px] text-sm font-medium">
-                      {edge.node.title.romaji}
+                      {edge.node.title.userPreferred}
                     </span>
                   </Link>
                 ) : (
@@ -138,7 +138,7 @@ export function Character() {
                     <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
                       <img
                         src={edge.node.coverImage.large}
-                        alt={edge.node.title.romaji}
+                        alt={edge.node.title.userPreferred}
                         loading="lazy"
                         style={{
                           opacity: 0,
@@ -155,7 +155,7 @@ export function Character() {
                     </div>
 
                     <span className="mt-2 line-clamp-2 min-h-[20px] text-sm font-medium">
-                      {edge.node.title.romaji}
+                      {edge.node.title.userPreferred}
                     </span>
                   </div>
                 )

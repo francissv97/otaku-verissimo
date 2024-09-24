@@ -1,36 +1,36 @@
 type StudioConnection = {
   edges: {
-    isMain: boolean;
-    node: { id: number; name: string; isAnimationStudio: boolean };
-  }[];
-};
+    isMain: boolean
+    node: { id: number; name: string; isAnimationStudio: boolean }
+  }[]
+}
 
-type MediaSeason = "WINTER" | "SPRING" | "SUMMER" | "FALL";
+type MediaSeason = 'WINTER' | 'SPRING' | 'SUMMER' | 'FALL'
 
 type MediaFormat =
-  | "TV"
-  | "TV_SHORT"
-  | "MOVIE"
-  | "SPECIAL"
-  | "OVA"
-  | "ONA"
-  | "MUSIC"
-  | "MANGA"
-  | "NOVEL"
-  | "ONE_SHOT";
+  | 'TV'
+  | 'TV_SHORT'
+  | 'MOVIE'
+  | 'SPECIAL'
+  | 'OVA'
+  | 'ONA'
+  | 'MUSIC'
+  | 'MANGA'
+  | 'NOVEL'
+  | 'ONE_SHOT'
 
-type MediaStatus = "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS";
+type MediaStatus = 'FINISHED' | 'RELEASING' | 'NOT_YET_RELEASED' | 'CANCELLED' | 'HIATUS'
 
 export type MediaSort =
-  | "TITLE_ROMAJI_DESC"
-  | "POPULARITY_DESC"
-  | "SCORE_DESC"
-  | "TRENDING_DESC"
-  | "FAVOURITES_DESC"
-  | "ID_DESC"
-  | "START_DATE_DESC";
+  | 'TITLE_ userPreferred_DESC'
+  | 'POPULARITY_DESC'
+  | 'SCORE_DESC'
+  | 'TRENDING_DESC'
+  | 'FAVOURITES_DESC'
+  | 'ID_DESC'
+  | 'START_DATE_DESC'
 // | "ID"
-// | "TITLE_ROMAJI"
+// | "TITLE_ userPreferred"
 // | "TITLE_ENGLISH"
 // | "TITLE_ENGLISH_DESC"
 // | "TITLE_NATIVE"
@@ -61,304 +61,302 @@ export type MediaSort =
 // | "FAVOURITES"
 
 export type PageInfo = {
-  total: number;
-  currentPage: number;
-  lastPage: number;
-  hasNextPage: true;
-  perPage: number;
-};
+  total: number
+  currentPage: number
+  lastPage: number
+  hasNextPage: true
+  perPage: number
+}
 
 export type PageMediaResultQuery = {
-  id: number;
+  id: number
   title: {
-    romaji: string;
-  };
+    userPreferred: string
+  }
   coverImage: {
-    large: string;
-    color: string;
-  };
-  format: MediaFormat;
-  averageScore: number;
-  episodes: number;
-  genres: string[];
-  status: MediaStatus;
-  studios: { nodes: { id: number; name: string }[] };
-  season: MediaSeason;
-  seasonYear: number;
+    large: string
+    color: string
+  }
+  format: MediaFormat
+  averageScore: number
+  episodes: number
+  genres: string[]
+  status: MediaStatus
+  studios: { nodes: { id: number; name: string }[] }
+  season: MediaSeason
+  seasonYear: number
   startDate: {
-    __typename: "FuzzyDate";
-    day: number;
-    month: number;
-    year: number;
-  };
-};
+    __typename: 'FuzzyDate'
+    day: number
+    month: number
+    year: number
+  }
+}
 
 export type AnimeMedia = {
-  id: number;
+  id: number
   title: {
-    romaji: string;
-    english: string;
-    native: string;
-  };
+    userPreferred: string
+  }
   coverImage: {
-    large: string;
-    color: string;
-  };
-  bannerImage: string;
-  season: MediaSeason;
-  seasonYear: number;
-  format: MediaFormat;
-  averageScore: number;
-  meanScore: number;
-  genres: string[];
-  description: string;
-  status: MediaStatus;
-  episodes: number;
-  duration: number;
-  studios: StudioConnection;
-  synonyms: string[];
-  popularity: number;
-  favourites: number;
+    large: string
+    color: string
+  }
+  bannerImage: string
+  season: MediaSeason
+  seasonYear: number
+  format: MediaFormat
+  averageScore: number
+  meanScore: number
+  genres: string[]
+  description: string
+  status: MediaStatus
+  episodes: number
+  duration: number
+  studios: StudioConnection
+  synonyms: string[]
+  popularity: number
+  favourites: number
   characters: {
     edges: {
       node: {
-        id: number;
-        name: { full: string };
-        image: { medium: string };
-      };
+        id: number
+        name: { full: string }
+        image: { medium: string }
+      }
       voiceActorRoles: {
-        roleNotes: string | null;
+        roleNotes: string | null
         voiceActor: {
-          id: number;
-          name: { full: string };
-          image: { medium: string };
-        };
-      }[];
-      role: "MAIN" | "SUPPORTING" | "BACKGROUND";
-    }[];
+          id: number
+          name: { full: string }
+          image: { medium: string }
+        }
+      }[]
+      role: 'MAIN' | 'SUPPORTING' | 'BACKGROUND'
+    }[]
     pageInfo: {
-      currentPage: number;
-      hasNextPage: boolean;
-    };
-  };
+      currentPage: number
+      hasNextPage: boolean
+    }
+  }
   staff: {
     edges: {
-      id: number;
+      id: number
       node: {
-        id: number;
-        name: { full: string };
-        image: { medium: string };
-      };
-      role: string;
-    }[];
+        id: number
+        name: { full: string }
+        image: { medium: string }
+      }
+      role: string
+    }[]
     pageInfo: {
-      currentPage: number;
-      hasNextPage: boolean;
-    };
-  };
-  source: string;
+      currentPage: number
+      hasNextPage: boolean
+    }
+  }
+  source: string
   startDate: {
-    __typename: "FuzzyDate";
-    day: number;
-    month: number;
-    year: number;
-  };
+    __typename: 'FuzzyDate'
+    day: number
+    month: number
+    year: number
+  }
   endDate: {
-    day: number;
-    month: number;
-    year: number;
-  };
+    day: number
+    month: number
+    year: number
+  }
   tags: {
-    id: number;
-    name: string;
-    description: string;
-    category: string;
-    rank: number;
-    isGeneralSpoiler: boolean;
-    isMediaSpoiler: boolean;
-    isAdult: boolean;
-  }[];
+    id: number
+    name: string
+    description: string
+    category: string
+    rank: number
+    isGeneralSpoiler: boolean
+    isMediaSpoiler: boolean
+    isAdult: boolean
+  }[]
   relations: {
     edges: {
-      relationType: string;
+      relationType: string
       node: {
-        id: number;
+        id: number
         title: {
-          romaji: string;
-        };
-        format: string;
+          userPreferred: string
+        }
+        format: string
         coverImage: {
-          large: string;
-        };
-        type: string;
-      };
-    }[];
-  };
+          large: string
+        }
+        type: string
+      }
+    }[]
+  }
   recommendations: {
     edges: {
       node: {
         mediaRecommendation: {
-          id: number;
+          id: number
           title: {
-            romaji: string;
-          };
-          format: string;
+            userPreferred: string
+          }
+          format: string
           coverImage: {
-            large: string;
-          };
-          averageScore: number;
-          favourites: number;
-        };
-      };
-    }[];
-  };
+            large: string
+          }
+          averageScore: number
+          favourites: number
+        }
+      }
+    }[]
+  }
   externalLinks: {
-    id: number;
-    site: string;
-    url: string;
-    color: string;
-    icon: string;
-  }[];
-};
+    id: number
+    site: string
+    url: string
+    color: string
+    icon: string
+  }[]
+}
 
 export type StaffModel = {
-  id: number;
+  id: number
   name: {
-    full: string;
-    native: string;
-  };
+    full: string
+    native: string
+  }
   image: {
-    large: string;
-  };
-  description: string;
-  homeTown: string;
-  favourites: number;
-  bloodType: string;
-  age: number;
-  gender: string;
-  yearsActive: number[];
+    large: string
+  }
+  description: string
+  homeTown: string
+  favourites: number
+  bloodType: string
+  age: number
+  gender: string
+  yearsActive: number[]
   dateOfBirth: {
-    day: number;
-    month: number;
-    year: number;
-  };
+    day: number
+    month: number
+    year: number
+  }
   characters: {
     edges: {
-      id: number;
-      role: string;
+      id: number
+      role: string
       media: {
-        id: number;
-        format: string;
+        id: number
+        format: string
         title: {
-          romaji: string;
-        };
+          userPreferred: string
+        }
         coverImage: {
-          large: string;
-        };
-      }[];
+          large: string
+        }
+      }[]
       node: {
-        id: number;
+        id: number
         name: {
-          full: string;
-        };
+          full: string
+        }
         image: {
-          large: string;
-        };
-      };
-    }[];
+          large: string
+        }
+      }
+    }[]
     pageInfo: {
-      currentPage: number;
-      hasNextPage: boolean;
-    };
-  };
+      currentPage: number
+      hasNextPage: boolean
+    }
+  }
   staffMedia: {
     edges: {
       node: {
-        id: number;
+        id: number
         title: {
-          romaji: string;
-        };
+          userPreferred: string
+        }
         coverImage: {
-          large: string;
-        };
+          large: string
+        }
         startDate: {
-          day: number | null;
-          month: number | null;
-          year: number | null;
-        };
-        type: "ANIME" | "MANGA";
-      };
-      staffRole: string;
-    }[];
+          day: number | null
+          month: number | null
+          year: number | null
+        }
+        type: 'ANIME' | 'MANGA'
+      }
+      staffRole: string
+    }[]
     pageInfo: {
-      currentPage: number;
-      hasNextPage: boolean;
-    };
-  };
-};
+      currentPage: number
+      hasNextPage: boolean
+    }
+  }
+}
 
 export type CharacterModel = {
-  id: number;
+  id: number
   name: {
-    full: string;
-    native: string;
-  };
+    full: string
+    native: string
+  }
   image: {
-    large: string;
-  };
-  description: string;
-  favourites: number;
-  bloodType: string;
+    large: string
+  }
+  description: string
+  favourites: number
+  bloodType: string
   media: {
     edges: {
       node: {
-        id: number;
+        id: number
         title: {
-          romaji: string;
-        };
+          userPreferred: string
+        }
         coverImage: {
-          large: string;
-        };
-        type: "ANIME" | "MANGA";
-      };
+          large: string
+        }
+        type: 'ANIME' | 'MANGA'
+      }
       voiceActors: {
-        id: number;
+        id: number
         name: {
-          full: string;
-        };
+          full: string
+        }
         image: {
-          large: string;
-        };
-        languageV2: string;
-      }[];
-    }[];
-  };
-};
+          large: string
+        }
+        languageV2: string
+      }[]
+    }[]
+  }
+}
 
 export type GetAnimeInfoQueryResponse = {
   Page: {
-    media: AnimeMedia[];
-  };
-};
+    media: AnimeMedia[]
+  }
+}
 
 export type PopularThisSeasonType = {
-  currentYear: number;
-  currentSeason: string | undefined;
-  perPage: number;
-};
+  currentYear: number
+  currentSeason: string | undefined
+  perPage: number
+}
 
 export type UpcomingNextSeasonType = {
-  nextSeasonYear: number;
-  nextSeason: string | undefined;
-  perPage: number;
-};
+  nextSeasonYear: number
+  nextSeason: string | undefined
+  perPage: number
+}
 
 export type TrendingNowType = {
-  perPage: number;
-};
+  perPage: number
+}
 
 export type AllTimePopularType = {
-  perPage: number;
-};
+  perPage: number
+}
 
-export type ViewAllParams = "trending" | "this-season" | "next-season" | "popular";
+export type ViewAllParams = 'trending' | 'this-season' | 'next-season' | 'popular'

@@ -179,7 +179,7 @@ export function Staff() {
                                 <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
                                   <img
                                     src={media.coverImage.large}
-                                    alt={media.title.romaji}
+                                    alt={media.title.userPreferred}
                                     loading="lazy"
                                     style={{
                                       opacity: 0,
@@ -203,7 +203,7 @@ export function Staff() {
 
                                 <div className="bottom-0 left-0 right-0 flex items-center">
                                   <span className="line-clamp-2 min-h-[20px] text-sm font-medium">
-                                    {media.title.romaji}
+                                    {media.title.userPreferred}
                                   </span>
                                 </div>
                               </div>
@@ -263,14 +263,15 @@ export function Staff() {
                       <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] justify-between gap-x-4 gap-y-8 md:grid-cols-[repeat(auto-fill,176px)]">
                         {staffUtils
                           .sort(staffUtils.group(staff.staffMedia.edges))
-                          .map((edge, index) =>
-                            edge.node.type == 'ANIME' ? (
-                              <Link to={`/anime/${edge.node.id}`} key={index}>
+                          .map((edge, index) => {
+                            const { id, coverImage, startDate, title } = edge.node
+                            return (
+                              <Link to={`/anime/${id}`} key={index}>
                                 <div className="flex flex-col gap-2">
                                   <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
                                     <img
-                                      src={edge.node.coverImage.large}
-                                      alt={edge.node.title.romaji}
+                                      src={coverImage.large}
+                                      alt={title.userPreferred}
                                       loading="lazy"
                                       style={{
                                         opacity: 0,
@@ -288,11 +289,11 @@ export function Staff() {
 
                                   <div className="flex flex-col gap-1">
                                     <span className="text-md font-medium text-sky-400">
-                                      {edge.node.startDate.year}
+                                      {startDate.year}
                                     </span>
 
                                     <span className="line-clamp-2 text-xs font-medium text-main">
-                                      {edge.node.title.romaji}
+                                      {title.userPreferred}
                                     </span>
 
                                     <div className="flex flex-col gap-1">
@@ -309,47 +310,8 @@ export function Staff() {
                                   </div>
                                 </div>
                               </Link>
-                            ) : (
-                              <div className="flex flex-col gap-2" key={index}>
-                                <div className="rounded bg-gradient-to-t from-orange-700 via-orange-600 to-orange-500">
-                                  <img
-                                    src={edge.node.coverImage.large}
-                                    alt={edge.node.title.romaji}
-                                    loading="lazy"
-                                    style={{
-                                      opacity: 0,
-                                      aspectRatio: '6/9',
-                                      objectFit: 'cover',
-                                      width: '100%',
-                                      transitionDuration: '700ms',
-                                    }}
-                                    onLoad={(t) => {
-                                      t.currentTarget.style.opacity = '1'
-                                    }}
-                                    className="rounded shadow-md shadow-black/20"
-                                  />
-                                </div>
-
-                                <div className="flex flex-col gap-1">
-                                  <span className="line-clamp-2 text-xs font-medium text-main">
-                                    {edge.node.title.romaji}
-                                  </span>
-
-                                  <div className="flex flex-col gap-1">
-                                    {edge.staffRoles.map((staffRole, index) => (
-                                      <span
-                                        key={index}
-                                        className="line-clamp-1 text-xs font-medium"
-                                        title={staffRole}
-                                      >
-                                        {staffRole}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
                             )
-                          )}
+                          })}
 
                         {/* {isLoading && <StaffAnimeStaffRolesSkeleton />} */}
                       </div>
