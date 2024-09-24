@@ -1,11 +1,10 @@
 import { DocumentNode, useQuery } from '@apollo/client'
 import { SwiperSlide } from 'swiper/react'
-import { CircleNotch } from '@phosphor-icons/react'
 import { PageMediaResultQuery } from '@/types'
 import { Subtitle } from '@/components/subtitle'
 import { SwiperSectionHome } from '@/components/swiper-section-home'
 import { CoverCard } from '@/components/cover-card'
-import logo from '@/assets/logo-short.svg'
+import { DefaultLoading as Loading } from '@/components/loading'
 
 type THomeListingSectionProps = {
   title: string
@@ -32,7 +31,7 @@ export function HomeListingSection({ title, query, variables }: THomeListingSect
     <div>
       <div className="mx-auto my-2 flex items-center justify-between px-4">
         {loading ? (
-          <div className="h-7 w-36 animate-pulse rounded-lg bg-zinc-50/10 px-4" />
+          <div className="h-7 w-36 animate-pulse rounded-lg px-4" />
         ) : (
           <Subtitle text={title} />
         )}
@@ -46,13 +45,7 @@ export function HomeListingSection({ title, query, variables }: THomeListingSect
       </div>
 
       {loading ? (
-        <div className="px-4">
-          <div className="flex h-72 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-50/10">
-            {/* <CircleNotch size={60} className="absolute animate-spin text-main" /> */}
-
-            <img src={logo} alt="ov logo" className="w-28 opacity-30" />
-          </div>
-        </div>
+        <Loading />
       ) : (
         <SwiperSectionHome>
           {animes?.map((media, index) => (
