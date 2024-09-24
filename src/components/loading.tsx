@@ -1,21 +1,14 @@
-// import shortLogo from "@/assets/logo-short.svg";
+import shortLogo from '@/assets/logo-short.svg'
 
-/* function Loading() {
+export function DefaultLoading() {
   return (
-    <div
-      id="center-loading-bounce"
-      className="pointer-events-none fixed top-0 z-40 hidden h-full w-full items-center justify-center duration-300"
-    >
-      <div className="w-40">
-        <img
-          src={shortLogo}
-          alt="Center loading with logo (ov)"
-          className="animate-ping opacity-40"
-        />
-      </div>
+    <div className="flex w-full animate-pulse flex-col items-center justify-center p-4 opacity-40">
+      <img src={shortLogo} alt="ov logo" className="w-16" />
+
+      <span className="text-xl font-medium">Loading...</span>
     </div>
-  );
-} */
+  )
+}
 
 export function CardSkeleton() {
   return (
