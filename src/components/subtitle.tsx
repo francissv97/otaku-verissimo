@@ -1,14 +1,13 @@
-import { ClassAttributes } from "react";
+import { ClassAttributes } from 'react'
 
 type TSubtitleProps = ClassAttributes<HTMLSpanElement> & {
-  text: string;
-  className?: string;
-};
+  text: string
+  className?: string
+}
 
 export function Subtitle({ text, className }: TSubtitleProps) {
-  return (
-    <span className={`text-lg font-semibold uppercase text-main ${className}`}>
-      {text}
-    </span>
-  );
+  const classnames = 'text-xl font-semibold uppercase text-main italic '.concat(
+    className ? className : ''
+  )
+  return <span className={classnames.trim()}>{text}</span>
 }

@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-zinc-800 text-zinc-50 font-main overflow-x-hidden min-h-screen box-border;
+  @apply box-border min-h-screen overflow-x-hidden bg-zinc-900 font-main text-zinc-50;
   --webkit-font-smoothing: antialiased;
 }
 
