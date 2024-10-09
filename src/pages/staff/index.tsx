@@ -15,18 +15,12 @@ import { formatDateToString } from '@/utils/format-date-to-string'
 
 export function Staff() {
   const { id } = useParams() as { id: string }
-  const [isLoading, setIsLoading] = useState(false)
 
   const { data, error, fetchMore } = useQuery(GET_STAFF_QUERY, {
-    variables: { id: id },
+    variables: { id },
     notifyOnNetworkStatusChange: true,
-    onCompleted(data) {
-      document.title = `${data.Staff.name.full} · otakuVERISSIMO`
-      setIsLoading(false)
-    },
     onError(error) {
       console.error(error)
-      setIsLoading(false)
     },
   })
 
